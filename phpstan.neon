@@ -1,0 +1,10 @@
+parameters:
+    level: 6
+    paths:
+        - src/templates
+        - src/classes
+        - index.php
+    ignoreErrors:
+      -
+        message: '#Variable \$[a-zA-Z0-9\\_]+ might not be defined\.#'
+        path: templates
