@@ -24,6 +24,11 @@ class User
         $this->formation = getFormationById($link, $data[0]['formation_id']);
     }
 
+    /**
+     * Добавляет пользователя в список на одобрение в преподавательский состав
+     *
+     * @return array<int, string>|false
+     */
     public function addUserToTeachersCheckList(): array|false
     {
         $sql = "INSERT INTO teachers_check_list (user_id) VALUES (?)";

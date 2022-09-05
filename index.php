@@ -1,9 +1,9 @@
 <?php
 /**
- * @var mysqli $link
+ * @var mysqli $link Ресурс подключения
+ * @var array $user Данные о пользователе
  */
 
-require_once 'vendor/autoload.php';
 require_once 'src/data/init.php';
 require_once 'src/helpers/mainHelpers.php';
 
@@ -47,3 +47,16 @@ foreach ($formationsData as $formation) {
 $testStudent = new UserStudent($link, 13000);
 $testTeacher = new UserTeacher($link, 9737);
 $testMaster = new UserMaster($link, 8855);
+
+$content = include_template('main.php', [
+    'formations' => $formationsData,
+    'user' => $user,
+]);
+
+$layout = include_template('layout.php', [
+    'user' => $user,
+    'content' => $content,
+    'title' => 'Vampires Academy | Main'
+]);
+
+print($layout);

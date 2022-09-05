@@ -2,74 +2,25 @@
 require_once "dbHelpers.php";
 
 /**
- * Собирает список всех существующих в базе данных формаций
+ * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
  *
- * @param mysqli $link Ресурс подключения
+ * @param string $name Путь к файлу шаблона относительно папки templates
+ * @param array $data Ассоциативный массив с данными для шаблона
  *
- * @return array|false Массив формаций, либо false из-за ошибки запроса
+ * @return string|false Итоговый HTML
  */
-function getFormationsData(mysqli $link): array|false
+function include_template(string $name, array $data = []): string|false
 {
-    $sql = "SELECT * FROM formations";
+    $name = 'src/templates/' . $name;
+    $result = '';
 
-    return dbQuery($link, $sql);
-}
+    if (!is_readable($name)) {
+        return $result;
+    }
 
-/**
- * Ищет информацию о формации по ее ID
- *
- * @param mysqli $link Ресурс подключения
- * @param int $formationId Идентификатор формации
- *
- * @return array|false Массив с информацией о формации, либо false из-за ошибки запроса
- */
-function getFormationById(mysqli $link, int $formationId): array|false
-{
-    $sql = "SELECT * FROM formations WHERE id = ?";
+    ob_start();
+    extract($data);
+    require $name;
 
-    return dbQuery($link, $sql, [$formationId]);
-}
-
-/**
- * Собирает список всех пользователей, находящихся в одной формации
- *
- * @param mysqli $link Ресурс подключения
- * @param int $formationId Идентификатор формации
- *
- * @return array|false Массив пользователей, либо false из-за ошибки запроса
- */
-function getUsersByFormationId(mysqli $link, int $formationId): array|false
-{
-    $sql = "SELECT * FROM users WHERE formation_id = ?";
-
-    return dbQuery($link, $sql, [$formationId]);
-}
-
-/**
- * Ищет пользователя по его FiveM ID
- *
- * @param mysqli $link Ресурс подключения
- * @param int $fivemId Идентификатор пользователя
- *
- * @return array|false Массив с данными пользователя, либо false из-за ошибки запроса
- */
-function getUserByFivemId(mysqli $link, int $fivemId): array|false
-{
-    $sql = "SELECT * FROM users WHERE fivem_id = ?";
-
-    return dbQuery($link, $sql, [$fivemId]);
-}
-
-/**
- * Собирает список всех пользователей, претендующих на место учителя
- *
- * @param mysqli $link Ресурс подключения
- *
- * @return array|false Массив пользователей, либо false из-за ошибки запроса
- */
-function getTeachersCheckList(mysqli $link): array|false
-{
-    $sql = "";
-
-    return dbQuery($link, $sql);
+    return ob_get_clean();
 }

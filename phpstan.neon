@@ -3,6 +3,8 @@ parameters:
     paths:
         - src/templates
         - src/classes
+        - src/helpers
+        - src/data/init.php
         - index.php
     ignoreErrors:
       -

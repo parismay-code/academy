@@ -10,14 +10,28 @@ require_once 'src/helpers/mainHelpers.php';
 
 class UserHighLevel extends User
 {
-    private function removeUserFromQuery($userId): void
+    /**
+     * Убирает пользователя, которого приняли в преподавательский состав, из списка ожидания
+     *
+     * @param int $userId
+     *
+     * @return void
+     */
+    private function removeUserFromQuery(int $userId): void
     {
         $sql = "DELETE FROM teachers_check_list WHERE user_id = ?";
 
         dbQuery($this->link, $sql, [$userId]);
     }
 
-    public function acceptNewTeacher($userId): array|false
+    /**
+     * Принимает пользователя, подавшего заявку на вступление в преподавательский состав
+     *
+     * @param int $userId
+     *
+     * @return array<int|string>|false
+     */
+    public function acceptNewTeacher(int $userId): array|false
     {
         $sql = "UPDATE users SET status = ? WHERE id = ?";
 
