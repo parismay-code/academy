@@ -1,6 +1,6 @@
 <?php
 /**
- * @var array $user Данные о пользователе
+ * @var User $user Данные о пользователе
  * @var string $formType Данные о формациях
  * @var string $error Если есть ошибка, то возвращает "password" (неверный логин или пароль), "re_password" (пароли не совпадают)
  */

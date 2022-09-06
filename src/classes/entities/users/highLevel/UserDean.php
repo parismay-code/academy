@@ -2,7 +2,9 @@
 
 namespace Academy\classes\entities\users\highLevel;
 
-class UserDean extends UserHighLevel
+use Academy\classes\entities\users\User;
+
+class UserDean extends User
 {
 
 }

@@ -2,7 +2,9 @@
 
 namespace Academy\classes\entities\users\highLevel;
 
-class UserViceRector extends UserHighLevel
+use Academy\classes\entities\users\User;
+
+class UserViceRector extends User
 {
 
 }

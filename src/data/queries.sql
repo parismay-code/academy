@@ -10,5 +10,5 @@ VALUES
 INSERT INTO users (username, fivem_id, discord, password, formation_id, status, registration_date)
 VALUES
   ('Emiel Regis van der Eretein', 9737, 'mentalaffect#6666', 'kkapass02', 1, 'teacher', NOW()),
-  ('Jacqueline de Monroe', 8855, '.Di#5151', 'pass', 1, 'master', NOW()),
-  ('Mikaela Teller', 1255, 'Zlaya#0007',  'pass', 2, 'dean', NOW());
+  ('Jacqueline de Monroe', 8855, 'Zlaya#0007', 'pass', 1, 'vice_rector', NOW()),
+  ('Mikaela Teller', 1255, '.Di#5151',  'pass', 2, 'dean', NOW());

@@ -11,7 +11,7 @@ class User
     const STATUS_TEACHER = 'teacher';
     const STATUS_MASTER = 'master';
     const STATUS_DEAN = 'dean';
-    const STATUS_VICE_RECTOR = 'vice_rector';
+    const STATUS_VICE_RECTOR = 'vice-rector';
     const STATUS_RECTOR = 'rector';
     const STATUS_ADMIN = 'admin';
 
@@ -35,6 +35,43 @@ class User
         self::STATUS_VICE_RECTOR => 'Проректор',
         self::STATUS_RECTOR => 'Ректор',
         self::STATUS_ADMIN => 'Администратор'
+    ];
+
+    const CHANGE_STATUS_MAP = [
+        self::STATUS_ADMIN => [
+            self::STATUS_STUDENT,
+            self::STATUS_ASSISTANT,
+            self::STATUS_TEACHER,
+            self::STATUS_MASTER,
+            self::STATUS_DEAN,
+            self::STATUS_VICE_RECTOR,
+            self::STATUS_RECTOR
+        ],
+        self::STATUS_RECTOR => [
+            self::STATUS_STUDENT,
+            self::STATUS_ASSISTANT,
+            self::STATUS_TEACHER,
+            self::STATUS_MASTER,
+            self::STATUS_DEAN,
+            self::STATUS_VICE_RECTOR,
+        ],
+        self::STATUS_VICE_RECTOR => [
+            self::STATUS_STUDENT,
+            self::STATUS_ASSISTANT,
+            self::STATUS_TEACHER,
+            self::STATUS_MASTER,
+            self::STATUS_DEAN
+        ],
+        self::STATUS_DEAN => [
+            self::STATUS_STUDENT,
+            self::STATUS_ASSISTANT,
+            self::STATUS_TEACHER,
+            self::STATUS_MASTER
+        ],
+        self::STATUS_MASTER => [],
+        self::STATUS_TEACHER => [],
+        self::STATUS_ASSISTANT => [],
+        self::STATUS_STUDENT => []
     ];
 
     const ACTIONS_MAP = [
@@ -136,7 +173,8 @@ class User
      *
      * @return int Идентификатор
      */
-    public function getId(): int {
+    public function getId(): int
+    {
         return $this->id;
     }
 
@@ -145,8 +183,24 @@ class User
      *
      * @return string Имя
      */
-    public function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
+    }
+
+    /**
+     * @param mysqli $link Ресурс подключения
+     * @param string $name Имя персонажа пользователя
+     *
+     * @return array|false
+     */
+    public function setName(mysqli $link, string $name): array|false
+    {
+        $this->name = $name;
+
+        $sql = "UPDATE users SET username = ? WHERE id = ?";
+
+        return dbQuery($link, $sql, [$name, $this->id]);
     }
 
     /**
@@ -154,8 +208,24 @@ class User
      *
      * @return int Идентификатор пользователя на платформе
      */
-    public function getFivemId(): int {
+    public function getFivemId(): int
+    {
         return $this->fivemId;
+    }
+
+    /**
+     * @param mysqli $link Ресурс подключения
+     * @param int $fivemId Идентификатор пользователя на сервере
+     *
+     * @return array|false
+     */
+    public function setFivemId(mysqli $link, int $fivemId): array|false
+    {
+        $this->fivemId = $fivemId;
+
+        $sql = "UPDATE users SET fivem_id = ? WHERE id = ?";
+
+        return dbQuery($link, $sql, [$fivemId, $this->id]);
     }
 
     /**
@@ -163,8 +233,24 @@ class User
      *
      * @return string Discord
      */
-    public function getDiscord(): string {
+    public function getDiscord(): string
+    {
         return $this->discord;
+    }
+
+    /**
+     * @param mysqli $link Ресурс подключения
+     * @param string $discord
+     *
+     * @return array|false
+     */
+    public function setDiscord(mysqli $link, string $discord): array|false
+    {
+        $this->discord = $discord;
+
+        $sql = "UPDATE users SET discord = ? WHERE id = ?";
+
+        return dbQuery($link, $sql, [$discord, $this->id]);
     }
 
     /**
@@ -172,7 +258,8 @@ class User
      *
      * @return array Данные о статусе
      */
-    public function getStatus(): array {
+    public function getStatus(): array
+    {
         return [
             'name' => $this->status,
             'title' => self::STATUS_MAP[$this->status]
@@ -180,12 +267,47 @@ class User
     }
 
     /**
+     * @param mysqli $link Ресурс подключения
+     * @param string $status Название статуса
+     *
+     * @return array|false
+     */
+    public function setStatus(mysqli $link, string $status): array|false
+    {
+        $this->status = $status;
+
+        $sql = "UPDATE users SET status = ? WHERE id = ?";
+
+        return dbQuery($link, $sql, [$status, $this->id]);
+    }
+
+    /**
      * Возвращает массив с данными о формации пользователя
      *
      * @return array Данные о формации
      */
-    public function getFormation(): array {
+    public function getFormation(): array
+    {
         return $this->formation;
+    }
+
+    /**
+     * @param mysqli $link Ресурс подключения
+     * @param int $formationId Идентификатор формации
+     *
+     * @return array|false
+     */
+    public function setFormation(mysqli $link, int $formationId): array|false
+    {
+        $this->formation = getFormationById($link, $formationId);
+
+        if ($this->formation) {
+            $this->formation = $this->formation[0];
+        }
+
+        $sql = "UPDATE users SET formation_id = ? WHERE id = ?";
+
+        return dbQuery($link, $sql, [$formationId, $this->id]);
     }
 
     /**
@@ -193,7 +315,8 @@ class User
      *
      * @return string Дата регистрации
      */
-    public function getRegistrationDate(): string {
+    public function getRegistrationDate(): string
+    {
         return $this->registrationDate;
     }
 
@@ -204,8 +327,21 @@ class User
      *
      * @return bool
      */
-    public function isActionAvailable(string $action): bool {
+    public function isActionAvailable(string $action): bool
+    {
         return in_array($this->status, self::ACTIONS_MAP[$action]);
+    }
+
+    /**
+     * Проверяет, может ли пользователь изменить статус другого пользователя
+     *
+     * @param string $otherUserStatus Статус другого пользователя
+     *
+     * @return bool
+     */
+    public function canChangeOtherStatus(string $otherUserStatus): bool
+    {
+        return in_array($otherUserStatus, self::CHANGE_STATUS_MAP[$this->status]);
     }
 
     /**

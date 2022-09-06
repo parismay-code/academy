@@ -1,6 +1,9 @@
 <?php
+
+use Academy\classes\entities\users\User;
+
 /**
- * @var array|null $user
+ * @var User $user
  */
 
 if (!$user) {

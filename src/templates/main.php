@@ -1,7 +1,9 @@
 <?php
 
+use Academy\classes\entities\users\User;
+
 /**
- * @var array $user Данные о пользователе
+ * @var User $user Данные о пользователе
  */
 
 ?>

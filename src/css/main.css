@@ -60,7 +60,7 @@ body {
   border-bottom: .05rem solid #000;
   box-shadow: 0 .05rem .5rem .05rem #000000aa;
 
-  background-color: #00000080;
+  background-color: #00000030;
 
   backdrop-filter: blur(.1rem);
 
@@ -82,11 +82,15 @@ body {
 .header__logo {
   position: relative;
 
-  padding: 2rem 2rem 3rem 2rem;
+  padding: 2.5rem 2rem;
 
   font-family: "Uindbase", sans-serif;
   font-weight: bold;
   font-size: 2rem;
+}
+
+.header__wrapper_login .header__logo {
+  padding: 2rem 2rem 3rem 2rem;
 }
 
 .header__wrapper_login .header__logo:after {
@@ -139,6 +143,8 @@ body {
   background-color: #ffffff;
 
   transition: width .2s;
+
+  pointer-events: none;
 }
 
 .vertical-list__element:hover a,
@@ -146,7 +152,8 @@ body {
   opacity: 1;
 }
 
-.vertical-list__element:hover a:after {
+.vertical-list__element:hover a:after,
+.vertical-list__element_active a:after {
   width: 100%;
 }
 
@@ -156,7 +163,11 @@ body {
 }
 
 .main__wrapper {
+  width: 100%;
+}
 
+.main__title {
+  margin-bottom: 1rem;
 }
 
 .auth {
@@ -173,8 +184,9 @@ body {
   width: 80%;
   padding: 2rem;
 
-  border-radius: 1rem;
-  background-color: #ffffffe0;
+  border: .05rem solid #ffffff;
+  border-radius: .5rem;
+  background-color: #00000080;
 
   text-align: center;
 }
@@ -182,8 +194,7 @@ body {
 .error {
   font-weight: 700;
   font-size: 1.2rem;
-  color: #b20101;
-  text-shadow: #000000;
+  color: #ea0202;
 }
 
 .auth-form {
@@ -199,7 +210,7 @@ fieldset {
 
   border-radius: 1rem;
 
-  background-color: #000000aa;
+  background-color: #00000080;
 }
 
 legend {
@@ -228,7 +239,7 @@ legend {
 }
 
 .auth-form input[type=submit] {
-  background-color: rgba(133, 204, 11, 0.9);
+  background-color: #85CC0BE5;
   color: #ffffff;
   font-size: 1.2rem;
   font-weight: 700;
@@ -269,8 +280,171 @@ legend {
   background-color: #ffffff;
 
   transition: width .2s;
+
+  pointer-events: none;
 }
 
 .auth-form__redirect:hover:after {
   width: 100%;
+}
+
+.teachers {
+  width: 100%;
+}
+
+.teachers__request {
+  opacity: .5;
+
+  text-align: center;
+
+  transition: opacity .2s;
+}
+
+.teachers__request:hover {
+  opacity: 1;
+}
+
+.teachers-list__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-bottom: 1rem;
+}
+
+.teachers-list,
+.teachers-request {
+  width: 60%;
+}
+
+.teachers-request__list {
+  width: 75%;
+}
+
+.teachers-list__teacher {
+  width: 75%;
+  margin-bottom: 1rem;
+}
+
+.teacher,
+.teachers-request-user {
+  padding: 1rem 2rem;
+
+  position: relative;
+
+  font-size: 1.2rem;
+
+  background-color: #00000080;
+  border: .05rem solid #ffffff;
+}
+
+.teacher_active {
+  padding: .75rem 1.75rem;
+  border: .3rem solid #85cc0be5;
+
+  animation-name: teacherSelection;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
+
+.teacher__name,
+.teachers-request-user__name {
+  font-weight: 700;
+}
+
+.teacher__id,
+.teachers-request-user__id {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  font-weight: 700;
+}
+
+.teacher-contacts,
+.teachers-request-user-contacts {
+  margin-top: .5rem;
+}
+
+.teachers-controls {
+  width: 22%;
+}
+
+.teachers-controls__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.teachers-controls-list {
+  display: none;
+}
+
+.teachers-controls-list_active {
+  display: block;
+}
+
+.change-status {
+  margin-top: 1rem;
+}
+
+.change-status__element {
+  padding: .2rem .5rem;
+
+  font-size: 1.2rem;
+}
+
+.change-status__element a {
+  opacity: .5;
+
+  transition: opacity .2s;
+}
+
+.change-status__element a:hover {
+  opacity: 1;
+}
+
+.teachers-request-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.teachers-request-controls__accept {
+  color: #85cc0b;
+}
+
+.teachers-request-controls__decline {
+  color: #ea0202;
+}
+
+.teachers-request-controls__accept,
+.teachers-request-controls__decline {
+  padding: 3rem;
+
+  opacity: .5;
+
+  transition: opacity .2s;
+}
+
+.teachers-request-controls__accept:hover,
+.teachers-request-controls__decline:hover {
+  opacity: 1;
+}
+
+@keyframes teacherSelection {
+  from {
+    border: .3rem solid #85cc0be5;
+  }
+
+  to {
+    border: .3rem solid #bbce99e5;
+  }
 }

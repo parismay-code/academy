@@ -9,7 +9,7 @@ require_once "dbHelpers.php";
  *
  * @return string|false Итоговый HTML
  */
-function include_template(string $name, array $data = []): string|false
+function includeTemplate(string $name, array $data = []): string|false
 {
     $name = 'src/templates/' . $name;
     $result = '';

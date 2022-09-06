@@ -1,28 +1,30 @@
 <?php
-/**
- * @var mysqli $link Ресурс подключения
- * @var array $user Данные о пользователе
- */
-
 require_once 'src/data/init.php';
 require_once 'src/helpers/mainHelpers.php';
+
+use Academy\classes\entities\users\User;
+
+/**
+ * @var mysqli $link Ресурс подключения
+ * @var User $user Данные о пользователе
+ */
 
 $formType = $_GET['form_type'] ?? 'login';
 $error = $_GET['error'] ?? null;
 
-$content = include_template('auth.php', [
+$content = includeTemplate('auth.php', [
     'user' => $user,
     'formType' => $formType,
     'error' => $error
 ]);
 
 if (!empty($user)) {
-    $content = include_template('main.php', [
+    $content = includeTemplate('main.php', [
         'user' => $user
     ]);
 }
 
-$layout = include_template('layout.php', [
+$layout = includeTemplate('layout.php', [
     'user' => $user,
     'content' => $content,
     'title' => 'Vampires Academy | Home',
