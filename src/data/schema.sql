@@ -18,8 +18,9 @@ CREATE TABLE `users`
   `id`                INT AUTO_INCREMENT PRIMARY KEY,
   `username`          VARCHAR(128),
   `fivem_id`          INT,
+  `discord`           VARCHAR(128),
   `password`          CHAR(64),
-  `formation_id`         VARCHAR(128),
+  `formation_id`      VARCHAR(128),
   `status`            VARCHAR(64),
   `registration_date` TIMESTAMP
 );

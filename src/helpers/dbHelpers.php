@@ -3,9 +3,9 @@
 /**
  * Устанавливает клиенту информацию о его почте и зашифрованном пароле в куки для дальнейшего упрощенного входа
  *
- * @param $email
- * @param $password
- * @param $expires
+ * @param int $fivemId
+ * @param string $password
+ * @param int $expires
  *
  * @return void
  */
@@ -105,7 +105,7 @@ function dbQuery(mysqli $link, string $sql, array $data = []): array|false
  *
  * @param mysqli $link Ресурс подключения
  *
- * @return array<int|string>|false Массив формаций, либо false из-за ошибки запроса
+ * @return array|false Массив формаций, либо false из-за ошибки запроса
  */
 function getFormationsData(mysqli $link): array|false
 {
@@ -120,7 +120,7 @@ function getFormationsData(mysqli $link): array|false
  * @param mysqli $link Ресурс подключения
  * @param int $formationId Идентификатор формации
  *
- * @return array<int|string>|false Массив с информацией о формации, либо false из-за ошибки запроса
+ * @return array|false Массив с информацией о формации, либо false из-за ошибки запроса
  */
 function getFormationById(mysqli $link, int $formationId): array|false
 {
@@ -130,12 +130,27 @@ function getFormationById(mysqli $link, int $formationId): array|false
 }
 
 /**
+ * Ищет информацию о формации по ее названию
+ *
+ * @param mysqli $link Ресурс подключения
+ * @param string $formationName Название формации
+ *
+ * @return array|false Массив с информацией о формации, либо false из-за ошибки запроса
+ */
+function getFormationByName(mysqli $link, string $formationName): array|false
+{
+    $sql = "SELECT * FROM formations WHERE name = ?";
+
+    return dbQuery($link, $sql, [$formationName]);
+}
+
+/**
  * Собирает список всех пользователей, находящихся в одной формации
  *
  * @param mysqli $link Ресурс подключения
  * @param int $formationId Идентификатор формации
  *
- * @return array<int|string>|false Массив пользователей, либо false из-за ошибки запроса
+ * @return array|false Массив пользователей, либо false из-за ошибки запроса
  */
 function getUsersByFormationId(mysqli $link, int $formationId): array|false
 {
@@ -150,7 +165,7 @@ function getUsersByFormationId(mysqli $link, int $formationId): array|false
  * @param mysqli $link Ресурс подключения
  * @param int $fivemId Идентификатор пользователя
  *
- * @return array<int|string>|false Массив с данными пользователя, либо false из-за ошибки запроса
+ * @return array|false Массив с данными пользователя, либо false из-за ошибки запроса
  */
 function getUserByFivemId(mysqli $link, int $fivemId): array|false
 {
@@ -164,7 +179,7 @@ function getUserByFivemId(mysqli $link, int $fivemId): array|false
  *
  * @param mysqli $link Ресурс подключения
  *
- * @return array<int|string>|false Массив пользователей, либо false из-за ошибки запроса
+ * @return array|false Массив пользователей, либо false из-за ошибки запроса
  */
 function getTeachersCheckList(mysqli $link): array|false
 {
