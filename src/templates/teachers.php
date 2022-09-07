@@ -23,12 +23,12 @@ use Academy\classes\entities\users\User;
         <?php endif; ?>
     </h1>
     <div class="teachers-list">
-        <?php foreach ($teachersList as $teacher): ?>
+        <?php foreach ($teachersList as $key => $teacher): ?>
             <div class="teachers-list__wrapper">
                 <div
                     class="teachers-list__teacher teacher teacher_<?= $teacher->getStatus()['name'] ?> <?= $teacher->getId() === $user->getId() ? ' teacher_active' : '' ?>">
                 <span class="teacher__name">
-                    <?= $teacher->getStatus()['title'] . ' ' . $teacher->getName() ?>
+                    <?= $teacher->getStatus()['title'] . ' ' . $teacher->getName() . ' | ' . $teacher->getFormation()['name'] ?>
                 </span>
                     <span class="teacher__id">
                 <?= 'ID: ' . $teacher->getFivemId() ?>
@@ -41,10 +41,10 @@ use Academy\classes\entities\users\User;
                 </div>
                 <?php if ($user->canChangeOtherStatus($teacher->getStatus()['name'])): ?>
                     <div class="teachers-controls">
-                        <a class="teachers-controls__title" href="?controls=<?= $teacher->getId() ?>">
+                        <div class="teachers-controls__title" onclick="changeControls(<?= $key ?>)">
                             Изменить статус
-                        </a>
-                        <ul class="teachers-controls-list change-status <?= $activeControls === $teacher->getId() ? 'teachers-controls-list_active' : '' ?>">
+                        </div>
+                        <ul class="teachers-controls-list change-status" id="<?= $key ?>">
                             <?php foreach (User::CHANGE_STATUS_MAP[$user->getStatus()['name']] as $status): ?>
                                 <li class="change-status__element">
                                     <a href="changeUserStatus.php?target=teachers&fivem_id=<?= $teacher->getFivemId() ?>&status=<?= $status ?>">
@@ -59,3 +59,10 @@ use Academy\classes\entities\users\User;
         <?php endforeach; ?>
     </div>
 </section>
+<script>
+    const changeControls = (id) => {
+        let el = document.getElementById(id);
+
+        el.classList.toggle('teachers-controls-list_active');
+    }
+</script>

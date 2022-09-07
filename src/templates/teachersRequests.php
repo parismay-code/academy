@@ -15,7 +15,7 @@ use Academy\classes\entities\users\User;
         <?php foreach ($teachersRequestList as $_user): ?>
             <div class="teachers-request-user">
                 <span class="teachers-request-user__name">
-                    <?= $_user->getStatus()['title'] . ' ' . $_user->getName() ?>
+                    <?= $_user->getStatus()['title'] . ' ' . $_user->getName() . ' | ' . $_user->getFormation()['name']?>
                 </span>
                 <span class="teachers-request-user__id">
                     <?= 'ID: ' . $_user->getFivemId() ?>

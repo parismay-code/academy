@@ -28,7 +28,7 @@ class User
 
     const STATUS_MAP = [
         self::STATUS_STUDENT => 'Студент',
-        self::STATUS_ASSISTANT => 'Помощник-референт',
+        self::STATUS_ASSISTANT => 'Ассистент',
         self::STATUS_TEACHER => 'Преподаватель',
         self::STATUS_MASTER => 'Магистр',
         self::STATUS_DEAN => 'Декан',

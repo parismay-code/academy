@@ -10,8 +10,19 @@ use Academy\classes\entities\users\User;
  * @var User $user Данные о пользователе
  */
 
+$lectures = [];
+
+$sql = "SELECT * FROM lectures";
+
+$result = dbQuery($link, $sql);
+
+if (!empty($result)) {
+    $lectures = $result;
+}
+
 $content = includeTemplate('lectures.php', [
     'user' => $user,
+    'lectures' => $lectures
 ]);
 
 $layout = includeTemplate('layout.php', [
