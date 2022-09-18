@@ -15,27 +15,27 @@ use Academy\classes\entities\users\User;
         <?php foreach ($teachersRequestList as $_user): ?>
             <div class="teachers-request-user">
                 <span class="teachers-request-user__name">
-                    <?= $_user->getStatus()['title'] . ' ' . $_user->getName() . ' | ' . $_user->getFormation()['name']?>
+                    <?= $_user->getStatus()['title'] . ' ' . htmlspecialchars($_user->getName()) . ' | ' . $_user->getFormation()['name'] ?>
                 </span>
                 <span class="teachers-request-user__id">
-                    <?= 'ID: ' . $_user->getFivemId() ?>
+                    <?= 'ID: ' . htmlspecialchars($_user->getFivemId()) ?>
                 </span>
                 <div class="teachers-request-user-contacts">
                     <span class="teachers-request-user-contacts__element">
-                        Discord: <b><?= $_user->getDiscord() ?></b>
+                        Discord: <b><?= htmlspecialchars($_user->getDiscord()) ?></b>
                     </span>
                 </div>
             </div>
             <div class="teachers-request-controls">
                 <a
                     class="teachers-request-controls__accept"
-                    href="changeUserStatus.php?fivem_id=<?= $_user->getFivemId() ?>&status=<?= User::STATUS_TEACHER ?>&target=teachersRequests&act=request"
+                    href="changeUserStatus.php?fivem_id=<?= htmlspecialchars($_user->getFivemId()) ?>&status=<?= User::STATUS_TEACHER ?>&target=teachersRequests&act=request"
                 >
                     Принять
                 </a>
                 <a
                     class="teachers-request-controls__decline"
-                    href="changeUserStatus.php?fivem_id=<?= $_user->getFivemId() ?>&status=<?= User::STATUS_STUDENT ?>&target=teachersRequests&act=request"
+                    href="changeUserStatus.php?fivem_id=<?= htmlspecialchars($_user->getFivemId()) ?>&status=<?= User::STATUS_STUDENT ?>&target=teachersRequests&act=request"
                 >
                     Отклонить
                 </a>

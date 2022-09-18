@@ -12,7 +12,7 @@ use Academy\classes\entities\Lecture;
 
 <section class="lecture-details">
     <h1 class="main__title">
-        Лекция <?= $lecture->getId() ?>. <?= $lecture->getTitle() ?>
+        Лекция <?= $lecture->getId() ?>. <?= htmlspecialchars($lecture->getTitle()) ?>
         <?php if ($user->isActionAvailable(User::ACTION_CHANGE_LECTURE)): ?> |
         <a class="lecture-details__edit" href="lectureDetails.php?id=<?= $lecture->getId() ?>&changing=true">
             Редактировать
@@ -25,6 +25,6 @@ use Academy\classes\entities\Lecture;
         <?php endforeach; ?>
     </div>
     <pre class="lecture-details__content">
-<?= $lecture->getDetails() ?>
+<?= htmlspecialchars($lecture->getDetails()) ?>
     </pre>
 </section>

@@ -1,21 +1,18 @@
 INSERT INTO formations (name, leader_name, deputy_leader_name, lawyer_name)
-VALUES
-  ('Insignis', 'Johan Liebert', 'Nathan Young', 'Jacqueline de Monroe'),
-  ('Camarilla', 'Terry Silva', 'Roxy Diaz', 'Mateo Gerrera'),
-  ('Caedes', 'Jack Black', 'David Brown', 'Scott Sewell'),
-  ('Brujah', 'Gunter Knapp', 'Timothee Grayson', 'Mikaela Teller'),
-  ('Sabbat', 'Schwein Fettes', 'Wendy Farrel Osborn', 'Dustin Ross'),
-  ('Gangrel', 'Aaron de Langeron', 'Aldo Delgado', 'Francis de Castan');
+VALUES ('Insignis', 'Johan Liebert', 'Nathan Young', 'Jacqueline de Monroe'),
+       ('Camarilla', 'Terry Silva', 'Roxy Diaz', 'Mateo Gerrera'),
+       ('Caedes', 'Jack Black', 'David Brown', 'Scott Sewell'),
+       ('Brujah', 'Gunter Knapp', 'Timothee Grayson', 'Mikaela Teller'),
+       ('Sabbat', 'Schwein Fettes', 'Wendy Farrel Osborn', 'Dustin Ross'),
+       ('Gangrel', 'Aaron de Langeron', 'Aldo Delgado', 'Francis de Castan');
 
 INSERT INTO users (username, fivem_id, discord, password, formation_id, status, registration_date)
-VALUES
-  ('Emiel Regis van der Eretein', 9737, 'mentalaffect#6666', 'kkapass02', 1, 'teacher', NOW()),
-  ('Jacqueline de Monroe', 8855, 'Zlaya#0007', 'pass', 1, 'vice-rector', NOW()),
-  ('Mikaela Teller', 1255, '.Di#5151',  'pass', 2, 'dean', NOW());
+VALUES ('Emiel Regis van der Eretein', 9737, 'mentalaffect#6666', 'kkapass02', 1, 'teacher', NOW()),
+       ('Jacqueline de Monroe', 8855, 'Zlaya#0007', 'pass', 1, 'vice-rector', NOW()),
+       ('Mikaela Teller', 1255, '.Di#5151', 'pass', 2, 'dean', NOW());
 
 INSERT INTO lectures (status, creation_date, title, details)
-VALUES
-  ('submitted', NOW(), 'Наследие Первородных', 'Первое Наследие. Маскарад.
+VALUES ('submitted', NOW(), 'Наследие Первородных', 'Первое Наследие. Маскарад.
 - Сородич обязан держать в тайне и не выставлять напоказ свою сущность в публичных местах.
 - Сородич никогда не раскроет тайну сущности другого Сородича человеку или представителю иной расы. От этого зависит выживание рода.
 Если Сородич узнает, что природа другого раскрыта человеку или представителю иной расы - он должен незамедлительно сообщить об этом Серафимам, Канцлеру, Кардиналу или Первородным.
@@ -61,7 +58,7 @@ VALUES
 
 Шестое Наследие. Знание - сила
 Каждый новый сородич обязан пройти общий курс обучения в Академии Ночи и сдать экзамен по итогам обучения в течении 3х недель с момента принятия в секту/клан/лордство.'),
-  ('submitted', NOW(), 'Королевская семья и иерархия вампирского сообщества', 'Темы:
+       ('submitted', NOW(), 'Королевская семья и иерархия вампирского сообщества', 'Темы:
 Королевская семья
 Иерархия сообщества
 Иерархия приказов
@@ -132,7 +129,7 @@ Insignis: Ad Mortem, Lasombra.
 Виконт секты выплачивает за каждого сородича 15 гильз.
 Понтифик независимого клана выплачивает - 20 гильз.
 Лорд независимого лордства по 30 гильз.'),
-  ('submitted', NOW(), 'Титульная система вампирского сообщества', 'Что такое титул? Титулы присваиваются Первородными за особые заслуги Сородичей. При этом, титула невозможно лишиться (в отличие от статуса). Максимум отказаться от него во время награждения.
+       ('submitted', NOW(), 'Титульная система вампирского сообщества', 'Что такое титул? Титулы присваиваются Первородными за особые заслуги Сородичей. При этом, титула невозможно лишиться (в отличие от статуса). Максимум отказаться от него во время награждения.
 
 Существует 3 вида титулов:
 Социальные
@@ -172,4 +169,24 @@ Aldo Chelsea - Серафим.
 Schwein Fetts - Серафим, Лорд независимого Лордства Guns''n''Roses.
 Roxy Diaz - Серафим, Легат секты Camarilla.
 Shaquille de Castan - Серафим, Канцлер и Десница мисс Victoria de Langeron.'),
-  ('submitted', NOW(), 'Элизиум', 'Скоро появится');
+       ('submitted', NOW(), 'Элизиум', 'Скоро появится');
+
+INSERT INTO schedule (day_id, lecture_id, lecture_number, lecture_time, type, teacher_id)
+VALUES (0, 1, 1, NOW(), 'lecture', 1),
+       (0, 2, 2, NOW(), 'lecture', 1),
+       (0, 3, 3, NOW(), 'lecture', 1),
+       (0, 4, 4, NOW(), 'lecture', 1),
+       (0, 5, 5, NOW(), 'lecture', 1),
+       (0, 6, 6, NOW(), 'lecture', 1),
+       (1, 7, 1, NOW(), 'lecture', 1),
+       (1, 8, 2, NOW(), 'lecture', 1),
+       (1, 9, 3, NOW(), 'lecture', 1),
+       (1, 10, 4, NOW(), 'lecture', 1),
+       (1, 1, 5, NOW(), 'vacation', 1),
+       (1, 1, 6, NOW(), 'vacation', 1),
+       (2, 1, 1, NOW(), 'examination', 1),
+       (2, 1, 2, NOW(), 'examination', 1),
+       (2, 1, 3, NOW(), 'examination', 1),
+       (2, 1, 4, NOW(), 'examination', 1),
+       (2, 1, 5, NOW(), 'examination', 1),
+       (2, 1, 6, NOW(), 'examination', 1);

@@ -10,15 +10,15 @@ use Academy\classes\entities\users\User;
  * @var User $user Данные о пользователе
  */
 
-$content = includeTemplate('exams.php', [
+$content = includeTemplate('studentDetails.php', [
     'user' => $user,
 ]);
 
 $layout = includeTemplate('layout.php', [
     'user' => $user,
     'content' => $content,
-    'title' => 'Vampires Academy | Examinations',
-    'target' => 'exams'
+    'title' => 'Vampires Academy | Student Info',
+    'target' => ''
 ]);
 
 print($layout);

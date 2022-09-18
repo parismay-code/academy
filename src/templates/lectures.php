@@ -22,7 +22,7 @@ use Academy\classes\entities\users\User;
         <?php foreach ($lectures as $lecture): ?>
         <li class="lectures-list__element">
             <a href="lectureDetails.php?id=<?= $lecture['id'] ?>" target="_blank">
-                <?= 'Лекция ' . $lecture['id'] . '. ' . $lecture['title'] ?>
+                <?= 'Лекция ' . $lecture['id'] . '. ' . htmlspecialchars($lecture['title']) ?>
             </a>
         </li>
         <?php endforeach; ?>

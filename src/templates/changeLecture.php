@@ -15,11 +15,11 @@ use Academy\classes\entities\users\User;
     <form class="add-lecture-form" name="changed_lecture" action="addLecture.php?id=<?= $lecture->getId() ?>&act=change"
           method="post" enctype="multipart/form-data">
         <fieldset>
-            <legend><?= 'Лекция ' . $lecture->getId() . '. ' . $lecture->getTitle() ?></legend>
+            <legend><?= 'Лекция ' . $lecture->getId() . '. ' . htmlspecialchars($lecture->getTitle()) ?></legend>
             <input type="text" name="title" maxlength="100" placeholder="Новое название" required>
             <input type="file" name="files">
             <textarea name="details" placeholder="Материал" required>
-<?= $lecture->getDetails() ?>
+<?= htmlspecialchars($lecture->getDetails()) ?>
             </textarea>
             <input type="submit" value="Изменить">
         </fieldset>

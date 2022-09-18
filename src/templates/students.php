@@ -9,5 +9,5 @@ use Academy\classes\entities\users\User;
 ?>
 
 <section>
-    profile
+    students
 </section>

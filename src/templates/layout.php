@@ -26,11 +26,6 @@ use Academy\classes\entities\users\User;
         <?php if (!empty($user)): ?>
         <nav class="header-navigation">
             <ul class="header-list vertical-list">
-                <!-- HOME REDIRECT -->
-                <li class="vertical-list__element <?= $target === 'home' ? 'vertical-list__element_active' : '' ?>">
-                    <a href="index.php">Домой</a>
-                </li>
-
                 <!-- SCHEDULE REDIRECT -->
                 <li class="vertical-list__element <?= $target === 'schedule' ? 'vertical-list__element_active' : '' ?>">
                     <a href="schedule.php">Расписание</a>
@@ -43,22 +38,22 @@ use Academy\classes\entities\users\User;
                 </li>
                 <?php endif; ?>
 
-                <!-- EXAMS REDIRECT -->
-                <?php if ($user->isActionAvailable(User::ACTION_TAKE_EXAMS)): ?>
-                <li class="vertical-list__element <?= $target === 'exams' ? 'vertical-list__element_active' : '' ?>">
-                    <a href="exams.php">Экзамены</a>
-                </li>
-                <?php endif; ?>
-
                 <!-- TEACHERS REDIRECT -->
                 <li class="vertical-list__element <?= $target === 'teachers' ? 'vertical-list__element_active' : '' ?>">
                     <a href="teachers.php">Преподаватели</a>
                 </li>
 
-                <!-- PROFILE && LOGOUT REDIRECT -->
+                <!-- PROFILE REDIRECT -->
                 <li class="vertical-list__element <?= $target === 'profile' ? 'vertical-list__element_active' : '' ?>">
                     <a href="profile.php">Профиль</a>
                 </li>
+
+                <!-- STUDENTS REDIRECT -->
+                <li class="vertical-list__element <?= $target === 'students' ? 'vertical-list__element_active' : '' ?>">
+                    <a href="students.php">Студенты</a>
+                </li>
+
+                <!-- LOGOUT REDIRECT -->
                 <li class="vertical-list__element">
                     <a href="logout.php">Выход</a>
                 </li>

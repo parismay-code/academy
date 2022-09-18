@@ -145,6 +145,21 @@ function getFormationByName(mysqli $link, string $formationName): array|false
 }
 
 /**
+ * Ищет пользователя по его ID
+ *
+ * @param mysqli $link Ресурс подключения
+ * @param int $id Идентификатор пользователя
+ *
+ * @return array|false Массив с данными пользователя, либо false из-за ошибки запроса
+ */
+function getUserById(mysqli $link, int $id): array|false
+{
+    $sql = "SELECT * FROM users WHERE id = ?";
+
+    return dbQuery($link, $sql, [$id]);
+}
+
+/**
  * Собирает список всех пользователей, находящихся в одной формации
  *
  * @param mysqli $link Ресурс подключения

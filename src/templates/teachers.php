@@ -15,7 +15,8 @@ use Academy\classes\entities\users\User;
     <h1 class="main__title">
         Преподавательский состав Академии Ночи
         <?php if ($user->getStatus()['name'] === User::STATUS_STUDENT && !$isInTeacherCheckList): ?> |
-            <a class="teachers__request" href="setUserInTeachersCheckList.php?id=<?= $user->getId(); ?>&target=teachers">
+            <a class="teachers__request"
+               href="setUserInTeachersCheckList.php?id=<?= $user->getId(); ?>&target=teachers">
                 Подать заявку
             </a>
         <?php elseif ($user->canChangeOtherStatus(User::STATUS_STUDENT)): ?> |
@@ -26,16 +27,16 @@ use Academy\classes\entities\users\User;
         <?php foreach ($teachersList as $key => $teacher): ?>
             <div class="teachers-list__wrapper">
                 <div
-                    class="teachers-list__teacher teacher teacher_<?= $teacher->getStatus()['name'] ?> <?= $teacher->getId() === $user->getId() ? ' teacher_active' : '' ?>">
+                    class="teachers-list__teacher teacher teacher_<?= htmlspecialchars($teacher->getStatus()['name']) ?> <?= $teacher->getId() === $user->getId() ? ' teacher_active' : '' ?>">
                 <span class="teacher__name">
-                    <?= $teacher->getStatus()['title'] . ' ' . $teacher->getName() . ' | ' . $teacher->getFormation()['name'] ?>
+                    <?= $teacher->getStatus()['title'] . ' ' . htmlspecialchars($teacher->getName()) . ' | ' . $teacher->getFormation()['name'] ?>
                 </span>
                     <span class="teacher__id">
-                <?= 'ID: ' . $teacher->getFivemId() ?>
+                <?= 'ID: ' . htmlspecialchars($teacher->getFivemId()) ?>
                 </span>
                     <div class="teacher-contacts">
                     <span class="teacher-contacts__element">
-                        Discord: <b><?= $teacher->getDiscord() ?></b>
+                        Discord: <b><?= htmlspecialchars($teacher->getDiscord()) ?></b>
                     </span>
                     </div>
                 </div>
@@ -47,7 +48,7 @@ use Academy\classes\entities\users\User;
                         <ul class="teachers-controls-list change-status" id="<?= $key ?>">
                             <?php foreach (User::CHANGE_STATUS_MAP[$user->getStatus()['name']] as $status): ?>
                                 <li class="change-status__element">
-                                    <a href="changeUserStatus.php?target=teachers&fivem_id=<?= $teacher->getFivemId() ?>&status=<?= $status ?>">
+                                    <a href="changeUserStatus.php?target=teachers&fivem_id=<?= htmlspecialchars($teacher->getFivemId()) ?>&status=<?= $status ?>">
                                         <?= User::STATUS_MAP[$status] ?>
                                     </a>
                                 </li>

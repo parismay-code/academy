@@ -65,3 +65,16 @@ CREATE TABLE `teachers_check_list`
   `user_id` INT,
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 );
+
+CREATE TABLE `schedule`
+(
+  `id`             INT AUTO_INCREMENT PRIMARY KEY,
+  `day_id`         INT,
+  `lecture_id`     INT,
+  `lecture_number` INT,
+  `lecture_time`   TIMESTAMP,
+  `type`           VARCHAR(32),
+  `teacher_id`     INT,
+  FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`lecture_id`) REFERENCES `lectures` (`id`)
+);
