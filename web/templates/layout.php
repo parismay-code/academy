@@ -28,7 +28,7 @@ use Academy\classes\entities\users\User;
             <ul class="header-list vertical-list">
                 <!-- SCHEDULE REDIRECT -->
                 <li class="vertical-list__element <?= $target === 'schedule' ? 'vertical-list__element_active' : '' ?>">
-                    <a href="schedule.php">Расписание</a>
+                    <a href="../../views/site/schedule.php">Расписание</a>
                 </li>
 
                 <!-- LECTURES REDIRECT -->
@@ -68,8 +68,5 @@ use Academy\classes\entities\users\User;
         <?= $content ?>
     </div>
 </main>
-
-<footer class="footer">
-</footer>
 </body>
 </html>

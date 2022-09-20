@@ -1,21 +1,21 @@
 @font-face {
   font-family: "Uindbase", sans-serif;
-  src: url("../assets/fonts/Uindbase.ttf") format("truetype");
+  src: url("../fonts/Uindbase.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Open Sans Condensed Bold", sans-serif;
-  src: url("../assets/fonts/OpenSansCondensed-Bold.ttf") format("truetype");
+  src: url("../fonts/OpenSansCondensed-Bold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Open Sans Condensed Light", sans-serif;
-  src: url("../assets/fonts/OpenSansCondensed-Light.ttf") format("truetype");
+  src: url("../fonts/OpenSansCondensed-Light.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Open Sans Condensed Light Italic", sans-serif;
-  src: url("../assets/fonts/OpenSansCondensed-LightItalic.ttf") format("truetype");
+  src: url("../fonts/OpenSansCondensed-LightItalic.ttf") format("truetype");
 }
 
 *,
@@ -45,7 +45,7 @@ html {
 }
 
 body {
-  background-image: url(../assets/images/bg.png);
+  background-image: url(../images/bg.png);
   background-repeat: repeat;
   background-size: 50%;
 }

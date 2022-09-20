@@ -2,20 +2,19 @@
 
 namespace app\controllers;
 
+use app\models\LoginForm;
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -41,7 +40,7 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function actions()
+    public function actions(): array
     {
         return [
             'error' => [
@@ -57,27 +56,17 @@ class SiteController extends Controller
     /**
      * Displays homepage.
      *
-     * @return string
-     */
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }
-
-    /**
-     * Login action.
-     *
      * @return Response|string
      */
-    public function actionLogin()
+    public function actionIndex(): Response|string
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->render('schedule');
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->render('schedule');
         }
 
         $model->password = '';
@@ -91,7 +80,7 @@ class SiteController extends Controller
      *
      * @return Response
      */
-    public function actionLogout()
+    public function actionLogout(): Response
     {
         Yii::$app->user->logout();
 
@@ -103,7 +92,7 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-    public function actionContact()
+    public function actionContact(): Response|string
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
@@ -121,7 +110,7 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionAbout()
+    public function actionAbout(): string
     {
         return $this->render('about');
     }

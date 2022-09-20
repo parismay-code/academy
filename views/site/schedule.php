@@ -1,13 +1,9 @@
 <?php
+/** @var yii\web\View $this */
 
-use Academy\classes\entities\Schedule;
-use Academy\classes\entities\users\User;
 
-/**
- * @var User $user
- * @var Schedule $schedule
- */
-
+$this->title = 'Расписание';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <section class="schedule">
