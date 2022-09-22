@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -16,6 +17,8 @@ use yii\web\IdentityInterface;
  * @property string|null $password
  * @property string|null $status
  * @property string|null $registration_date
+ * @property string|null $auth_key
+ * @property string|null $access_token
  *
  * @property DayLecture[] $dayLectures
  * @property FormationUser[] $formationUsers
@@ -23,6 +26,16 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    /**
+     * Return all users from table
+     *
+     * @return ActiveRecord[]
+     */
+    private function getAllUsers(): array
+    {
+        return self::findAll([]);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -41,6 +54,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['registration_date'], 'safe'],
             [['username', 'discord'], 'string', 'max' => 128],
             [['password', 'status'], 'string', 'max' => 64],
+            [['auth_key', 'access_token'], 'string', 'max' => 32],
         ];
     }
 
@@ -91,41 +105,64 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritDoc
      */
-    public static function findIdentity($id)
+    public static function findIdentity($id): User|null
     {
-        $users = User::findAll();
-        return isset($users[$id - 1]);
+        return self::findOne($id);
     }
 
     /**
      * @inheritDoc
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public static function findIdentityByAccessToken($token, $type = null): User|null
     {
-        // TODO: Implement findIdentityByAccessToken() method.
+        return self::findOne(['access_token' => $token]);
+    }
+
+    /**
+     * Finds user by FiveM ID
+     *
+     * @param int $fivemId
+     *
+     * @return User|null
+     */
+    public static function findIdentityByFivemId(int $fivemId): User|null
+    {
+        return self::findOne(['fivem_id' => $fivemId]);
     }
 
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): int|string
     {
-        // TODO: Implement getId() method.
+        return $this->id;
     }
 
     /**
      * @inheritDoc
      */
-    public function getAuthKey()
+    public function getAuthKey(): string
     {
-        // TODO: Implement getAuthKey() method.
+        return $this->auth_key;
     }
 
     /**
      * @inheritDoc
      */
-    public function validateAuthKey($authKey)
+    public function validateAuthKey($authKey): bool
     {
-        // TODO: Implement validateAuthKey() method.
+        return $this->auth_key === $authKey;
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function validatePassword(string $password): bool
+    {
+        return $this->password === $password;
     }
 }

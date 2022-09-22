@@ -3,6 +3,8 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
+use yii\symfonymailer\Mailer;
+
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
@@ -27,7 +29,7 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-            'class' => \yii\symfonymailer\Mailer::class,
+            'class' => Mailer::class,
             'viewPath' => '@app/mail',
             // send all mails to a file by default.
             'useFileTransport' => true,
@@ -42,14 +44,16 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/' => 'auth/index',
+                'auth/index' => 'login',
+                'auth/registration' => 'registration',
+                'schedule/index' => 'schedule',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

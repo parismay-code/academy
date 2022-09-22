@@ -50,66 +50,14 @@ body {
   background-size: 50%;
 }
 
-.header {
-  position: sticky;
-  top: 0;
-
-  width: 100%;
+header {
   padding: 1rem 5rem;
 
   border-bottom: .05rem solid #000;
-  box-shadow: 0 .05rem .5rem .05rem #000000aa;
 
   background-color: #00000030;
 
   backdrop-filter: blur(.1rem);
-
-  user-select: none;
-}
-
-.header__wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header__wrapper_login {
-  flex-direction: column;
-  justify-content: center;
-}
-
-.header__logo {
-  position: relative;
-
-  padding: 2.5rem 2rem;
-
-  font-family: "Uindbase", sans-serif;
-  font-weight: bold;
-  font-size: 2rem;
-}
-
-.header__wrapper_login .header__logo {
-  padding: 2rem 2rem 3rem 2rem;
-}
-
-.header__wrapper_login .header__logo:after {
-  content: 'АВТОРИЗАЦИЯ';
-
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-
-  font-size: 1.5rem;
-}
-
-.header-navigation {
-  margin-right: 2rem;
-
-  font-family: "Open Sans Condensed Bold", sans-serif;
-  font-weight: bold;
-  font-size: 1.3rem;
 }
 
 .vertical-list {
@@ -157,19 +105,6 @@ body {
   width: 100%;
 }
 
-.main {
-  width: 100%;
-  padding: 2rem 10rem;
-}
-
-.main__wrapper {
-  width: 100%;
-}
-
-.main__title {
-  margin-bottom: 1rem;
-}
-
 .auth {
   display: flex;
   flex-direction: column;
@@ -178,28 +113,6 @@ body {
 
   width: 50%;
   margin: 0 auto;
-}
-
-.auth-errors {
-  width: 80%;
-  padding: 2rem;
-
-  border: .05rem solid #ffffff;
-  border-radius: .5rem;
-  background-color: #00000080;
-
-  text-align: center;
-}
-
-.error {
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: #ea0202;
-}
-
-.auth-form {
-  width: 100%;
-  margin: 2rem;
 }
 
 .add-lecture-form {
