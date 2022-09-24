@@ -51,7 +51,7 @@ class RegistrationForm extends Model
         $user->fivem_id = $this->fivemId;
         $user->discord = $this->discord;
         $user->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
-        $user->status = User::STATUS_STUDENT;
+        $user->status = User::STATUS_VISITOR;
         $user->registration_date = date('Y.m.d H:i:s');
         $user->auth_key = Yii::$app->getSecurity()->generateRandomString();
         $user->access_token = Yii::$app->getSecurity()->generateRandomString();

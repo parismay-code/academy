@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\DayLecture;
+use app\models\User;
 use Yii;
 use yii\db\StaleObjectException;
 use yii\web\Controller;
@@ -26,7 +27,10 @@ class ScheduleController extends Controller
 
     public function actionChange(string $type, int $id): Response|string
     {
-        if (Yii::$app->user->isGuest) {
+        $user = User::findOne(Yii::$app->user->id);
+        $isChangeAvailable = $user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE);
+
+        if (Yii::$app->user->isGuest || !$isChangeAvailable) {
             return $this->goHome();
         }
 
@@ -50,19 +54,7 @@ class ScheduleController extends Controller
             $model->to = $scheduleDay->to;
         }
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($type === 'lecture') {
-                $dayLecture->delete();
-            } else {
-                foreach ($scheduleDay->dayLectures as $lecture) {
-                    $lecture->delete();
-                }
-
-                $scheduleDay->delete();
-            }
-
-            $model->change($id);
-
+        if ($model->load(Yii::$app->request->post()) && $model->change($id)) {
             return $this->goBack();
         }
 

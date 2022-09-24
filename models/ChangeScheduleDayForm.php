@@ -14,20 +14,10 @@ class ChangeScheduleDayForm extends Model
     {
         $scheduleDay = new ScheduleDay();
 
-        $scheduleDay->id = $id;
         $scheduleDay->type = $this->type;
         $scheduleDay->from = $this->from;
         $scheduleDay->to = $this->to;
 
-        $scheduleDay->save();
-
-        for ($i = 0; $i < $this->to - $this->from; $i++) {
-            $dayLecture = new DayLecture();
-
-            $dayLecture->day_id = $id;
-            $dayLecture->isFree = true;
-
-            $dayLecture->save();
-        }
+        $scheduleDay->update();
     }
 }
