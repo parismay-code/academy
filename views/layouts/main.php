@@ -9,11 +9,15 @@ use yii\helpers\Url;
 use app\assets\AppAsset;
 use app\widgets\Alert;
 use yii\bootstrap5\Html;
+use app\models\User;
 
 $route = Yii::$app->requestedRoute;
 
 Yii::$app->language = 'ru-RU';
 Yii::$app->user->loginUrl = ['auth/index'];
+
+$user = User::findOne(Yii::$app->user->id);
+$userLevel = $user ? User::STATUS_MAP[$user->status]['level'] : -1;
 
 AppAsset::register($this);
 
@@ -50,17 +54,27 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_k
         <?php if (!Yii::$app->user->isGuest): ?>
             <?php
             $links = [
-                ['title' => 'Расписание', 'path' => 'schedule/index'],
-                ['title' => 'Лекции', 'path' => 'lectures/index'],
-                ['title' => 'Преподаватели', 'path' => 'teachers/index'],
-                ['title' => 'Студенты', 'path' => 'students/index'],
-                ['title' => 'Профиль', 'path' => 'profile/index'],
-                ['title' => 'Выход', 'path' => 'auth/logout'],
+                ['title' => 'Расписание', 'path' => 'schedule/index', 'level' => 0],
+                ['title' => 'Лекции', 'path' => 'lectures/index', 'level' => 2],
+                ['title' => 'Преподаватели', 'path' => 'teachers/index', 'level' => 0],
+                ['title' => 'Студенты', 'path' => 'students/index', 'level' => 4],
+                ['title' => 'Пользователи', 'path' => 'users/index', 'level' => 5],
+                ['title' => 'Профиль', 'path' => 'profile/index', 'level' => 0],
+                ['title' => 'Выход', 'path' => 'auth/logout', 'level' => 0],
             ];
             ?>
             <div class="d-flex flex-row align-items-center justify-content-between text-uppercase fw-bold">
                 <?php foreach ($links as $link): ?>
-                    <?= Html::a($link['title'], [$link['path']], ['class' => 'link-light text-decoration-none mx-lg-2']) ?>
+                    <?php if ($userLevel >= $link['level']): ?>
+                        <?=
+                        Html::a
+                        (
+                            $link['title'],
+                            [$link['path']],
+                            ['class' => 'link-light text-decoration-none mx-lg-2']
+                        )
+                        ?>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>

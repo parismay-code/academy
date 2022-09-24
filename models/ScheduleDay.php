@@ -32,13 +32,6 @@ class ScheduleDay extends ActiveRecord
     const TYPE_ATTESTATION = 'attestation';
     const TYPE_EXAMINATION = 'examination';
 
-    const DURATION_MAP = [
-        self::TYPE_VACATION => 0,
-        self::TYPE_LECTURE => 1,
-        self::TYPE_ATTESTATION => 1,
-        self::TYPE_EXAMINATION => 4
-    ];
-
     const TYPE_MAP = [
         self::TYPE_VACATION => 'Выходной',
         self::TYPE_LECTURE => 'Лекции',
@@ -68,10 +61,5 @@ class ScheduleDay extends ActiveRecord
     public function getDayLectures(): ActiveQuery
     {
         return $this->hasMany(DayLecture::class, ['day_id' => 'id']);
-    }
-
-    public function getDuration(): int
-    {
-        return self::DURATION_MAP[$this->type];
     }
 }

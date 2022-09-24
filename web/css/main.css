@@ -58,6 +58,7 @@ header {
     backdrop-filter: blur(.1rem);
 }
 
-.btn-outline-success {
+.btn-outline-success,
+.btn-outline-secondary {
     background-color: #00000080;
 }

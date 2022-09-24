@@ -38,17 +38,17 @@ $date = date('d.m.Y', $timestamp);
     ],
 ]); ?>
 
-    <div class="form-range"></div>
-
 <?= $form->field($model, 'type')
     ->dropDownList(ScheduleDay::TYPE_MAP)
     ->label('Тип дня') ?>
 
 <?= $form->field($model, 'from')
     ->dropDownList([
+        15 => '15:00',
+        16 => '16:00',
         17 => '17:00',
         18 => '18:00',
-        19 => '19:00'
+        19 => '19:00',
     ])
     ->label('Начало дня') ?>
 
@@ -56,7 +56,9 @@ $date = date('d.m.Y', $timestamp);
     ->dropDownList([
         20 => '20:00',
         21 => '21:00',
-        22 => '22:00'
+        22 => '22:00',
+        23 => '23:00',
+        24 => '24:00',
     ])
     ->label('Конец дня') ?>
 

@@ -10,14 +10,41 @@ class ChangeScheduleDayForm extends Model
     public ?int $from = null;
     public ?int $to = null;
 
-    public function change(int $id): void
+    public function rules(): array
     {
-        $scheduleDay = new ScheduleDay();
+        return [
+            [['type', 'from', 'to'], 'required'],
+        ];
+    }
+
+    public function change(int $id): bool
+    {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        $scheduleDay = ScheduleDay::findOne($id);
 
         $scheduleDay->type = $this->type;
         $scheduleDay->from = $this->from;
         $scheduleDay->to = $this->to;
 
-        $scheduleDay->update();
+        $dayLectures = $scheduleDay->dayLectures;
+
+        foreach ($dayLectures as $lecture) {
+            $lecture->delete();
+        }
+
+        for ($i = 0; $i < $this->to - $this->from; $i++) {
+            $lecture = new DayLecture();
+
+            $lecture->day_id = $id;
+            $lecture->time = $this->from + $i;
+            $lecture->isFree = 1;
+
+            $lecture->save();
+        }
+
+        return $scheduleDay->update();
     }
 }

@@ -8,7 +8,7 @@ use Yii;
 use yii\db\StaleObjectException;
 use yii\web\Controller;
 use app\models\ScheduleDay;
-use app\models\ChangeLectureForm;
+use app\models\ChangeDayLectureForm;
 use app\models\ChangeScheduleDayForm;
 use yii\web\Response;
 
@@ -28,7 +28,9 @@ class ScheduleController extends Controller
     public function actionChange(string $type, int $id): Response|string
     {
         $user = User::findOne(Yii::$app->user->id);
-        $isChangeAvailable = $user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE);
+        $isChangeAvailable = $type === 'lecture' ?
+            $user->isActionAvailable(User::ACTION_TAKE_LESSON) :
+            $user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE);
 
         if (Yii::$app->user->isGuest || !$isChangeAvailable) {
             return $this->goHome();
@@ -37,7 +39,7 @@ class ScheduleController extends Controller
         $dayLecture = null;
         $scheduleDay = null;
 
-        $model = $type === 'lecture' ? new ChangeLectureForm() : new ChangeScheduleDayForm();
+        $model = $type === 'lecture' ? new ChangeDayLectureForm() : new ChangeScheduleDayForm();
 
         if ($type === 'lecture') {
             $dayLecture = DayLecture::findOne($id);
@@ -45,7 +47,7 @@ class ScheduleController extends Controller
 
             $model->lectureId = $dayLecture->lecture_id;
             $model->teacherId = $dayLecture->teacher_id;
-            $model->time = $dayLecture->time;
+            $model->isFree = (bool)$dayLecture->isFree;
         } else {
             $scheduleDay = ScheduleDay::findOne($id);
 
@@ -55,7 +57,7 @@ class ScheduleController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->change($id)) {
-            return $this->goBack();
+            return $this->goHome();
         }
 
         return $this->render($type === 'lecture' ? 'changeLecture' : 'changeDay', [

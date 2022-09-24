@@ -11,7 +11,8 @@ require_once Yii::$app->basePath . '/helpers/mainHelper.php';
  * @var ScheduleDay[] $models
  */
 
-$user = User::findOne(['id' => Yii::$app->user->id]);
+$user = User::findOne(Yii::$app->user->id);
+
 $this->title = 'Vampires Academy | Расписание';
 ?>
 
@@ -35,15 +36,15 @@ $this->title = 'Vampires Academy | Расписание';
             $isLecture = $model->type === ScheduleDay::TYPE_LECTURE;
             $isAttestationOrExamination = $model->type === ScheduleDay::TYPE_ATTESTATION || $model->type === ScheduleDay::TYPE_EXAMINATION
             ?>
-            <div class="col-xxl-5 mb-4">
-                <h5 class="mb-4">
-                    <?= "$title | $date" ?>
-                    <?php if ($user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)): ?> |
-                        <?= Html::a('Изменить', ['schedule/change', 'type' => 'day', 'id' => $model->id],
-                            ['class' => 'link-secondary']) ?>
-                    <?php endif; ?>
-                </h5>
-                <?php if ($isVacation): ?>
+            <?php if ($isVacation && $user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)): ?>
+                <div class="col-xxl-6 mb-4 px-3">
+                    <h5 class="mb-4">
+                        <?= "$title | $date" ?>
+                        <?php if ($user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)): ?> |
+                            <?= Html::a('Изменить', ['schedule/change', 'type' => 'day', 'id' => $model->id],
+                                ['class' => 'link-secondary text-decoration-none']) ?>
+                        <?php endif; ?>
+                    </h5>
                     <div
                             style="height: 15.5rem; border: 1px solid #373b3e; background-color: #212529; pointer-events: none; user-select: none;"
                             class="d-flex align-items-center justify-content-center text-uppercase fw-bold fs-5"
@@ -51,7 +52,16 @@ $this->title = 'Vampires Academy | Расписание';
                     >
                         Выходной
                     </div>
-                <?php else: ?>
+                </div>
+            <?php elseif (!$isVacation): ?>
+                <div class="col-xxl-6 mb-4 px-3">
+                    <h5 class="mb-4">
+                        <?= "$title | $date" ?>
+                        <?php if ($user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)): ?> |
+                            <?= Html::a('Изменить', ['schedule/change', 'type' => 'day', 'id' => $model->id],
+                                ['class' => 'link-secondary text-decoration-none']) ?>
+                        <?php endif; ?>
+                    </h5>
                     <table
                             style="user-select: none"
                             class="table table-bordered table-striped table-hover table-dark"
@@ -61,9 +71,8 @@ $this->title = 'Vampires Academy | Расписание';
                             <thead>
                             <tr>
                                 <th class="col-3">Лекция</th>
+                                <th class="col-3 text-center">Преподаватель</th>
                                 <th class="col-1 text-center">Время</th>
-                                <th class="col-2 text-center">Преподаватель</th>
-                                <th class="col-1 text-center">Длительность</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -73,27 +82,53 @@ $this->title = 'Vampires Academy | Расписание';
                                 $lectureTime = $dayLecture->time . ':00';
                                 $lecture = $dayLecture->lecture;
                                 $teacher = $dayLecture->teacher;
-
-                                $duration = $model->getDuration() . ' ' . getNounPluralForm($model->getDuration(),
-                                        'час', 'часа', 'часов');
                                 ?>
                                 <?php if ($isFree): ?>
                                     <tr>
                                         <td class="col-3">
-                                            <?= Html::a('Свободно', ['schedule/change', 'type' => 'lecture', 'id' => $dayLecture->id]) ?>
+                                            <?php if ($user->isActionAvailable(User::ACTION_TAKE_LESSON)): ?>
+                                                <?=
+                                                Html::a
+                                                (
+                                                    'Свободно',
+                                                    [
+                                                        'schedule/change',
+                                                        'type' => 'lecture',
+                                                        'id' => $dayLecture->id
+                                                    ],
+                                                    ['class' => 'link-primary text-decoration-none']
+                                                )
+                                                ?>
+                                            <?php else: ?>
+                                                Свободно
+                                            <?php endif; ?>
                                         </td>
-                                        <td class="col-1 text-center">-</td>
-                                        <td class="col-2 text-center">-</td>
-                                        <td class="col-1 text-center">-</td>
+                                        <td class="col-3 text-center">-</td>
+                                        <td class="col-1 text-center"><?= $lectureTime ?></td>
                                     </tr>
                                 <?php else: ?>
                                     <tr>
                                         <td class="col-3">
-                                            <?= Html::encode($lecture->title) ?>
+                                            <?php if ($user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)): ?>
+                                                <?=
+                                                Html::a
+                                                (
+                                                    Html::encode("$lecture->id. $lecture->title"),
+                                                    [
+                                                        'schedule/change',
+                                                        'type' => 'lecture',
+                                                        'id' => $dayLecture->id
+                                                    ],
+                                                    ['class' => 'link-primary text-decoration-none']
+                                                )
+                                                ?>
+                                            <?php else: ?>
+                                                <?= Html::encode($lecture->title) ?>
+                                            <?php endif; ?>
                                         </td>
-                                        <td class="col-1 text-center"><?= date('H:i', strtotime($lectureTime)) ?></td>
-                                        <td class="col-2 text-center"><?= Html::encode($teacher->username) ?></td>
-                                        <td class="col-1 text-center"><?= $duration ?></td>
+                                        <td class="col-3 text-center"><?= Html::encode($teacher->username) ?></td>
+                                        <td class="col-1 text-center"><?= date('H:i',
+                                                strtotime($lectureTime)) ?></td>
                                     </tr>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -104,30 +139,22 @@ $this->title = 'Vampires Academy | Расписание';
                             <tr>
                                 <th class="col-1 text-center">Тип</th>
                                 <th class="col-1 text-center">Время</th>
-                                <th class="col-1 text-center">Продолжительность</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td style="height: 13rem" class="col-1">
+                                <td class="col-1 text-center">
                                     <?= $model->type === ScheduleDay::TYPE_ATTESTATION ? 'Аттестация' : 'Экзамен' ?>
                                 </td>
-                                <td style="height: 13rem" class="col-1">
+                                <td class="col-1 text-center">
                                     <?= "С $model->from:00 до $model->to:00" ?>
-                                </td>
-                                <td style="height: 13rem" class="col-1">
-                                    <?php
-                                    $diff = $model->to - $model->from;
-
-                                    echo $diff . ' ' . getNounPluralForm($diff, 'час', 'часа', 'часов')
-                                    ?>
                                 </td>
                             </tr>
                             </tbody>
                         <?php endif; ?>
                     </table>
-                <?php endif; ?>
-            </div>
+                </div>
+            <?php endif; ?>
         <?php endforeach; ?>
     </div>
 </section>

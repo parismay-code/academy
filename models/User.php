@@ -47,6 +47,7 @@ class User extends ActiveRecord implements IdentityInterface
     const ACTION_CHANGE_RECTOR = 'change rector status';
     const ACTION_SELF_DELETE_ACCOUNT = 'self delete account';
     const ACTION_DELETE_ACCOUNT = 'delete account';
+    const ACTION_SUBMIT_LECTURE = 'submit lecture';
 
     const STATUS_MAP = [
         self::STATUS_VISITOR => ['name' => 'Посетитель', 'level' => 0],
@@ -64,7 +65,7 @@ class User extends ActiveRecord implements IdentityInterface
         self::ACTION_TAKE_LESSON => 2,
         self::ACTION_TAKE_EXAMS => 4,
         self::ACTION_CHANGE_LECTURE => 4,
-        self::ACTION_CHANGE_SCHEDULE => 3,
+        self::ACTION_CHANGE_SCHEDULE => 4,
         self::ACTION_CHANGE_ASSISTANT => 5,
         self::ACTION_CHANGE_TEACHER => 5,
         self::ACTION_CHANGE_MASTER => 6,
@@ -72,6 +73,7 @@ class User extends ActiveRecord implements IdentityInterface
         self::ACTION_CHANGE_RECTOR => 8,
         self::ACTION_SELF_DELETE_ACCOUNT => 0,
         self::ACTION_DELETE_ACCOUNT => 7,
+        self::ACTION_SUBMIT_LECTURE => 6
     ];
 
     public static function tableName(): string
