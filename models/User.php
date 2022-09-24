@@ -26,27 +26,59 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    /**
-     * Return all users from table
-     *
-     * @return ActiveRecord[]
-     */
-    private function getAllUsers(): array
-    {
-        return self::findAll([]);
-    }
+    const STATUS_VISITOR = 'visitor';
+    const STATUS_STUDENT = 'student';
+    const STATUS_ASSISTANT = 'assistant';
+    const STATUS_TEACHER = 'teacher';
+    const STATUS_MASTER = 'master';
+    const STATUS_DEAN = 'dean';
+    const STATUS_VICE_RECTOR = 'vice-rector';
+    const STATUS_RECTOR = 'rector';
+    const STATUS_ADMIN = 'admin';
 
-    /**
-     * {@inheritdoc}
-     */
+    const ACTION_TAKE_LESSON = 'take lesson';
+    const ACTION_TAKE_EXAMS = 'take exams';
+    const ACTION_CHANGE_LECTURE = 'change lecture';
+    const ACTION_CHANGE_SCHEDULE = 'change schedule';
+    const ACTION_CHANGE_ASSISTANT = 'change assistant status';
+    const ACTION_CHANGE_TEACHER = 'change teacher status';
+    const ACTION_CHANGE_MASTER = 'change master status';
+    const ACTION_CHANGE_VICE_RECTOR = 'change vice rector status';
+    const ACTION_CHANGE_RECTOR = 'change rector status';
+    const ACTION_SELF_DELETE_ACCOUNT = 'self delete account';
+    const ACTION_DELETE_ACCOUNT = 'delete account';
+
+    const STATUS_MAP = [
+        self::STATUS_VISITOR => ['name' => 'Посетитель', 'level' => 0],
+        self::STATUS_STUDENT => ['name' => 'Студент', 'level' => 1],
+        self::STATUS_ASSISTANT => ['name' => 'Ассистент', 'level' => 2],
+        self::STATUS_TEACHER => ['name' => 'Преподаватель', 'level' => 3],
+        self::STATUS_MASTER => ['name' => 'Магистр', 'level' => 4],
+        self::STATUS_DEAN => ['name' => 'Декан', 'level' => 5],
+        self::STATUS_VICE_RECTOR => ['name' => 'Проректор', 'level' => 6],
+        self::STATUS_RECTOR => ['name' => 'Ректор', 'level' => 7],
+        self::STATUS_ADMIN => ['name' => 'Администратор', 'level' => 8],
+    ];
+
+    const ACTIONS_LEVEL_MAP = [
+        self::ACTION_TAKE_LESSON => 2,
+        self::ACTION_TAKE_EXAMS => 4,
+        self::ACTION_CHANGE_LECTURE => 4,
+        self::ACTION_CHANGE_SCHEDULE => 3,
+        self::ACTION_CHANGE_ASSISTANT => 5,
+        self::ACTION_CHANGE_TEACHER => 5,
+        self::ACTION_CHANGE_MASTER => 6,
+        self::ACTION_CHANGE_VICE_RECTOR => 7,
+        self::ACTION_CHANGE_RECTOR => 8,
+        self::ACTION_SELF_DELETE_ACCOUNT => 0,
+        self::ACTION_DELETE_ACCOUNT => 7,
+    ];
+
     public static function tableName(): string
     {
         return 'user';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules(): array
     {
         return [
@@ -58,9 +90,6 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels(): array
     {
         return [
@@ -72,97 +101,63 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
-    /**
-     * Gets query for [[DayLectures]].
-     *
-     * @return ActiveQuery
-     */
     public function getDayLectures(): ActiveQuery
     {
         return $this->hasMany(DayLecture::class, ['teacher_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[FormationUsers]].
-     *
-     * @return ActiveQuery
-     */
     public function getFormationUsers(): ActiveQuery
     {
         return $this->hasMany(FormationUser::class, ['user_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[TeacherQueues]].
-     *
-     * @return ActiveQuery
-     */
     public function getTeacherQueues(): ActiveQuery
     {
         return $this->hasMany(TeacherQueue::class, ['user_id' => 'id']);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public static function findIdentity($id): User|null
+    public static function findIdentity($id): static|null
     {
-        return self::findOne($id);
+        return new static(self::findOne($id));
     }
 
-    /**
-     * @inheritDoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null): User|null
+    public static function findIdentityByAccessToken($token, $type = null): static|null
     {
-        return self::findOne(['access_token' => $token]);
+        return new static(self::findOne(['access_token' => $token]));
     }
 
-    /**
-     * Finds user by FiveM ID
-     *
-     * @param int $fivemId
-     *
-     * @return User|null
-     */
-    public static function findIdentityByFivemId(int $fivemId): User|null
+    public static function findIdentityByFivemId(int $fivemId): static|null
     {
-        return self::findOne(['fivem_id' => $fivemId]);
+        return new static(self::findOne(['fivem_id' => $fivemId]));
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getId(): int|string
     {
         return $this->id;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getAuthKey(): string
     {
         return $this->auth_key;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function validateAuthKey($authKey): bool
     {
         return $this->auth_key === $authKey;
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password
-     *
-     * @return bool
-     */
     public function validatePassword(string $password): bool
     {
-        return $this->password === $password;
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password);
+    }
+
+    public function isActionAvailable(string $action): bool
+    {
+        return self::STATUS_MAP[$this->status]['level'] >= self::ACTIONS_LEVEL_MAP[$action];
+    }
+
+    public function isChangeUserStatusAvailable(string $userStatus): bool
+    {
+        return self::STATUS_MAP[$this->status]['level'] > self::STATUS_MAP[$userStatus]['level'];
     }
 }

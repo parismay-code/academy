@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -12,7 +13,8 @@ use yii\db\ActiveRecord;
  * @property int|null $day_id
  * @property int|null $lecture_id
  * @property int|null $teacher_id
- * @property string|null $time
+ * @property int|null $time
+ * @property int|null $isFree
  *
  * @property ScheduleDay $day
  * @property Lecture $lecture
@@ -34,57 +36,38 @@ class DayLecture extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['day_id', 'lecture_id', 'teacher_id'], 'integer'],
-            [['time'], 'string', 'max' => 32],
-            [
-                ['day_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => ScheduleDay::class,
-                'targetAttribute' => ['day_id' => 'id']
-            ],
-            [
-                ['lecture_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Lecture::class,
-                'targetAttribute' => ['lecture_id' => 'id']
-            ],
-            [
-                ['teacher_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => User::class,
-                'targetAttribute' => ['teacher_id' => 'id']
-            ],
+            [['day_id', 'lecture_id', 'teacher_id', 'isFree', 'time'], 'integer'],
+            [['day_id'], 'exist', 'skipOnError' => true, 'targetClass' => ScheduleDay::class, 'targetAttribute' => ['day_id' => 'id']],
+            [['lecture_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lecture::class, 'targetAttribute' => ['lecture_id' => 'id']],
+            [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['teacher_id' => 'id']],
         ];
     }
 
     /**
-     * Gets query for [[Day]].
-     *
-     * @return ActiveQuery
+     * {@inheritdoc}
      */
+    public function attributeLabels(): array
+    {
+        return [
+            'id' => 'ID',
+            'day_id' => 'Day ID',
+            'lecture_id' => 'Lecture ID',
+            'teacher_id' => 'Teacher ID',
+            'time' => 'Time',
+            'isFree' => 'Is Free',
+        ];
+    }
+
     public function getDay(): ActiveQuery
     {
         return $this->hasOne(ScheduleDay::class, ['id' => 'day_id']);
     }
 
-    /**
-     * Gets query for [[Lecture]].
-     *
-     * @return ActiveQuery
-     */
     public function getLecture(): ActiveQuery
     {
         return $this->hasOne(Lecture::class, ['id' => 'lecture_id']);
     }
 
-    /**
-     * Gets query for [[Teacher]].
-     *
-     * @return ActiveQuery
-     */
     public function getTeacher(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'teacher_id']);

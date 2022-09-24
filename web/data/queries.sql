@@ -5,11 +5,6 @@ VALUES ('Insignis', 'Johan Liebert', 'Nathan Young', 'Jacqueline de Monroe'),
        ('Sabbat', 'Schwein Fettes', 'Wendy Farrel Osborn', 'Dustin Ross'),
        ('Gangrel', 'Aaron de Langeron', 'Aldo Delgado', 'Francis de Castan');
 
-INSERT INTO user (username, fivem_id, discord, password, status, registration_date)
-VALUES ('Emiel Regis van der Eretein', 9737, 'mentalaffect#6666', 'kkapass02', 'teacher', NOW()),
-       ('Jacqueline de Monroe', 8855, 'Zlaya#0007', 'pass', 'rector', NOW()),
-       ('Mikaela Teller', 1255, '.Di#5151', 'pass', 'dean', NOW());
-
 INSERT INTO lecture (status, creation_date, title, details)
 VALUES ('submitted', NOW(), 'Наследие Первородных', 'Скоро'),
        ('submitted', NOW(), 'Королевская семья и иерархия вампирского сообщества', 'Скоро'),
@@ -23,10 +18,47 @@ VALUES ('submitted', NOW(), 'Наследие Первородных', 'Скор
        ('submitted', NOW(), 'Производство формаций', 'Скоро');
 
 INSERT INTO schedule_day (type, `from`, `to`)
-VALUES ('lectures', '17:00', '21:00'),
-       ('vacation', '17:00', '21:00'),
-       ('lectures', '17:00', '21:00'),
-       ('vacation', '17:00', '21:00'),
-       ('lectures', '17:00', '21:00'),
-       ('attestation', '17:00', '21:00'),
-       ('examination', '17:00', '21:00');
+VALUES ('lecture', 17, 21),
+       ('vacation', 17, 21),
+       ('lecture', 17, 21),
+       ('vacation', 17, 21),
+       ('lecture', 17, 21),
+       ('attestation', 17, 21),
+       ('examination', 17, 21);
+
+INSERT INTO day_lecture (day_id, isFree)
+VALUES (1, true),
+       (1, true),
+       (1, true),
+       (1, true),
+       (1, true),
+       (2, true),
+       (2, true),
+       (2, true),
+       (2, true),
+       (2, true),
+       (3, true),
+       (3, true),
+       (3, true),
+       (3, true),
+       (3, true),
+       (4, true),
+       (4, true),
+       (4, true),
+       (4, true),
+       (4, true),
+       (5, true),
+       (5, true),
+       (5, true),
+       (5, true),
+       (5, true),
+       (6, true),
+       (6, true),
+       (6, true),
+       (6, true),
+       (6, true),
+       (7, true),
+       (7, true),
+       (7, true),
+       (7, true),
+       (7, true);

@@ -49,9 +49,10 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '/' => 'auth/index',
-                'auth/index' => 'login',
-                'auth/registration' => 'registration',
-                'schedule/index' => 'schedule',
+                'login' => 'auth/index',
+                'logout' => 'auth/logout',
+                'registration' => 'auth/registration',
+                'schedule' => 'schedule/index',
             ],
         ],
     ],

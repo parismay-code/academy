@@ -21,7 +21,9 @@ CREATE TABLE `user`
     `discord`           VARCHAR(128),
     `password`          CHAR(64),
     `status`            VARCHAR(64),
-    `registration_date` TIMESTAMP
+    `registration_date` TIMESTAMP,
+    `auth_key`          VARCHAR(32),
+    `access_token`      VARCHAR(32)
 );
 
 CREATE TABLE `formation_user`
@@ -69,8 +71,8 @@ CREATE TABLE `schedule_day`
 (
     `id`   INT AUTO_INCREMENT PRIMARY KEY,
     `type` VARCHAR(32),
-    `from` CHAR(32),
-    `to`   CHAR(32)
+    `from` INT,
+    `to`   INT
 );
 
 CREATE TABLE `day_lecture`
@@ -79,7 +81,8 @@ CREATE TABLE `day_lecture`
     `day_id`     INT,
     `lecture_id` INT,
     `teacher_id` INT,
-    `time`       CHAR(32),
+    `time`       INT,
+    `isFree`     BOOL,
     FOREIGN KEY (`day_id`) REFERENCES `schedule_day` (`id`),
     FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`),
     FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`)

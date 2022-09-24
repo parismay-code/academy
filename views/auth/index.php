@@ -10,31 +10,45 @@ use yii\bootstrap5\ActiveForm;
 $this->title = 'Vampires Academy | Вход';
 ?>
 
-<main class="container">
-    <?php $form = ActiveForm::begin([
-        'id' => 'login-form',
-        'layout' => 'horizontal',
-        'fieldConfig' => [
-            'template' => "{label}\n{input}\n{error}",
-            'labelOptions' => ['class' => 'col-lg-1 col-form-label mr-lg-3'],
-            'inputOptions' => ['class' => 'col-lg-3 form-control'],
-            'errorOptions' => ['class' => 'col-lg-7 invalid-feedback'],
+<?php $form = ActiveForm::begin([
+    'id' => 'login-form',
+    'layout' => 'horizontal',
+    'options' => ['class' => 'w-75 m-auto mt-5'],
+    'fieldConfig' => [
+        'template' => "{beginWrapper}\n{input}\n{error}\n{endWrapper}",
+        'horizontalCssClasses' => [
+            'wrapper' => '',
         ],
-    ]); ?>
+    ],
+]); ?>
 
-    <fieldset>
-        <legend>Вход в профиль</legend>
-        <?= $form->field($model, 'fivemId')
-            ->input('number', [
-                'min' => '1',
-                'max' => '999999',
-                'placeholder' => 'Ваш ID на сервере',
-                'autofocus' => true,
-            ]);
+<?=
+$form->field($model, 'fivemId')
+    ->input('number', [
+        'min' => '1',
+        'max' => '999999',
+        'placeholder' => 'Ваш ID на сервере',
+        'autofocus' => true,
+    ]);
+?>
+
+<?=
+$form->field($model, 'password')
+    ->passwordInput([
+        'placeholder' => 'Пароль',
+    ]);
+?>
+
+<?= Html::submitInput('Войти', ['class' => 'btn btn-outline-success w-100 p-3', 'name' => 'login-button']) ?>
+
+    <div class="p-5 d-flex align-items-center justify-content-center">
+        <?=
+        Html::a
+        (
+            'Еще нет аккаунта?',
+            ['auth/registration'],
+            ['class' => 'text-white text-decoration-none fs-5 link-secondary p-3']
+        )
         ?>
-        <?= $form->field($model, 'password')->passwordInput() ?>
-        <?= Html::submitInput('Войти', ['class' => 'btn btn-primary']) ?>
-        <br>
-        <span class="auth-form__redirect">Еще нет аккаунта?</span>
-    </fieldset>
-</main>
+    </div>
+<?php ActiveForm::end(); ?>

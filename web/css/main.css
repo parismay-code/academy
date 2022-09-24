@@ -1,578 +1,63 @@
 @font-face {
-  font-family: "Uindbase", sans-serif;
-  src: url("../fonts/Uindbase.ttf") format("truetype");
+    font-family: "Uindbase", sans-serif;
+    src: url("../fonts/Uindbase.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Open Sans Condensed Bold", sans-serif;
-  src: url("../fonts/OpenSansCondensed-Bold.ttf") format("truetype");
+    font-family: "Open Sans Condensed Bold", sans-serif;
+    src: url("../fonts/OpenSansCondensed-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Open Sans Condensed Light", sans-serif;
-  src: url("../fonts/OpenSansCondensed-Light.ttf") format("truetype");
+    font-family: "Open Sans Condensed Light", sans-serif;
+    src: url("../fonts/OpenSansCondensed-Light.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Open Sans Condensed Light Italic", sans-serif;
-  src: url("../fonts/OpenSansCondensed-LightItalic.ttf") format("truetype");
+    font-family: "Open Sans Condensed Light Italic", sans-serif;
+    src: url("../fonts/OpenSansCondensed-LightItalic.ttf") format("truetype");
 }
 
 *,
 *:after,
 *:before {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 
-  list-style: none;
-  text-decoration: none;
+    list-style: none;
+    text-decoration: none;
 }
 
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button {
-  display: none;
-}
-
-a {
-  color: inherit;
+    display: none;
 }
 
 html {
-  font-size: 14px;
-  font-family: "Open Sans Condensed Light", sans-serif;
-  color: #ffffff;
+    font-size: 14px;
+    font-family: "Open Sans Condensed Light", sans-serif;
 }
 
 body {
-  background-image: url(../images/bg.png);
-  background-repeat: repeat;
-  background-size: 50%;
+    background-image: url(../images/bg.png);
+    background-repeat: repeat;
+    background-size: 50%;
+
+    color: #ffffff !important;
 }
 
 header {
-  padding: 1rem 5rem;
+    padding: 1rem 5rem;
+    margin-bottom: 1rem;
 
-  border-bottom: .05rem solid #000;
+    border-bottom: .05rem solid #000;
 
-  background-color: #00000030;
+    background-color: #00000030;
 
-  backdrop-filter: blur(.1rem);
+    backdrop-filter: blur(.1rem);
 }
 
-.vertical-list {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.vertical-list__element {
-  margin-left: 1.5rem;
-}
-
-.vertical-list__element a {
-  position: relative;
-
-  opacity: .5;
-  transition: opacity .2s;
-}
-
-.vertical-list__element a:after {
-  content: '';
-
-  position: absolute;
-  left: 50%;
-  bottom: -25%;
-  transform: translateX(-50%);
-
-  width: 50%;
-  height: .05rem;
-
-  background-color: #ffffff;
-
-  transition: width .2s;
-
-  pointer-events: none;
-}
-
-.vertical-list__element:hover a,
-.vertical-list__element_active a {
-  opacity: 1;
-}
-
-.vertical-list__element:hover a:after,
-.vertical-list__element_active a:after {
-  width: 100%;
-}
-
-.auth {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 50%;
-  margin: 0 auto;
-}
-
-.add-lecture-form {
-  max-width: 60%;
-  width: 100%;
-  margin: 0 auto;
-}
-
-fieldset {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 1rem;
-
-  background-color: #00000080;
-}
-
-legend {
-  padding: .5rem;
-  font-family: "Open Sans Condensed Bold", sans-serif;
-  font-weight: 700;
-  font-size: 1.2rem
-}
-
-input,
-select,
-textarea {
-  max-width: 80%;
-  width: 100%;
-  padding: 1rem;
-  margin: 1rem 0;
-
-  border: .1rem solid #000000;
-
-  background-color: #ffffffea;
-  color: #000000;
-
-  outline: none;
-}
-
-input::placeholder {
-  color: #000000;
-}
-
-input[type=submit] {
-  background-color: #85CC0BE5;
-  color: #ffffff;
-  font-size: 1.2rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-label {
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.auth-form__redirect {
-  position: relative;
-
-  margin-bottom: 2rem;
-
-  opacity: .5;
-
-  transition: opacity .2s;
-}
-
-.auth-form__redirect:hover {
-  opacity: 1;
-}
-
-.auth-form__redirect:after {
-  content: '';
-
-  position: absolute;
-  left: 50%;
-  bottom: -25%;
-  transform: translateX(-50%);
-
-  width: 50%;
-  height: .05rem;
-
-  background-color: #ffffff;
-
-  transition: width .2s;
-
-  pointer-events: none;
-}
-
-.auth-form__redirect:hover:after {
-  width: 100%;
-}
-
-.teachers {
-  width: 100%;
-}
-
-.teachers__request {
-  opacity: .5;
-
-  text-align: center;
-
-  transition: opacity .2s;
-}
-
-.teachers__request:hover {
-  opacity: 1;
-}
-
-.teachers-list__wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  margin-bottom: 1rem;
-}
-
-.teachers-list,
-.teachers-request {
-  width: 60%;
-}
-
-.teachers-request__list {
-  width: 75%;
-}
-
-.teachers-list__teacher {
-  width: 75%;
-  margin-bottom: 1rem;
-}
-
-.teacher,
-.teachers-request-user {
-  padding: 1rem 2rem;
-
-  position: relative;
-
-  font-size: 1.2rem;
-
-  background-color: #00000080;
-  border: .05rem solid #ffffff;
-}
-
-.teacher_active {
-  padding: .75rem 1.75rem;
-  border: .3rem solid #85cc0be5;
-
-  animation-name: teacherSelection;
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  animation-timing-function: ease-in-out;
-}
-
-.teacher__name,
-.teachers-request-user__name {
-  font-weight: 700;
-}
-
-.teacher__id,
-.teachers-request-user__id {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-
-  font-weight: 700;
-}
-
-.teacher-contacts,
-.teachers-request-user-contacts {
-  margin-top: .5rem;
-}
-
-.teachers-controls {
-  width: 22%;
-}
-
-.teachers-controls__title {
-  font-size: 1.5rem;
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-.teachers-controls-list {
-  max-height: 0;
-  overflow: hidden;
-
-  transition: max-height .5s;
-}
-
-.teachers-controls-list_active {
-  max-height: 20vh;
-}
-
-.change-status {
-  margin-top: 1rem;
-}
-
-.change-status__element {
-  padding: .2rem .5rem;
-
-  font-size: 1.2rem;
-}
-
-.change-status__element a {
-  opacity: .5;
-
-  transition: opacity .2s;
-}
-
-.change-status__element a:hover {
-  opacity: 1;
-}
-
-.teachers-request-controls {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-
-  font-size: 2rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.teachers-request-controls__accept {
-  color: #85cc0b;
-}
-
-.teachers-request-controls__decline {
-  color: #ea0202;
-}
-
-.teachers-request-controls__accept,
-.teachers-request-controls__decline {
-  padding: 3rem;
-
-  opacity: .5;
-
-  transition: opacity .2s;
-}
-
-.teachers-request-controls__accept:hover,
-.teachers-request-controls__decline:hover {
-  opacity: 1;
-}
-
-.lecture-details {
-
-}
-
-.lecture-details__content {
-  padding: 1rem 2rem;
-
-  background-color: #00000080;
-  border: .05rem solid #ffffff;
-
-  font-family: "Open Sans Condensed Light", sans-serif;
-  font-size: 1.1rem;
-  white-space: pre-wrap;
-}
-
-.lectures-list__element {
-  font-size: 1.2rem;
-  margin-bottom: .5rem;
-}
-
-.lectures-list__element a {
-  padding: 1rem;
-
-  opacity: .5;
-  transition: opacity .2s;
-}
-
-.lectures-list__element a:hover {
-  opacity: 1;
-}
-
-.lecture-details__edit {
-  opacity: .5;
-  transition: opacity .2s;
-}
-
-.lecture-details__edit:hover {
-  opacity: 1;
-}
-
-.schedule__wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.schedule-day {
-  width: 47%;
-  margin-bottom: 2rem;
-}
-
-.schedule-day_active .schedule__table {
-  filter: drop-shadow(0 0 3rem #85cc0be5);
-
-  animation-name: daySelection;
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  animation-timing-function: ease-in-out;
-}
-
-.schedule-day__title {
-  margin-bottom: 1rem;
-
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
-.schedule__table {
-  padding: 0 .5rem;
-
-  border: .1rem solid #ffffff;
-
-  background-color: #00000080;
-
-  opacity: 1;
-
-  transition: opacity .2s .2s;
-}
-
-.schedule__change {
-  opacity: 1;
-
-  transition: opacity .2s .2s;
-}
-
-.schedule__hidden {
-  max-width: 0;
-  max-height: 0;
-
-  opacity: 0;
-
-  transition: none;
-}
-
-.table__row,
-.table__header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-  height: 4.5rem;
-
-  border-bottom: .1rem solid #ffffff;
-
-  text-align: center;
-}
-
-.table__header {
-  border-bottom: .3rem solid #a7a7a7;
-}
-
-.table__row:last-child {
-  border: none;
-}
-
-.table__examination {
-  height: calc(4.5rem * 7);
-}
-
-.table__row_active {
-
-}
-
-.table__header .table__data {
-  font-size: 1.2rem;
-  text-align: center !important;
-}
-
-.table__data {
-  padding: 0 .5rem;
-  line-height: 1.1rem;
-}
-
-.schedule__title {
-  text-align: left;
-  width: 35%;
-}
-
-.schedule__time {
-  width: 10%;
-}
-
-.table__examination .schedule__lecture,
-.table__examination .schedule__time,
-.table__examination .schedule__duration {
-  width: 30%;
-}
-
-.schedule__teacher {
-  width: 30%;
-}
-
-.schedule__duration {
-  width: 25%;
-}
-
-.table__examination .table__data {
-  width: 30% !important;
-  text-align: center !important;
-  font-size: 1.5rem;
-}
-
-.schedule__vacation {
-  height: calc(4.5rem * 7);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-.schedule-day__title_link {
-  opacity: .5;
-
-  text-align: center;
-
-  transition: opacity .2s;
-
-  cursor: pointer;
-}
-
-.schedule-day__title_link:hover {
-  opacity: 1;
-}
-
-@keyframes teacherSelection {
-  from {
-    border: .3rem solid #85cc0be5;
-  }
-
-  to {
-    border: .3rem solid #85cc0b80;
-  }
-}
-
-@keyframes daySelection {
-  from {
-    filter: drop-shadow(0 0 3rem #85cc0be5);
-  }
-
-  to {
-    filter: drop-shadow(0 0 2rem #85cc0b80);
-  }
+.btn-outline-success {
+    background-color: #00000080;
 }

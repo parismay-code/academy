@@ -10,27 +10,28 @@ class LoginForm extends Model
     public ?int $fivemId = null;
     public ?string $password = null;
 
-    private bool|User $_user = false;
+    private User|bool $_user = false;
 
     public function rules(): array
     {
         return [
             [['fivemId', 'password'], 'required'],
-            ['password', 'validatePassword'],
+            [['fivemId', 'password'], 'validateData'],
         ];
     }
 
-    public function validatePassword(string $attribute): void
+    public function validateData(): void
     {
-        if (!$this->hasErrors()) {
-            $user = $this->getUser();
+        if ($this->hasErrors()) {
+            return;
+        }
 
-            if (!$user) {
-                $this->addError($attribute, 'Пользователь с таким ID не найден.');
-            }
-            if (!$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Неверный пароль');
-            }
+        $this->_user = User::findOne(['fivem_id' => $this->fivemId]) ?? false;
+
+        if ($this->_user === false) {
+            $this->addError('fivemId', 'Указанный ID не зарегистрирован.');
+        } else if (!$this->_user->validatePassword($this->password)) {
+            $this->addError('password', 'Неверный пароль.');
         }
     }
 
@@ -40,15 +41,6 @@ class LoginForm extends Model
             return false;
         }
 
-        return Yii::$app->user->login($this->getUser(), 3600*24*30);
-    }
-
-    public function getUser(): User|null
-    {
-        if ($this->_user === false) {
-            $this->_user = User::findIdentityByFivemId($this->fivemId);
-        }
-
-        return $this->_user;
+        return Yii::$app->user->login($this->_user, 3600 * 24 * 30);
     }
 }

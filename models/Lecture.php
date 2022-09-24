@@ -19,6 +19,10 @@ use yii\db\ActiveRecord;
  */
 class Lecture extends ActiveRecord
 {
+    const STATUS_NEW = 'new';
+    const STATUS_SUBMITTED = 'submitted';
+    const STATUS_ARCHIVED = 'archived';
+
     /**
      * {@inheritdoc}
      */

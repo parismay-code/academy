@@ -5,25 +5,58 @@ namespace app\controllers;
 use Yii;
 use yii\web\Response;
 use yii\web\Controller;
-use yii\helpers\Url;
 use app\models\LoginForm;
+use app\models\RegistrationForm;
+use app\models\User;
+use yii\helpers\Url;
 
 class AuthController extends Controller
 {
-    public function actionIndex(): string|Response
+    public function actionIndex(): Response|string
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->redirect(Url::to(['schedule/index'], true));
+            return $this->redirect(Url::to(['schedule/index']));
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect(Url::to(['schedule/index'], true));
+            return $this->goBack();
         }
 
         $model->password = '';
         return $this->render('index', [
             'model' => $model,
         ]);
+    }
+
+    public function actionRegistration(): Response|string
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new RegistrationForm();
+        if ($model->load(Yii::$app->request->post())) {
+            if (User::findOne(['fivem_id' => $model->fivemId])) {
+                return $this->goBack();
+            }
+
+            $model->registration();
+
+            return $this->goHome();
+        }
+
+        $model->password = null;
+        $model->repeatPassword = null;
+        return $this->render('registration', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionLogout(): Response
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 }
