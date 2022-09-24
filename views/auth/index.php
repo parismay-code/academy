@@ -12,7 +12,6 @@ $this->title = 'Vampires Academy | Вход';
 
 <?php $form = ActiveForm::begin([
     'id' => 'login-form',
-    'layout' => 'horizontal',
     'options' => ['class' => 'w-75 m-auto mt-5'],
     'fieldConfig' => [
         'template' => "{beginWrapper}\n{input}\n{error}\n{endWrapper}",

@@ -10,6 +10,7 @@ class RegistrationForm extends Model
     public ?int $fivemId = null;
     public ?string $username = null;
     public ?string $discord = null;
+    public string $status = User::STATUS_VISITOR;
     public ?string $password = null;
     public ?string $repeatPassword = null;
     public ?int $formationId = null;
@@ -21,6 +22,7 @@ class RegistrationForm extends Model
                 'fivemId',
                 'username',
                 'discord',
+                'status',
                 'password',
                 'repeatPassword',
                 'formationId',
@@ -51,7 +53,7 @@ class RegistrationForm extends Model
         $user->fivem_id = $this->fivemId;
         $user->discord = $this->discord;
         $user->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
-        $user->status = User::STATUS_VISITOR;
+        $user->status = $this->status;
         $user->registration_date = date('Y.m.d H:i:s');
         $user->auth_key = Yii::$app->getSecurity()->generateRandomString();
         $user->access_token = Yii::$app->getSecurity()->generateRandomString();

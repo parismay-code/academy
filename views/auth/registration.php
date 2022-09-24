@@ -4,6 +4,7 @@ use app\models\Formation;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\ArrayHelper;
+use app\models\User;
 
 /** @var yii\web\View $this
  * @var app\models\LoginForm $model
@@ -15,7 +16,6 @@ $this->title = 'Vampires Academy | Регистрация';
 
 <?php $form = ActiveForm::begin([
     'id' => 'registration-form',
-    'layout' => 'horizontal',
     'options' => ['class' => 'w-75 m-auto mt-5'],
     'fieldConfig' => [
         'template' => "{beginWrapper}\n{input}\n{error}\n{endWrapper}{hint}",
@@ -40,6 +40,11 @@ $this->title = 'Vampires Academy | Регистрация';
 <?= $form->field($model, 'username')->textInput(['placeholder' => 'Имя персонажа']) ?>
 
 <?= $form->field($model, 'discord')->textInput(['placeholder' => 'Discord'])->hint('example#9999') ?>
+
+<?= $form->field($model, 'discord')->dropDownList([
+    User::STATUS_VISITOR => User::STATUS_MAP[User::STATUS_VISITOR]['name'],
+    User::STATUS_STUDENT => User::STATUS_MAP[User::STATUS_STUDENT]['name'],
+]); ?>
 
 <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Пароль']) ?>
 
