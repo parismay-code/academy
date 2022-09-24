@@ -103,7 +103,8 @@ class LecturesController extends Controller
         $model->details = $lecture->details;
 
         return $this->render('change', [
-            'model' => $model
+            'model' => $model,
+            'title' => 'Изменение лекции'
         ]);
     }
 
@@ -121,7 +122,8 @@ class LecturesController extends Controller
         }
 
         return $this->render('change', [
-            'model' => $model
+            'model' => $model,
+            'title' => 'Новая лекция'
         ]);
     }
 

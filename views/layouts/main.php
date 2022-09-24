@@ -46,7 +46,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_k
                 class="link-light text-decoration-none text-uppercase text-center d-flex flex-column"
                 href="<?= Url::to(['auth/index'], true) ?>"
         >
-            <h3 class="m-0">Vampires Academy</h3>
+            <h3 class="m-0 fw-bolder">Vampires Academy</h3>
             <?php if ($route === 'auth/index' || $route === 'auth/registration'): ?>
                 <h4>Авторизация</h4>
             <?php endif; ?>
@@ -54,13 +54,13 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_k
         <?php if (!Yii::$app->user->isGuest): ?>
             <?php
             $links = [
-                ['title' => 'Расписание', 'path' => 'schedule/index', 'level' => 0],
-                ['title' => 'Лекции', 'path' => 'lectures/index', 'level' => 2],
-                ['title' => 'Преподаватели', 'path' => 'teachers/index', 'level' => 0],
-                ['title' => 'Студенты', 'path' => 'students/index', 'level' => 4],
-                ['title' => 'Пользователи', 'path' => 'users/index', 'level' => 5],
-                ['title' => 'Профиль', 'path' => 'profile/index', 'level' => 0],
-                ['title' => 'Выход', 'path' => 'auth/logout', 'level' => 0],
+                ['title' => 'Расписание', 'path' => 'schedule/index', 'level' => 0, 'classParams' => 'link-secondary'],
+                ['title' => 'Лекции', 'path' => 'lectures/index', 'level' => 2, 'classParams' => 'link-secondary'],
+                ['title' => 'Преподаватели', 'path' => 'teachers/index', 'level' => 0, 'classParams' => 'link-secondary'],
+                ['title' => 'Студенты', 'path' => 'students/index', 'level' => 4, 'classParams' => 'link-secondary'],
+                ['title' => 'Пользователи', 'path' => 'users/index', 'level' => 5, 'classParams' => 'link-secondary'],
+                ['title' => 'Профиль', 'path' => 'profile/index', 'level' => 0, 'classParams' => 'link-secondary'],
+                ['title' => 'Выход', 'path' => 'auth/logout', 'level' => 0, 'classParams' => 'link-success'],
             ];
             ?>
             <div class="d-flex flex-row align-items-center justify-content-between text-uppercase fw-bold">
@@ -71,7 +71,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_k
                         (
                             $link['title'],
                             [$link['path']],
-                            ['class' => 'link-light text-decoration-none mx-lg-2']
+                            ['class' => 'text-decoration-none fw-bolder mx-lg-2' . ' ' . $link['classParams']]
                         )
                         ?>
                     <?php endif; ?>

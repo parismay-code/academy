@@ -96,7 +96,7 @@ $this->title = 'Vampires Academy | Расписание';
                                                         'type' => 'lecture',
                                                         'id' => $dayLecture->id
                                                     ],
-                                                    ['class' => 'link-primary text-decoration-none']
+                                                    ['class' => 'link-secondary text-decoration-none border-bottom']
                                                 )
                                                 ?>
                                             <?php else: ?>
@@ -119,7 +119,7 @@ $this->title = 'Vampires Academy | Расписание';
                                                         'type' => 'lecture',
                                                         'id' => $dayLecture->id
                                                     ],
-                                                    ['class' => 'link-primary text-decoration-none']
+                                                    ['class' => 'link-secondary text-decoration-none border-bottom']
                                                 )
                                                 ?>
                                             <?php else: ?>

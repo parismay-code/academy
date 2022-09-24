@@ -62,5 +62,5 @@ $date = date('d.m.Y', $timestamp);
     ])
     ->label('Конец дня') ?>
 
-<?= Html::submitInput('Изменить', ['class' => 'btn btn-outline-success w-100 p-3']) ?>
+<?= Html::submitInput('Изменить', ['class' => 'btn btn-outline-success w-100 p-3 text-uppercase fw-bold']) ?>
 <?php ActiveForm::end(); ?>

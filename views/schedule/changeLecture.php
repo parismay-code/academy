@@ -81,5 +81,5 @@ $form->field($model, 'isFree')
     ->label('Лекция не назначена');
 ?>
 
-<?= Html::submitInput('Изменить', ['class' => 'btn btn-outline-success w-100 p-3']) ?>
+<?= Html::submitInput('Изменить', ['class' => 'btn btn-outline-success w-100 p-3 text-uppercase fw-bold']) ?>
 <?php ActiveForm::end(); ?>

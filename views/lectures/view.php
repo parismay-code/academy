@@ -3,6 +3,7 @@
 use app\models\User;
 use app\models\Lecture;
 use yii\helpers\Html;
+use yii\bootstrap5\Modal;
 
 /**
  * @var yii\web\View $this
@@ -15,8 +16,8 @@ $this->title = "Vampires Academy | Лекция $model->id. " . Html::encode($mo
 ?>
 
 <section>
-    <h4 class="mb-5"><?= "Лекция $model->id. " . Html::encode($model->title) ?></h4>
-    <ul class="d-flex flex-row text-uppercase fs-5">
+    <h4 class="mb-3"><?= "Лекция $model->id. " . Html::encode($model->title) ?></h4>
+    <ul class="d-flex flex-row text-uppercase fs-5 mb-3">
         <li class="mx-3">
             <?php if ($model->status === Lecture::STATUS_NEW && $user->isActionAvailable(User::ACTION_SUBMIT_LECTURE)): ?>
                 <?=
@@ -24,7 +25,7 @@ $this->title = "Vampires Academy | Лекция $model->id. " . Html::encode($mo
                 (
                     'Утвердить материал',
                     ['lectures/submit', 'id' => $model->id],
-                    ['class' => 'link-secondary text-decoration-none font-weight-bold']
+                    ['class' => 'link-secondary text-decoration-none fw-bold']
                 )
                 ?>
             <?php elseif ($model->status === Lecture::STATUS_SUBMITTED && $user->isActionAvailable(User::ACTION_SUBMIT_LECTURE)): ?>
@@ -33,7 +34,7 @@ $this->title = "Vampires Academy | Лекция $model->id. " . Html::encode($mo
                 (
                     'Архивировать',
                     ['lectures/zip', 'id' => $model->id],
-                    ['class' => 'link-secondary text-decoration-none font-weight-bold']
+                    ['class' => 'link-secondary text-decoration-none fw-bold']
                 )
                 ?>
             <?php elseif ($model->status === Lecture::STATUS_ARCHIVED && $user->isActionAvailable(User::ACTION_SUBMIT_LECTURE)): ?>
@@ -42,7 +43,7 @@ $this->title = "Vampires Academy | Лекция $model->id. " . Html::encode($mo
                 (
                     'Разархивировать',
                     ['lectures/submit', 'id' => $model->id],
-                    ['class' => 'link-secondary text-decoration-none font-weight-bold']
+                    ['class' => 'link-secondary text-decoration-none fw-bold']
                 )
                 ?>
             <?php endif; ?>
@@ -52,8 +53,8 @@ $this->title = "Vampires Academy | Лекция $model->id. " . Html::encode($mo
             Html::a
             (
                 'Изменить',
-                ['lectures/delete', 'id' => $model->id],
-                ['class' => 'link-success text-decoration-none font-weight-bold']
+                ['lectures/change', 'id' => $model->id],
+                ['class' => 'link-success text-decoration-none fw-bold']
             )
             ?>
         </li>
@@ -63,7 +64,7 @@ $this->title = "Vampires Academy | Лекция $model->id. " . Html::encode($mo
             (
                 'Удалить',
                 ['lectures/delete', 'id' => $model->id],
-                ['class' => 'link-danger text-decoration-none font-weight-bold']
+                ['class' => 'link-danger text-decoration-none fw-bold']
             )
             ?>
         </li>
