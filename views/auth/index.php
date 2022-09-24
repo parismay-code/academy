@@ -14,10 +14,7 @@ $this->title = 'Vampires Academy | Вход';
     'id' => 'login-form',
     'options' => ['class' => 'w-75 m-auto mt-5'],
     'fieldConfig' => [
-        'template' => "{beginWrapper}\n{input}\n{error}\n{endWrapper}",
-        'horizontalCssClasses' => [
-            'wrapper' => '',
-        ],
+        'template' => "{input}\n{error}",
     ],
 ]); ?>
 
@@ -38,7 +35,7 @@ $form->field($model, 'password')
     ]);
 ?>
 
-<?= Html::submitInput('Войти', ['class' => 'btn btn-outline-success w-100 p-3', 'name' => 'login-button']) ?>
+<?= Html::submitInput('Войти', ['class' => 'btn btn-success text-white text-uppercase text-decoration-none font-weight-bold fs-5 p-2 fw-bold w-100', 'name' => 'login-button']) ?>
 
     <div class="p-5 d-flex align-items-center justify-content-center">
         <?=

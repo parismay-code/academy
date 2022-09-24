@@ -55,9 +55,6 @@ $teacherItems = ArrayHelper::map($teachers, 'id', 'username');
     'options' => ['class' => 'w-75 m-auto mt-5'],
     'fieldConfig' => [
         'template' => "{label}\n{input}\n{error}",
-        'horizontalCssClasses' => [
-            'wrapper' => '',
-        ],
     ],
 ]); ?>
 

@@ -18,11 +18,7 @@ $this->title = 'Vampires Academy | Регистрация';
     'id' => 'registration-form',
     'options' => ['class' => 'w-75 m-auto mt-5'],
     'fieldConfig' => [
-        'template' => "{beginWrapper}\n{input}\n{error}\n{endWrapper}{hint}",
-        'horizontalCssClasses' => [
-            'wrapper' => '',
-            'hint' => 'text-border-info'
-        ],
+        'template' => "{input}\n{error}\n{hint}",
     ],
 ]); ?>
 
@@ -58,7 +54,7 @@ $items = ArrayHelper::map($formations, 'id', 'name');
 <?= $form->field($model, 'formationId')->dropDownList($items) ?>
 
 <?= Html::submitInput('Зарегистрироваться',
-    ['class' => 'btn btn-outline-success w-100 p-3', 'name' => 'registration-button']) ?>
+    ['class' => 'btn btn-success text-white text-uppercase text-decoration-none font-weight-bold fs-5 p-2 fw-bold w-100', 'name' => 'registration-button']) ?>
 
     <div class="p-5 d-flex align-items-center justify-content-center">
         <?=

@@ -28,13 +28,9 @@ $date = date('d.m.Y', $timestamp);
 
 <?php $form = ActiveForm::begin([
     'id' => 'change-schedule-day-form',
-    'layout' => 'horizontal',
     'options' => ['class' => 'w-75 m-auto mt-5'],
     'fieldConfig' => [
-        'template' => "{beginWrapper}{label}{input}{error}{endWrapper}",
-        'horizontalCssClasses' => [
-            'wrapper' => '',
-        ],
+        'template' => "{label}{input}{error}",
     ],
 ]); ?>
 
