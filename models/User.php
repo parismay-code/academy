@@ -22,6 +22,8 @@ use yii\web\IdentityInterface;
  *
  * @property DayLecture[] $dayLectures
  * @property FormationUser[] $formationUsers
+ * @property StudentVisit[] $studentVisits
+ * @property TeacherActivity[] $teacherActivities
  * @property TeacherQueue[] $teacherQueues
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -38,7 +40,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     const ACTION_TAKE_LESSON = 'take lesson';
     const ACTION_TAKE_EXAMS = 'take exams';
+    const ACTION_CREATE_LECTURE = 'create lecture';
     const ACTION_CHANGE_LECTURE = 'change lecture';
+    const ACTION_DELETE_LECTURE = 'delete lecture';
     const ACTION_CHANGE_SCHEDULE = 'change schedule';
     const ACTION_CHANGE_ASSISTANT = 'change assistant status';
     const ACTION_CHANGE_TEACHER = 'change teacher status';
@@ -48,6 +52,9 @@ class User extends ActiveRecord implements IdentityInterface
     const ACTION_SELF_DELETE_ACCOUNT = 'self delete account';
     const ACTION_DELETE_ACCOUNT = 'delete account';
     const ACTION_SUBMIT_LECTURE = 'submit lecture';
+    const ACTION_ZIP_LECTURE = 'zip lecture';
+    const ACTION_VIEW_STUDENTS = 'view students';
+    const ACTION_VIEW_ALL_USERS = 'view all users';
 
     const STATUS_MAP = [
         self::STATUS_VISITOR => ['name' => 'Посетитель', 'level' => 0],
@@ -62,18 +69,23 @@ class User extends ActiveRecord implements IdentityInterface
     ];
 
     const ACTIONS_LEVEL_MAP = [
-        self::ACTION_TAKE_LESSON => 2,
-        self::ACTION_TAKE_EXAMS => 4,
-        self::ACTION_CHANGE_LECTURE => 4,
-        self::ACTION_CHANGE_SCHEDULE => 4,
-        self::ACTION_CHANGE_ASSISTANT => 5,
-        self::ACTION_CHANGE_TEACHER => 5,
-        self::ACTION_CHANGE_MASTER => 6,
-        self::ACTION_CHANGE_VICE_RECTOR => 7,
-        self::ACTION_CHANGE_RECTOR => 8,
-        self::ACTION_SELF_DELETE_ACCOUNT => 0,
-        self::ACTION_DELETE_ACCOUNT => 7,
-        self::ACTION_SUBMIT_LECTURE => 6
+        self::ACTION_TAKE_LESSON => self::STATUS_MAP[self::STATUS_ASSISTANT]['level'],
+        self::ACTION_TAKE_EXAMS => self::STATUS_MAP[self::STATUS_MASTER]['level'],
+        self::ACTION_CREATE_LECTURE => self::STATUS_MAP[self::STATUS_MASTER]['level'],
+        self::ACTION_CHANGE_LECTURE => self::STATUS_MAP[self::STATUS_MASTER]['level'],
+        self::ACTION_DELETE_LECTURE => self::STATUS_MAP[self::STATUS_MASTER]['level'],
+        self::ACTION_CHANGE_SCHEDULE => self::STATUS_MAP[self::STATUS_MASTER]['level'],
+        self::ACTION_CHANGE_ASSISTANT => self::STATUS_MAP[self::STATUS_DEAN]['level'],
+        self::ACTION_CHANGE_TEACHER => self::STATUS_MAP[self::STATUS_DEAN]['level'],
+        self::ACTION_CHANGE_MASTER => self::STATUS_MAP[self::STATUS_VICE_RECTOR]['level'],
+        self::ACTION_CHANGE_VICE_RECTOR => self::STATUS_MAP[self::STATUS_RECTOR]['level'],
+        self::ACTION_CHANGE_RECTOR => self::STATUS_MAP[self::STATUS_ADMIN]['level'],
+        self::ACTION_SELF_DELETE_ACCOUNT => self::STATUS_MAP[self::STATUS_VISITOR]['level'],
+        self::ACTION_DELETE_ACCOUNT => self::STATUS_MAP[self::STATUS_RECTOR]['level'],
+        self::ACTION_SUBMIT_LECTURE => self::STATUS_MAP[self::STATUS_DEAN]['level'],
+        self::ACTION_ZIP_LECTURE => self::STATUS_MAP[self::STATUS_DEAN]['level'],
+        self::ACTION_VIEW_STUDENTS => self::STATUS_MAP[self::STATUS_MASTER]['level'],
+        self::ACTION_VIEW_ALL_USERS => self::STATUS_MAP[self::STATUS_DEAN]['level'],
     ];
 
     public static function tableName(): string
@@ -95,11 +107,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels(): array
     {
         return [
+            'id' => 'ID',
             'username' => 'Имя',
+            'fivem_id' => 'Fivem ID',
             'discord' => 'Discord',
             'password' => 'Пароль',
             'status' => 'Статус',
             'registration_date' => 'Дата регистрации',
+            'auth_key' => 'Auth Key',
+            'access_token' => 'Access Token',
         ];
     }
 
@@ -111,6 +127,16 @@ class User extends ActiveRecord implements IdentityInterface
     public function getFormationUsers(): ActiveQuery
     {
         return $this->hasMany(FormationUser::class, ['user_id' => 'id']);
+    }
+
+    public function getStudentVisits(): ActiveQuery
+    {
+        return $this->hasMany(StudentVisit::class, ['student_id' => 'id']);
+    }
+
+    public function getTeacherActivities(): ActiveQuery
+    {
+        return $this->hasMany(TeacherActivity::class, ['teacher_id' => 'id']);
     }
 
     public function getTeacherQueues(): ActiveQuery
@@ -161,5 +187,18 @@ class User extends ActiveRecord implements IdentityInterface
     public function isChangeUserStatusAvailable(string $userStatus): bool
     {
         return self::STATUS_MAP[$this->status]['level'] > self::STATUS_MAP[$userStatus]['level'];
+    }
+
+    public function getAvailableToChangeStatusList(): array
+    {
+        $result = [];
+
+        foreach (self::STATUS_MAP as $key => $status) {
+            if ($status['level'] < self::STATUS_MAP[$this->status]['level']) {
+                $result[] = array('label' => $key, 'name' => $status['name'], 'level' => $status['level']);
+            }
+        }
+
+        return $result;
     }
 }
