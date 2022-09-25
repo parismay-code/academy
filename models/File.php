@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -16,17 +17,11 @@ use yii\db\ActiveRecord;
  */
 class File extends ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName(): string
     {
         return 'file';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules(): array
     {
         return [
@@ -35,11 +30,15 @@ class File extends ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[LectureFiles]].
-     *
-     * @return ActiveQuery
-     */
+    public function attributeLabels(): array
+    {
+        return [
+            'id' => 'ID',
+            'url' => 'Url',
+            'type' => 'Type',
+        ];
+    }
+
     public function getLectureFiles(): ActiveQuery
     {
         return $this->hasMany(LectureFile::class, ['file_id' => 'id']);

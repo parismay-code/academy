@@ -28,11 +28,8 @@ class ScheduleController extends Controller
     public function actionChange(string $type, int $id): Response|string
     {
         $user = User::findOne(Yii::$app->user->id);
-        $isChangeAvailable = $type === 'lecture' ?
-            $user->isActionAvailable(User::ACTION_TAKE_LESSON) :
-            $user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE);
 
-        if (Yii::$app->user->isGuest || !$isChangeAvailable) {
+        if (!$user || !$user->isActionAvailable($type === 'lecture' ? User::ACTION_TAKE_LESSON : User::ACTION_CHANGE_SCHEDULE)) {
             return $this->goHome();
         }
 
@@ -47,7 +44,7 @@ class ScheduleController extends Controller
 
             $model->lectureId = $dayLecture->lecture_id;
             $model->teacherId = $dayLecture->teacher_id;
-            $model->isFree = (bool)$dayLecture->isFree;
+            $model->isFree = (bool)$dayLecture->is_free;
         } else {
             $scheduleDay = ScheduleDay::findOne($id);
 

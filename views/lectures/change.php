@@ -38,7 +38,7 @@ $this->title = "Vampires Academy | $title";
     $form->field($model, 'details')
         ->textarea([
             'placeholder' => 'Лекционный материал',
-            'rows' => 7,
+            'rows' => 25
         ]);
     ?>
 

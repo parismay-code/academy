@@ -8,21 +8,15 @@ use yii\web\Response;
 use app\models\User;
 use app\models\Lecture;
 use app\models\ChangeLectureForm;
+use yii\helpers\Url;
 
 class LecturesController extends Controller
 {
-    private function checkUserRights(User $user, string $minimalStatus): bool
-    {
-        $minimalStatusLevel = User::STATUS_MAP[$minimalStatus]['level'];
-
-        return User::STATUS_MAP[$user->status]['level'] >= $minimalStatusLevel;
-    }
-
     public function actionIndex(): Response|string
     {
         $user = User::findOne(Yii::$app->user->id);
 
-        if (!$this->checkUserRights($user, User::STATUS_ASSISTANT)) {
+        if (!$user || !$user->isActionAvailable(User::ACTION_TAKE_LESSON)) {
             return $this->goHome();
         }
 
@@ -38,7 +32,7 @@ class LecturesController extends Controller
     {
         $user = User::findOne(Yii::$app->user->id);
 
-        if (!$this->checkUserRights($user, User::STATUS_ASSISTANT)) {
+        if (!$user || !$user->isActionAvailable(User::ACTION_TAKE_LESSON)) {
             return $this->goHome();
         }
 
@@ -53,7 +47,7 @@ class LecturesController extends Controller
     {
         $user = User::findOne(Yii::$app->user->id);
 
-        if (!$this->checkUserRights($user, User::STATUS_VICE_RECTOR)) {
+        if (!$user || !$user->isActionAvailable(User::ACTION_SUBMIT_LECTURE)) {
             return $this->goHome();
         }
 
@@ -63,15 +57,14 @@ class LecturesController extends Controller
 
         $model->update();
 
-        return $this->actionIndex();
+        return $this->redirect(Url::to(['lectures/view', 'id' => $id]));
     }
 
     public function actionZip(int $id): Response|string
     {
         $user = User::findOne(Yii::$app->user->id);
-        $viceRectorStatusLevel = User::STATUS_MAP[User::STATUS_VICE_RECTOR]['level'];
 
-        if (Yii::$app->user->isGuest || User::STATUS_MAP[$user->status]['level'] < $viceRectorStatusLevel) {
+        if (!$user || !$user->isActionAvailable(User::ACTION_ZIP_LECTURE)) {
             return $this->goHome();
         }
 
@@ -81,14 +74,14 @@ class LecturesController extends Controller
 
         $model->update();
 
-        return $this->actionIndex();
+        return $this->redirect(Url::to(['lectures/view', 'id' => $id]));
     }
 
     public function actionChange(int $id): Response|string
     {
         $user = User::findOne(Yii::$app->user->id);
 
-        if (!$this->checkUserRights($user, User::STATUS_MASTER)) {
+        if (!$user || !$user->isActionAvailable(User::ACTION_CHANGE_LECTURE)) {
             return $this->goHome();
         }
 
@@ -96,7 +89,7 @@ class LecturesController extends Controller
 
         $model = new ChangeLectureForm();
         if ($model->load(Yii::$app->request->post()) && $model->change($id)) {
-            return $this->actionView($id);
+            return $this->redirect(Url::to(['lectures/view', 'id' => $id]));
         }
 
         $model->title = $lecture->title;
@@ -112,13 +105,13 @@ class LecturesController extends Controller
     {
         $user = User::findOne(Yii::$app->user->id);
 
-        if (!$this->checkUserRights($user, User::STATUS_MASTER)) {
+        if (!$user || !$user->isActionAvailable(User::ACTION_CREATE_LECTURE)) {
             return $this->goHome();
         }
 
         $model = new ChangeLectureForm();
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
-            return $this->actionIndex();
+            return $this->redirect(Url::to(['lectures/index']));
         }
 
         return $this->render('change', [
@@ -131,7 +124,7 @@ class LecturesController extends Controller
     {
         $user = User::findOne(Yii::$app->user->id);
 
-        if (!$this->checkUserRights($user, User::STATUS_VICE_RECTOR)) {
+        if (!$user || !$user->isActionAvailable(User::ACTION_DELETE_LECTURE)) {
             return $this->goHome();
         }
 

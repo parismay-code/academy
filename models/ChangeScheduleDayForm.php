@@ -40,7 +40,7 @@ class ChangeScheduleDayForm extends Model
 
             $lecture->day_id = $id;
             $lecture->time = $this->from + $i;
-            $lecture->isFree = 1;
+            $lecture->is_free = 1;
 
             $lecture->save();
         }

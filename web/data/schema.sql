@@ -82,8 +82,26 @@ CREATE TABLE `day_lecture`
     `lecture_id` INT,
     `teacher_id` INT,
     `time`       INT,
-    `isFree`     BOOL,
+    `is_free`    BOOL,
     FOREIGN KEY (`day_id`) REFERENCES `schedule_day` (`id`),
     FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`),
     FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`)
-)
+);
+
+CREATE TABLE `student_visit`
+(
+    `id`            INT AUTO_INCREMENT PRIMARY KEY,
+    `student_id`    INT,
+    `lecture_id`    INT,
+    `is_individual` BOOl,
+    FOREIGN KEY (`student_id`) REFERENCES `user` (`id`),
+    FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`)
+);
+
+CREATE TABLE `teacher_activity`
+(
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `teacher_id` INT,
+    `type`       VARCHAR(32),
+    FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`)
+);

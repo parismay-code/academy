@@ -54,24 +54,35 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_k
         <?php if (!Yii::$app->user->isGuest): ?>
             <?php
             $links = [
-                ['title' => 'Расписание', 'path' => 'schedule/index', 'level' => 0, 'classParams' => 'link-secondary'],
-                ['title' => 'Лекции', 'path' => 'lectures/index', 'level' => 2, 'classParams' => 'link-secondary'],
-                ['title' => 'Преподаватели', 'path' => 'teachers/index', 'level' => 0, 'classParams' => 'link-secondary'],
-                ['title' => 'Студенты', 'path' => 'students/index', 'level' => 4, 'classParams' => 'link-secondary'],
-                ['title' => 'Пользователи', 'path' => 'users/index', 'level' => 5, 'classParams' => 'link-secondary'],
-                ['title' => 'Профиль', 'path' => 'profile/index', 'level' => 0, 'classParams' => 'link-secondary'],
-                ['title' => 'Выход', 'path' => 'auth/logout', 'level' => 0, 'classParams' => 'link-success'],
+                ['title' => 'Расписание', 'path' => 'schedule/index', 'level' => 0],
+                ['title' => 'Лекции', 'path' => 'lectures/index', 'level' => 2],
+                ['title' => 'Преподаватели', 'path' => 'teachers/index', 'level' => 0],
+                ['title' => 'Студенты', 'path' => 'students/index', 'level' => 4],
+                ['title' => 'Пользователи', 'path' => 'users/index', 'level' => 5],
+                ['title' => 'Профиль', 'path' => 'profile/index', 'level' => 0],
+                ['title' => 'Выход', 'path' => 'auth/logout', 'level' => 0, 'classParams' => 'link-danger'],
             ];
             ?>
             <div class="d-flex flex-row align-items-center justify-content-between text-uppercase fw-bold">
                 <?php foreach ($links as $link): ?>
+                    <?php
+                    $isLinkActive = $link['path'] === Yii::$app->requestedRoute;
+
+                    if ($isLinkActive) {
+                        $link['classParams'] = 'link-success';
+                    }
+
+                    $params = [
+                        $link['classParams'] ?? 'link-secondary',
+                    ];
+                    ?>
                     <?php if ($userLevel >= $link['level']): ?>
                         <?=
                         Html::a
                         (
                             $link['title'],
                             [$link['path']],
-                            ['class' => 'text-decoration-none fw-bolder mx-lg-2' . ' ' . $link['classParams']]
+                            ['class' => 'text-decoration-none fw-bolder mx-lg-2' . ' ' . implode(' ', $params)]
                         )
                         ?>
                     <?php endif; ?>

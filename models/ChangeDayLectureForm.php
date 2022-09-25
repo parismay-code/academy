@@ -32,7 +32,7 @@ class ChangeDayLectureForm extends Model
             $dayLecture->teacher_id = $this->teacherId;
         }
 
-        $dayLecture->isFree = (int)$this->isFree;
+        $dayLecture->is_free = (int)$this->isFree;
 
         return $dayLecture->update();
     }

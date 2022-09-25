@@ -78,7 +78,7 @@ $this->title = 'Vampires Academy | Расписание';
                             <tbody>
                             <?php foreach ($model->dayLectures as $dayLecture): ?>
                                 <?php
-                                $isFree = $dayLecture->isFree;
+                                $isFree = $dayLecture->is_free;
                                 $lectureTime = $dayLecture->time . ':00';
                                 $lecture = $dayLecture->lecture;
                                 $teacher = $dayLecture->teacher;

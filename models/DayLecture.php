@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property int|null $lecture_id
  * @property int|null $teacher_id
  * @property int|null $time
- * @property int|null $isFree
+ * @property int|null $is_free
  *
  * @property ScheduleDay $day
  * @property Lecture $lecture
@@ -22,30 +22,21 @@ use yii\db\ActiveRecord;
  */
 class DayLecture extends ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName(): string
     {
         return 'day_lecture';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules(): array
     {
         return [
-            [['day_id', 'lecture_id', 'teacher_id', 'isFree', 'time'], 'integer'],
+            [['day_id', 'lecture_id', 'teacher_id', 'time', 'is_free'], 'integer'],
             [['day_id'], 'exist', 'skipOnError' => true, 'targetClass' => ScheduleDay::class, 'targetAttribute' => ['day_id' => 'id']],
             [['lecture_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lecture::class, 'targetAttribute' => ['lecture_id' => 'id']],
             [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['teacher_id' => 'id']],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels(): array
     {
         return [
@@ -54,7 +45,7 @@ class DayLecture extends ActiveRecord
             'lecture_id' => 'Lecture ID',
             'teacher_id' => 'Teacher ID',
             'time' => 'Time',
-            'isFree' => 'Is Free',
+            'is_free' => 'Is Free',
         ];
     }
 

@@ -49,6 +49,12 @@ pre {
     background-color: #00000080;
     padding: 1rem 2rem;
     border-radius: .5rem;
+
+    white-space: pre-wrap;
+}
+
+.invisible {
+    display: none !important;
 }
 
 .btn-outline-success,
@@ -68,4 +74,79 @@ pre {
 .link-secondary:hover {
     color: #ffffff !important;
     opacity: .5;
+}
+
+.teachers-list__wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 1rem;
+}
+
+.teachers-list,
+.teachers-request {
+    width: 60%;
+}
+
+.teachers-request__list {
+    width: 75%;
+}
+
+.teachers-list__teacher {
+    width: 75%;
+    margin-bottom: 1rem;
+}
+
+.teacher,
+.teachers-request-user {
+    padding: 1rem 2rem;
+
+    position: relative;
+
+    font-size: 1.2rem;
+
+    background-color: #00000080;
+    border: .05rem solid #ffffff;
+}
+
+.teacher_active {
+    padding: .75rem 1.75rem;
+    border: .3rem solid #85cc0be5;
+
+    animation-name: teacherSelection;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+
+.teacher__name,
+.teachers-request-user__name {
+    font-weight: 700;
+}
+
+.teacher__id,
+.teachers-request-user__id {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    font-weight: 700;
+}
+
+.teacher-contacts,
+.teachers-request-user-contacts {
+    margin-top: .5rem;
+}
+
+@keyframes teacherSelection {
+    from {
+        border: .3rem solid #85cc0be5;
+    }
+
+    to {
+        border: .3rem solid #bbce99e5;
+    }
 }

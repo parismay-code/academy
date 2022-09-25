@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -39,22 +40,26 @@ class ScheduleDay extends ActiveRecord
         self::TYPE_EXAMINATION => 'Экзамен',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName(): string
     {
         return 'schedule_day';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules(): array
     {
         return [
-            [['type'], 'string', 'max' => 32],
             [['from', 'to'], 'integer'],
+            [['type'], 'string', 'max' => 32],
+        ];
+    }
+
+    public function attributeLabels(): array
+    {
+        return [
+            'id' => 'ID',
+            'type' => 'Type',
+            'from' => 'From',
+            'to' => 'To',
         ];
     }
 

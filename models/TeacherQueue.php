@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -15,36 +16,27 @@ use yii\db\ActiveRecord;
  */
 class TeacherQueue extends ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName(): string
     {
         return 'teacher_queue';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules(): array
     {
         return [
             [['user_id'], 'integer'],
-            [
-                ['user_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => User::class,
-                'targetAttribute' => ['user_id' => 'id']
-            ],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
-    /**
-     * Gets query for [[User]].
-     *
-     * @return ActiveQuery
-     */
+    public function attributeLabels(): array
+    {
+        return [
+            'id' => 'ID',
+            'user_id' => 'User ID',
+        ];
+    }
+
     public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);

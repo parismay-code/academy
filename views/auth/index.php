@@ -43,7 +43,7 @@ $form->field($model, 'password')
         (
             'Еще нет аккаунта?',
             ['auth/registration'],
-            ['class' => 'text-white text-decoration-none fs-5 link-secondary p-3']
+            ['class' => 'text-decoration-none fs-5 link-secondary p-3']
         )
         ?>
     </div>

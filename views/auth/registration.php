@@ -37,7 +37,7 @@ $this->title = 'Vampires Academy | Регистрация';
 
 <?= $form->field($model, 'discord')->textInput(['placeholder' => 'Discord'])->hint('example#9999') ?>
 
-<?= $form->field($model, 'discord')->dropDownList([
+<?= $form->field($model, 'status')->dropDownList([
     User::STATUS_VISITOR => User::STATUS_MAP[User::STATUS_VISITOR]['name'],
     User::STATUS_STUDENT => User::STATUS_MAP[User::STATUS_STUDENT]['name'],
 ]); ?>
@@ -62,7 +62,7 @@ $items = ArrayHelper::map($formations, 'id', 'name');
         (
             'Вход в аккаунт',
             ['auth/index'],
-            ['class' => 'text-white text-decoration-none fs-5 link-secondary p-3']
+            ['class' => 'text-decoration-none fs-5 link-secondary p-3']
         )
         ?>
     </div>

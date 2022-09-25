@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -16,6 +17,7 @@ use yii\db\ActiveRecord;
  *
  * @property DayLecture[] $dayLectures
  * @property LectureFile[] $lectureFiles
+ * @property StudentVisit[] $studentVisits
  */
 class Lecture extends ActiveRecord
 {
@@ -23,17 +25,11 @@ class Lecture extends ActiveRecord
     const STATUS_SUBMITTED = 'submitted';
     const STATUS_ARCHIVED = 'archived';
 
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName(): string
     {
         return 'lecture';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules(): array
     {
         return [
@@ -42,36 +38,29 @@ class Lecture extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels(): array
     {
         return [
-            'status' => 'Статус',
-            'creation_date' => 'Дата создания',
-            'title' => 'Название',
-            'details' => 'Материал',
+            'id' => 'ID',
+            'status' => 'Status',
+            'creation_date' => 'Creation Date',
+            'title' => 'Title',
+            'details' => 'Details',
         ];
     }
 
-    /**
-     * Gets query for [[DayLectures]].
-     *
-     * @return ActiveQuery
-     */
     public function getDayLectures(): ActiveQuery
     {
         return $this->hasMany(DayLecture::class, ['lecture_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[LectureFiles]].
-     *
-     * @return ActiveQuery
-     */
     public function getLectureFiles(): ActiveQuery
     {
         return $this->hasMany(LectureFile::class, ['lecture_id' => 'id']);
+    }
+
+    public function getStudentVisits(): ActiveQuery
+    {
+        return $this->hasMany(StudentVisit::class, ['lecture_id' => 'id']);
     }
 }

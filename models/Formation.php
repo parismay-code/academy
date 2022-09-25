@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -18,17 +19,11 @@ use yii\db\ActiveRecord;
  */
 class Formation extends ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName(): string
     {
         return 'formation';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules(): array
     {
         return [
@@ -36,24 +31,17 @@ class Formation extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels(): array
     {
         return [
-            'name' => 'Формация',
-            'leader_name' => 'Глава',
-            'deputy_leader_name' => 'Первый заместитель (Примоген, Архонт, Легат)',
-            'lawyer_name' => 'Второй заместитель (Хранитель, Юстициарий, Адъютор)',
+            'id' => 'ID',
+            'name' => 'Название формации',
+            'leader_name' => 'Глава (Виконт, Понтифик, Лорд)',
+            'deputy_leader_name' => 'Первый заместитель (Легат, Архонт, Примоген)',
+            'lawyer_name' => 'Второй заместитель (Адъютор, Юстициарий, Хранитель)',
         ];
     }
 
-    /**
-     * Gets query for [[FormationUsers]].
-     *
-     * @return ActiveQuery
-     */
     public function getFormationUsers(): ActiveQuery
     {
         return $this->hasMany(FormationUser::class, ['formation_id' => 'id']);
