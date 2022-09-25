@@ -54,6 +54,8 @@ class ScheduleController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->change($id)) {
+            Yii::$app->session->setFlash('success', 'Расписание изменено.');
+
             return $this->goHome();
         }
 

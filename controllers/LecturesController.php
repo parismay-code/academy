@@ -57,6 +57,8 @@ class LecturesController extends Controller
 
         $model->update();
 
+        Yii::$app->session->setFlash('success', "Лекция #$id утверждена.");
+
         return $this->redirect(Url::to(['lectures/view', 'id' => $id]));
     }
 
@@ -74,6 +76,8 @@ class LecturesController extends Controller
 
         $model->update();
 
+        Yii::$app->session->setFlash('success', "Лекция #$id архивирована.");
+
         return $this->redirect(Url::to(['lectures/view', 'id' => $id]));
     }
 
@@ -89,6 +93,8 @@ class LecturesController extends Controller
 
         $model = new ChangeLectureForm();
         if ($model->load(Yii::$app->request->post()) && $model->change($id)) {
+            Yii::$app->session->setFlash('success', "Лекция #$id изменена.");
+
             return $this->redirect(Url::to(['lectures/view', 'id' => $id]));
         }
 
@@ -111,6 +117,8 @@ class LecturesController extends Controller
 
         $model = new ChangeLectureForm();
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
+            Yii::$app->session->setFlash('success', "Лекция '$model->title' успешно создана.");
+
             return $this->redirect(Url::to(['lectures/index']));
         }
 
@@ -132,6 +140,8 @@ class LecturesController extends Controller
 
         $lecture->delete();
 
-        return $this->actionIndex();
+        Yii::$app->session->setFlash('success', "Лекция #$id удалена.");
+
+        return $this->redirect(Url::to(['lectures/index']));
     }
 }

@@ -43,6 +43,8 @@ class AuthController extends Controller
 
             $model->registration();
 
+            Yii::$app->session->setFlash('success', 'Аккаунт успешно зарегистрирован.');
+
             return $this->goHome();
         }
 
@@ -56,6 +58,8 @@ class AuthController extends Controller
     public function actionLogout(): Response
     {
         Yii::$app->user->logout();
+
+        Yii::$app->session->setFlash('success', 'Вы вышли из аккаунта.');
 
         return $this->goHome();
     }
