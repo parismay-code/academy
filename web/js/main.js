@@ -1,3 +1,3 @@
-const changeTeachersControls = (el) => {
+const changeControls = (el) => {
     el.classList.toggle('invisible');
 }

@@ -76,7 +76,7 @@ pre {
     opacity: .5;
 }
 
-.teachers-list__wrapper {
+.users-list__wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -85,22 +85,22 @@ pre {
     margin-bottom: 1rem;
 }
 
-.teachers-list,
-.teachers-request {
+.users-list,
+.users-request {
     width: 60%;
 }
 
-.teachers-request__list {
+.users-request__list {
     width: 75%;
 }
 
-.teachers-list__teacher {
+.users-list__user {
     width: 75%;
     margin-bottom: 1rem;
 }
 
-.teacher,
-.teachers-request-user {
+.user,
+.users-request-user {
     padding: 1rem 2rem;
 
     position: relative;
@@ -111,7 +111,7 @@ pre {
     border: .05rem solid #ffffff;
 }
 
-.teacher_active {
+.user_active {
     padding: .75rem 1.75rem;
     border: .3rem solid #85cc0be5;
 
@@ -122,13 +122,13 @@ pre {
     animation-timing-function: ease-in-out;
 }
 
-.teacher__name,
-.teachers-request-user__name {
+.user__name,
+.users-request-user__name {
     font-weight: 700;
 }
 
-.teacher__id,
-.teachers-request-user__id {
+.user__id,
+.users-request-user__id {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -136,8 +136,8 @@ pre {
     font-weight: 700;
 }
 
-.teacher-contacts,
-.teachers-request-user-contacts {
+.user-contacts,
+.users-request-user-contacts {
     margin-top: .5rem;
 }
 

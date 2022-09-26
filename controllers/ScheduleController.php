@@ -5,7 +5,6 @@ namespace app\controllers;
 use app\models\DayLecture;
 use app\models\User;
 use Yii;
-use yii\db\StaleObjectException;
 use yii\web\Controller;
 use app\models\ScheduleDay;
 use app\models\ChangeDayLectureForm;
@@ -43,7 +42,7 @@ class ScheduleController extends Controller
             $scheduleDay = $dayLecture->day;
 
             $model->lectureId = $dayLecture->lecture_id;
-            $model->teacherId = $dayLecture->teacher_id;
+            $model->teacherId = $dayLecture->teacher_id ?? $user->id ?? null;
             $model->isFree = (bool)$dayLecture->is_free;
         } else {
             $scheduleDay = ScheduleDay::findOne($id);

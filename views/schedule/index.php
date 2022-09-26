@@ -17,7 +17,7 @@ $this->title = 'Vampires Academy | Расписание';
 ?>
 
 <section>
-    <h4 class="mb-5">Расписание Академии Ночи</h4>
+    <h4 class="mb-3">Расписание Академии Ночи</h4>
     <div class="d-flex flex-row align-items-start justify-content-between flex-wrap">
         <?php foreach ($models as $model): ?>
             <?php

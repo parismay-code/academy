@@ -1,3 +1,14 @@
+INSERT INTO status (name, label, level)
+VALUES ('visitor', 'Посетитель', 0),
+       ('student', 'Студент', 1),
+       ('assistant', 'Ассистент', 2),
+       ('teacher', 'Преподаватель', 3),
+       ('master', 'Магистр', 4),
+       ('dean', 'Декан', 5),
+       ('vice-rector', 'Проректор', 6),
+       ('rector', 'Ректор', 7),
+       ('admin', 'Администратор', 8);
+
 INSERT INTO formation (name, leader_name, deputy_leader_name, lawyer_name)
 VALUES ('Insignis', 'Johan Liebert', 'Nathan Young', 'Jacqueline de Monroe'),
        ('Camarilla', 'Gunter Knapp', 'Roxy Diaz', 'Mateo Gerrera'),

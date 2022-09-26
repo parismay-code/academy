@@ -5,6 +5,7 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\User;
+use app\models\Status;
 
 /** @var yii\web\View $this
  * @var app\models\LoginForm $model
@@ -37,9 +38,9 @@ $this->title = 'Vampires Academy | Регистрация';
 
 <?= $form->field($model, 'discord')->textInput(['placeholder' => 'Discord'])->hint('example#9999') ?>
 
-<?= $form->field($model, 'status')->dropDownList([
-    User::STATUS_VISITOR => User::STATUS_MAP[User::STATUS_VISITOR]['name'],
-    User::STATUS_STUDENT => User::STATUS_MAP[User::STATUS_STUDENT]['name'],
+<?= $form->field($model, 'statusId')->dropDownList([
+    0 => Status::findOne(['level' => 0])->label,
+    1 => Status::findOne(['level' => 1])->label,
 ]); ?>
 
 <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Пароль']) ?>

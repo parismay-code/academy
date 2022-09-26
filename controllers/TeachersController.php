@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Status;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -17,16 +18,20 @@ class TeachersController extends Controller
             return $this->goHome();
         }
 
-        $models = User::findAll([
-            'status' => [
-                User::STATUS_ASSISTANT,
-                User::STATUS_TEACHER,
-                User::STATUS_MASTER,
-                User::STATUS_DEAN,
-                User::STATUS_VICE_RECTOR,
-                User::STATUS_RECTOR,
-            ]
-        ]);
+        $teachersStatusesId = [
+            Status::findOne(['name' => Status::ASSISTANT])->id,
+            Status::findOne(['name' => Status::TEACHER])->id,
+            Status::findOne(['name' => Status::MASTER])->id,
+            Status::findOne(['name' => Status::DEAN])->id,
+            Status::findOne(['name' => Status::VICE_RECTOR])->id,
+            Status::findOne(['name' => Status::RECTOR])->id,
+        ];
+
+        $models = User::find()
+            ->where(['user.status_id' => $teachersStatusesId])
+            ->join('LEFT OUTER JOIN', 'status', 'status.id = user.status_id')
+            ->orderBy('status.level DESC')
+            ->all();
 
         return $this->render('index', [
             'models' => $models
@@ -41,7 +46,9 @@ class TeachersController extends Controller
             return $this->goHome();
         }
 
-        $models = TeacherQueue::find()->all();
+        $models = TeacherQueue::find()
+            ->orderBy('id ASC')
+            ->all();
 
         return $this->render('queue', [
             'models' => $models,
@@ -53,7 +60,7 @@ class TeachersController extends Controller
     {
         $user = User::findOne(Yii::$app->user->id);
 
-        if (!$user || ($user->status !== User::STATUS_VISITOR && $user->status !== User::STATUS_STUDENT)) {
+        if (!$user || ($user->status->name !== Status::VISITOR && $user->status->name !== STATUS::STUDENT)) {
             return $this->goHome();
         }
 
@@ -79,10 +86,15 @@ class TeachersController extends Controller
 
         $model->delete();
 
-        $userModel->status = User::STATUS_ASSISTANT;
+        $status = Status::findOne(['level' => 2]);
+
+        $userModel->status_id = $status->id;
         $userModel->update();
 
-        Yii::$app->session->setFlash('success', "$userModel->username успешно принят(а) в преподавательский состав на должность 'Ассистент'.");
+        Yii::$app->session->setFlash(
+            'success',
+            "$userModel->username успешно принят(а) в преподавательский состав на должность '$status->label'."
+        );
 
         return $this->redirect(Url::to(['teachers/index']));
     }
@@ -103,22 +115,22 @@ class TeachersController extends Controller
         return $this->redirect(Url::to(['teachers/index']));
     }
 
-    public function actionChange(int $id, string $newStatus): Response
+    public function actionChange(int $id, int $newStatusId): Response
     {
         $user = User::findOne(Yii::$app->user->id);
 
         $targetUser = User::findOne($id);
 
-        if (!$user || !$user->isChangeUserStatusAvailable($targetUser->status) || $targetUser->status === $newStatus) {
+        if (!$user || $user->status->level < $targetUser->status->level || $targetUser->status->id === $newStatusId) {
             return $this->goHome();
         }
 
-        $targetUser->status = $newStatus;
+        $targetUser->status_id = $newStatusId;
         $targetUser->update();
 
         Yii::$app->session->setFlash(
             'success',
-            "Cтатус $targetUser->username успешно изменен на " . "'" . User::STATUS_MAP[$newStatus]['name'] . "'."
+            "Cтатус $targetUser->username успешно изменен на " . "'" . $targetUser->status->label . "'."
         );
 
         return $this->redirect(Url::to(['teachers/index']));

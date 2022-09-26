@@ -36,13 +36,7 @@ class AuthController extends Controller
         }
 
         $model = new RegistrationForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if (User::findOne(['fivem_id' => $model->fivemId])) {
-                return $this->goBack();
-            }
-
-            $model->registration();
-
+        if ($model->load(Yii::$app->request->post()) && $model->registration()) {
             Yii::$app->session->setFlash('success', 'Аккаунт успешно зарегистрирован.');
 
             return $this->goHome();

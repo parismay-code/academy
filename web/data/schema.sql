@@ -4,6 +4,14 @@ CREATE DATABASE academy
 
 use academy;
 
+CREATE TABLE `status`
+(
+    `id`    INT AUTO_INCREMENT PRIMARY KEY,
+    `name`  VARCHAR(32),
+    `label` VARCHAR(32),
+    `level` INT
+);
+
 CREATE TABLE `formation`
 (
     `id`                 INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,14 +24,15 @@ CREATE TABLE `formation`
 CREATE TABLE `user`
 (
     `id`                INT AUTO_INCREMENT PRIMARY KEY,
+    `status_id`         INT,
     `username`          VARCHAR(128),
     `fivem_id`          INT,
     `discord`           VARCHAR(128),
     `password`          CHAR(64),
-    `status`            VARCHAR(64),
     `registration_date` TIMESTAMP,
     `auth_key`          VARCHAR(32),
-    `access_token`      VARCHAR(32)
+    `access_token`      VARCHAR(32),
+    FOREIGN KEY (`status_id`) REFERENCES `status` (`id`) ON DELETE SET NULL
 );
 
 CREATE TABLE `formation_user`
@@ -31,8 +40,8 @@ CREATE TABLE `formation_user`
     `id`           INT AUTO_INCREMENT PRIMARY KEY,
     `user_id`      INT,
     `formation_id` INT,
-    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-    FOREIGN KEY (`formation_id`) REFERENCES `formation` (`id`)
+    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`formation_id`) REFERENCES `formation` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `lecture`
@@ -56,15 +65,15 @@ CREATE TABLE `lecture_file`
     `id`         INT AUTO_INCREMENT PRIMARY KEY,
     `lecture_id` INT,
     `file_id`    INT,
-    FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`),
-    FOREIGN KEY (`file_id`) REFERENCES `file` (`id`)
+    FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`file_id`) REFERENCES `file` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `teacher_queue`
 (
     `id`      INT AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT,
-    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `schedule_day`
@@ -83,9 +92,9 @@ CREATE TABLE `day_lecture`
     `teacher_id` INT,
     `time`       INT,
     `is_free`    BOOL,
-    FOREIGN KEY (`day_id`) REFERENCES `schedule_day` (`id`),
-    FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`),
-    FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`)
+    FOREIGN KEY (`day_id`) REFERENCES `schedule_day` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`) ON DELETE SET NULL,
+    FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
 );
 
 CREATE TABLE `student_visit`
@@ -94,8 +103,9 @@ CREATE TABLE `student_visit`
     `student_id`    INT,
     `lecture_id`    INT,
     `is_individual` BOOl,
-    FOREIGN KEY (`student_id`) REFERENCES `user` (`id`),
-    FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`)
+    `date`          TIMESTAMP,
+    FOREIGN KEY (`student_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `teacher_activity`
@@ -103,5 +113,6 @@ CREATE TABLE `teacher_activity`
     `id`         INT AUTO_INCREMENT PRIMARY KEY,
     `teacher_id` INT,
     `type`       VARCHAR(32),
-    FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`)
+    `date`       TIMESTAMP,
+    FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 );

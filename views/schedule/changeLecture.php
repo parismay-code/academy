@@ -7,6 +7,7 @@ use app\models\ScheduleDay;
 use app\models\DayLecture;
 use app\models\Lecture;
 use app\models\User;
+use app\models\Status;
 use yii\helpers\ArrayHelper;
 
 /** @var yii\web\View $this
@@ -30,16 +31,20 @@ if ($timestamp > strtotime('Sunday')) {
 $date = date('d.m.Y', $timestamp);
 
 $lectures = Lecture::findAll(['status' => Lecture::STATUS_SUBMITTED]);
-$teachers = User::findAll([
-    'status' => [
-        User::STATUS_ASSISTANT,
-        User::STATUS_TEACHER,
-        User::STATUS_MASTER,
-        User::STATUS_DEAN,
-        User::STATUS_VICE_RECTOR,
-        User::STATUS_RECTOR,
-    ]
-]);
+
+$teacherStatusMap = Status::findAll(['name' => Status::TEACHER_STATUS_MAP]);
+
+$teacherStatusIdMap = [];
+
+foreach ($teacherStatusMap as $teacherStatus) {
+    $teacherStatusIdMap[] = $teacherStatus->id;
+}
+
+$teachers = User::find()
+    ->where(['status_id' => $teacherStatusMap])
+    ->join('LEFT OUTER JOIN', 'status', 'status.id = user.status_id')
+    ->orderBy('status.level')
+    ->all();
 
 foreach ($lectures as $lecture) {
     $lecture->title = "Лекция $lecture->id. $lecture->title";
