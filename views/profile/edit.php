@@ -9,13 +9,10 @@ use app\models\ProfileChangeForm;
 
 /**
  * @var yii\web\View $this
- * @var ProfileChangeForm $model
+ * @var User $user
  */
 
-$user = User::findOne(Yii::$app->user->id);
-
 $formations = Formation::find()->all();
-
 $items = ArrayHelper::map($formations, 'id', 'name');
 
 $this->title = 'Vampires Academy | Профиль';
@@ -32,16 +29,15 @@ $this->title = 'Vampires Academy | Профиль';
     ]); ?>
 
     <?=
-    $form->field($model, 'username')
+    $form->field($user, 'username')
         ->textInput([
             'placeholder' => 'Имя',
             'autofocus' => true,
         ])
         ->label('Новое имя Вашего персонажа');
     ?>
-
     <?=
-    $form->field($model, 'fivemId')
+    $form->field($user, 'fivem_id')
         ->input('number', [
             'min' => '1',
             'max' => '999999',
@@ -49,30 +45,33 @@ $this->title = 'Vampires Academy | Профиль';
         ])
         ->label('Ваш ID на сервере');
     ?>
-
     <?=
-    $form->field($model, 'discord')
+    $form->field($user, 'discord')
         ->textInput(['placeholder' => 'Discord'])
         ->hint('example#9999')
         ->label('Ваш новый Discord (с тегом)');
     ?>
-
     <?=
-    $form->field($model, 'formationId')
+    $form->field($user, 'formation_id')
         ->dropDownList($items)
         ->label('Выберите свою новую формацию');
     ?>
-
     <?=
-    $form->field($model, 'newPassword')
+    $form->field($user, 'new_password')
         ->passwordInput([
             'placeholder' => 'Пароль',
         ])
         ->label('Введите новый пароль');
     ?>
-
     <?=
-    $form->field($model, 'password')
+    $form->field($user, 'password_repeat')
+        ->passwordInput([
+            'placeholder' => 'Пароль',
+        ])
+        ->label('Повторите новый пароль');
+    ?>
+    <?=
+    $form->field($user, 'password')
         ->passwordInput([
             'placeholder' => 'Пароль',
         ])

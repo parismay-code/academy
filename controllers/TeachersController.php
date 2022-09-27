@@ -29,7 +29,7 @@ class TeachersController extends Controller
 
         $models = User::find()
             ->where(['user.status_id' => $teachersStatusesId])
-            ->join('LEFT OUTER JOIN', 'status', 'status.id = user.status_id')
+            ->joinWith('status')
             ->orderBy('status.level DESC')
             ->all();
 

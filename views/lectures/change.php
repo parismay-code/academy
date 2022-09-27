@@ -1,13 +1,13 @@
 <?php
 
-use app\models\ChangeLectureForm;
+use app\models\Lecture;
 use app\models\User;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var ChangeLectureForm $model
+ * @var Lecture $lecture
  * @var string $title
  */
 
@@ -27,15 +27,14 @@ $this->title = "Vampires Academy | $title";
     ]); ?>
 
     <?=
-    $form->field($model, 'title')
+    $form->field($lecture, 'title')
         ->textInput([
             'placeholder' => 'Название лекции',
             'autofocus' => true,
         ])
     ?>
-
     <?=
-    $form->field($model, 'details')
+    $form->field($lecture, 'details')
         ->textarea([
             'placeholder' => 'Лекционный материал',
             'rows' => 25

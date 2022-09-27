@@ -17,7 +17,7 @@ Yii::$app->language = 'ru-RU';
 Yii::$app->user->loginUrl = ['auth/index'];
 
 $user = User::findOne(Yii::$app->user->id);
-$userLevel = $user ? User::STATUS_MAP[$user->status]['level'] : -1;
+$userLevel = $user->status->level ?? -1;
 
 AppAsset::register($this);
 

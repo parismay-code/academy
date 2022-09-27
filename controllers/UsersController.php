@@ -18,7 +18,10 @@ class UsersController extends Controller
             return $this->goHome();
         }
 
-        $models = User::find()->all();
+        $models = User::find()
+            ->joinWith('status')
+            ->orderBy('status.level DESC')
+            ->all();
 
         return $this->render('index', [
             'models' => $models,

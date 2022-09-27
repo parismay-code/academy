@@ -2,10 +2,13 @@
 
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
+use app\models\User;
 
-/** @var yii\web\View $this */
-/** @var app\models\LoginForm $model */
-/** @var ActiveForm $form */
+/**
+ * @var yii\web\View $this
+ * @var User $user
+ * @var ActiveForm $form
+ */
 
 $this->title = 'Vampires Academy | Вход';
 ?>
@@ -19,7 +22,7 @@ $this->title = 'Vampires Academy | Вход';
 ]); ?>
 
 <?=
-$form->field($model, 'fivemId')
+$form->field($user, 'fivem_id')
     ->input('number', [
         'min' => '1',
         'max' => '999999',
@@ -27,9 +30,8 @@ $form->field($model, 'fivemId')
         'autofocus' => true,
     ]);
 ?>
-
 <?=
-$form->field($model, 'password')
+$form->field($user, 'password')
     ->passwordInput([
         'placeholder' => 'Пароль',
     ]);

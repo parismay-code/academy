@@ -6,7 +6,7 @@ use yii\helpers\Html;
 
 /**
  * @var yii\web\View $this
- * @var Lecture[] $models
+ * @var Lecture[] $lectures
  */
 
 $user = User::findOne(Yii::$app->user->id);
@@ -27,9 +27,9 @@ $this->title = 'Vampires Academy | Лекции';
         ?>
     </div>
     <ul class="list-group list">
-        <?php foreach ($models as $model): ?>
+        <?php foreach ($lectures as $lecture): ?>
             <?php
-                $status = match ($model->status) {
+                $status = match ($lecture->status) {
                     Lecture::STATUS_NEW => '(не утверждена)',
                     Lecture::STATUS_ARCHIVED => '(архивирована)',
                     default => ''
@@ -39,8 +39,8 @@ $this->title = 'Vampires Academy | Лекции';
                 <?=
                 Html::a
                 (
-                    "Лекция $model->id. $model->title $status",
-                    ['lectures/view', 'id' => $model->id],
+                    "Лекция $lecture->id. $lecture->title $status",
+                    ['lectures/view', 'id' => $lecture->id],
                     ['class' => 'link-secondary text-decoration-none']
                 );
                 ?>

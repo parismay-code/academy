@@ -20,10 +20,10 @@ class LecturesController extends Controller
             return $this->goHome();
         }
 
-        $models = Lecture::find()->all();
+        $lectures = Lecture::find()->all();
 
         return $this->render('index', [
-            'models' => $models,
+            'lectures' => $lectures,
             'user' => $user
         ]);
     }
@@ -36,10 +36,10 @@ class LecturesController extends Controller
             return $this->goHome();
         }
 
-        $model = Lecture::findOne($id);
+        $lecture = Lecture::findOne($id);
 
         return $this->render('view', [
-            'model' => $model
+            'lecture' => $lecture
         ]);
     }
 
@@ -51,11 +51,11 @@ class LecturesController extends Controller
             return $this->goHome();
         }
 
-        $model = Lecture::findOne($id);
+        $lecture = Lecture::findOne($id);
 
-        $model->status = Lecture::STATUS_SUBMITTED;
+        $lecture->status = Lecture::STATUS_SUBMITTED;
 
-        $model->update();
+        $lecture->update();
 
         Yii::$app->session->setFlash('success', "Лекция #$id утверждена.");
 
@@ -70,11 +70,11 @@ class LecturesController extends Controller
             return $this->goHome();
         }
 
-        $model = Lecture::findOne($id);
+        $lecture = Lecture::findOne($id);
 
-        $model->status = Lecture::STATUS_ARCHIVED;
+        $lecture->status = Lecture::STATUS_ARCHIVED;
 
-        $model->update();
+        $lecture->update();
 
         Yii::$app->session->setFlash('success', "Лекция #$id архивирована.");
 
@@ -91,18 +91,21 @@ class LecturesController extends Controller
 
         $lecture = Lecture::findOne($id);
 
-        $model = new ChangeLectureForm();
-        if ($model->load(Yii::$app->request->post()) && $model->change($id)) {
-            Yii::$app->session->setFlash('success', "Лекция #$id изменена.");
+        if (Yii::$app->request->getIsPost()) {
+            $lecture->load(Yii::$app->request->post());
 
-            return $this->redirect(Url::to(['lectures/view', 'id' => $id]));
+            if ($lecture->validate()) {
+                $lecture->status = Lecture::STATUS_NEW;
+                $lecture->update(false);
+
+                Yii::$app->session->setFlash('success', "Лекция '$lecture->title' успешно изменена.");
+
+                return $this->redirect(Url::to(['lectures/view', 'id' => $lecture->id]));
+            }
         }
 
-        $model->title = $lecture->title;
-        $model->details = $lecture->details;
-
         return $this->render('change', [
-            'model' => $model,
+            'lecture' => $lecture,
             'title' => 'Изменение лекции'
         ]);
     }
@@ -115,15 +118,23 @@ class LecturesController extends Controller
             return $this->goHome();
         }
 
-        $model = new ChangeLectureForm();
-        if ($model->load(Yii::$app->request->post()) && $model->create()) {
-            Yii::$app->session->setFlash('success', "Лекция '$model->title' успешно создана.");
+        $lecture = new Lecture();
 
-            return $this->redirect(Url::to(['lectures/index']));
+        if (Yii::$app->request->getIsPost()) {
+            $lecture->load(Yii::$app->request->post());
+
+            if ($lecture->validate()) {
+                $lecture->status = Lecture::STATUS_NEW;
+                $lecture->save(false);
+
+                Yii::$app->session->setFlash('success', "Лекция '$lecture->title' успешно создана.");
+
+                return $this->redirect(Url::to(['lectures/view', 'id' => $lecture->id]));
+            }
         }
 
         return $this->render('change', [
-            'model' => $model,
+            'lecture' => $lecture,
             'title' => 'Новая лекция'
         ]);
     }

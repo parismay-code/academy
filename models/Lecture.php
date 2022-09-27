@@ -33,6 +33,7 @@ class Lecture extends ActiveRecord
     public function rules(): array
     {
         return [
+            [['title', 'details'], 'required'],
             [['status', 'title', 'details'], 'string'],
             [['creation_date'], 'safe'],
         ];
@@ -44,8 +45,8 @@ class Lecture extends ActiveRecord
             'id' => 'ID',
             'status' => 'Status',
             'creation_date' => 'Creation Date',
-            'title' => 'Title',
-            'details' => 'Details',
+            'title' => 'Название лекции',
+            'details' => 'Лекционный материал',
         ];
     }
 

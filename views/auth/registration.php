@@ -7,10 +7,14 @@ use yii\helpers\ArrayHelper;
 use app\models\User;
 use app\models\Status;
 
-/** @var yii\web\View $this
- * @var app\models\LoginForm $model
+/**
+ * @var yii\web\View $this
+ * @var User $user
  * @var ActiveForm $form
  */
+
+$formations = Formation::find()->all();
+$items = ArrayHelper::map($formations, 'id', 'name');
 
 $this->title = 'Vampires Academy | Регистрация';
 ?>
@@ -25,7 +29,7 @@ $this->title = 'Vampires Academy | Регистрация';
 
 <div class="col-xl-3"></div>
 
-<?= $form->field($model, 'fivemId')
+<?= $form->field($user, 'fivem_id')
     ->input('number', [
         'min' => '1',
         'max' => '999999',
@@ -33,26 +37,15 @@ $this->title = 'Vampires Academy | Регистрация';
         'autofocus' => true,
     ]);
 ?>
-
-<?= $form->field($model, 'username')->textInput(['placeholder' => 'Имя персонажа']) ?>
-
-<?= $form->field($model, 'discord')->textInput(['placeholder' => 'Discord'])->hint('example#9999') ?>
-
-<?= $form->field($model, 'statusId')->dropDownList([
-    0 => Status::findOne(['level' => 0])->label,
-    1 => Status::findOne(['level' => 1])->label,
+<?= $form->field($user, 'username')->textInput(['placeholder' => 'Имя персонажа']) ?>
+<?= $form->field($user, 'discord')->textInput(['placeholder' => 'Discord'])->hint('example#9999') ?>
+<?= $form->field($user, 'status_id')->dropDownList([
+    1 => Status::findOne(['level' => 0])->label,
+    2 => Status::findOne(['level' => 1])->label,
 ]); ?>
-
-<?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Пароль']) ?>
-
-<?= $form->field($model, 'repeatPassword')->passwordInput(['placeholder' => 'Повторите пароль']) ?>
-
-<?php
-$formations = Formation::find()->all();
-$items = ArrayHelper::map($formations, 'id', 'name');
-?>
-
-<?= $form->field($model, 'formationId')->dropDownList($items) ?>
+<?= $form->field($user, 'password')->passwordInput(['placeholder' => 'Пароль']) ?>
+<?= $form->field($user, 'password_repeat')->passwordInput(['placeholder' => 'Повторите пароль']) ?>
+<?= $form->field($user, 'formation_id')->dropDownList($items) ?>
 
 <?= Html::submitInput('Зарегистрироваться',
     ['class' => 'btn btn-success text-white text-uppercase text-decoration-none font-weight-bold fs-5 p-2 fw-bold w-100', 'name' => 'registration-button']) ?>

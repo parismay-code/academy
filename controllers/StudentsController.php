@@ -22,7 +22,8 @@ class StudentsController extends Controller
         $formations = Formation::find()->all();
 
         $models = User::find()
-            ->where(['formation_id' => $formation_id])
+            ->join('LEFT OUTER JOIN', 'formation_user', 'user_id = user.id')
+            ->where(['formation_user.formation_id' => $formation_id])
             ->andWhere(['status_id' => 0])
             ->orderBy('id DESC')
             ->all();

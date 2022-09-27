@@ -7,8 +7,6 @@ use app\models\User;
 use Yii;
 use yii\web\Controller;
 use app\models\ScheduleDay;
-use app\models\ChangeDayLectureForm;
-use app\models\ChangeScheduleDayForm;
 use yii\web\Response;
 
 class ScheduleController extends Controller
@@ -19,49 +17,98 @@ class ScheduleController extends Controller
             return $this->goHome();
         }
 
-        $models = ScheduleDay::find()->all();
+        $schedules = ScheduleDay::find()->all();
 
-        return $this->render('index', ['models' => $models]);
+        return $this->render('index', ['schedules' => $schedules]);
     }
 
-    public function actionChange(string $type, int $id): Response|string
+    public function actionVacate(int $id): Response|string
     {
         $user = User::findOne(Yii::$app->user->id);
 
-        if (!$user || !$user->isActionAvailable($type === 'lecture' ? User::ACTION_TAKE_LESSON : User::ACTION_CHANGE_SCHEDULE)) {
+        if (!$user || !$user->isActionAvailable(User::ACTION_TAKE_LESSON)) {
             return $this->goHome();
         }
 
-        $dayLecture = null;
-        $scheduleDay = null;
+        $dayLecture = DayLecture::findOne($id);
 
-        $model = $type === 'lecture' ? new ChangeDayLectureForm() : new ChangeScheduleDayForm();
+        $dayLecture->is_free = 1;
 
-        if ($type === 'lecture') {
-            $dayLecture = DayLecture::findOne($id);
-            $scheduleDay = $dayLecture->day;
+        $dayLecture->update();
 
-            $model->lectureId = $dayLecture->lecture_id;
-            $model->teacherId = $dayLecture->teacher_id ?? $user->id ?? null;
-            $model->isFree = (bool)$dayLecture->is_free;
-        } else {
-            $scheduleDay = ScheduleDay::findOne($id);
+        Yii::$app->session->setFlash('success', "Лекция на $dayLecture->time:00 освобождена.");
 
-            $model->type = $scheduleDay->type;
-            $model->from = $scheduleDay->from;
-            $model->to = $scheduleDay->to;
-        }
+        return $this->goHome();
+    }
 
-        if ($model->load(Yii::$app->request->post()) && $model->change($id)) {
-            Yii::$app->session->setFlash('success', 'Расписание изменено.');
+    public function actionAppoint(int $id): Response|string
+    {
+        $user = User::findOne(Yii::$app->user->id);
 
+        if (!$user || !$user->isActionAvailable(User::ACTION_TAKE_LESSON)) {
             return $this->goHome();
         }
 
-        return $this->render($type === 'lecture' ? 'changeLecture' : 'changeDay', [
-            'model' => $model,
+        $dayLecture = DayLecture::findOne($id);
+        $schedule = $dayLecture->day;
+
+        $dayLecture->teacher_id = $dayLecture->teacher_id ?? $user->id;
+
+        if (Yii::$app->request->getIsPost()) {
+            $dayLecture->load(Yii::$app->request->post());
+
+            if ($dayLecture->validate()) {
+                $dayLecture->is_free = 0;
+                $dayLecture->update(false);
+
+                Yii::$app->session->setFlash('success', "На $dayLecture->time:00 назначения лекция '" . $dayLecture->lecture->title . "'.");
+
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('changeLecture', [
             'dayLecture' => $dayLecture,
-            'scheduleDay' => $scheduleDay
+            'schedule' => $schedule
         ]);
+    }
+
+    public function actionChange(int $id): Response|string
+    {
+        $user = User::findOne(Yii::$app->user->id);
+
+        if (!$user || !$user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)) {
+            return $this->goHome();
+        }
+
+        $schedule = ScheduleDay::findOne($id);
+
+        if (Yii::$app->request->getIsPost()) {
+            $schedule->load(Yii::$app->request->post());
+
+            if ($schedule->validate()) {
+                foreach ($schedule->dayLectures as $lecture) {
+                    $lecture->delete();
+                }
+
+                for ($i = 0; $i < $schedule->to - $schedule->from; $i++) {
+                    $lecture = new DayLecture();
+
+                    $lecture->day_id = $id;
+                    $lecture->time = $schedule->from + $i;
+                    $lecture->is_free = 1;
+
+                    $lecture->save();
+                }
+
+                $schedule->update(false);
+
+                Yii::$app->session->setFlash('success', 'Расписание изменено.');
+
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('changeDay', ['schedule' => $schedule]);
     }
 }

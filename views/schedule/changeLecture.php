@@ -2,7 +2,6 @@
 
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
-use app\models\ChangeDayLectureForm;
 use app\models\ScheduleDay;
 use app\models\DayLecture;
 use app\models\Lecture;
@@ -11,15 +10,14 @@ use app\models\Status;
 use yii\helpers\ArrayHelper;
 
 /** @var yii\web\View $this
- * @var ChangeDayLectureForm $model
- * @var ScheduleDay $scheduleDay
+ * @var ScheduleDay $schedule
  * @var DayLecture $dayLecture
  * @var ActiveForm $form
  */
 
 $this->title = 'Vampires Academy | Изменение расписания';
 
-$dayData = ScheduleDay::DAYS_MAP[$scheduleDay->id];
+$dayData = ScheduleDay::DAYS_MAP[$schedule->id];
 
 $title = $dayData['ru'];
 $timestamp = strtotime($dayData['en']);
@@ -36,14 +34,14 @@ $teacherStatusMap = Status::findAll(['name' => Status::TEACHER_STATUS_MAP]);
 
 $teacherStatusIdMap = [];
 
-foreach ($teacherStatusMap as $teacherStatus) {
-    $teacherStatusIdMap[] = $teacherStatus->id;
+foreach ($teacherStatusMap as $status) {
+    $teacherStatusIdMap[] = $status->id;
 }
 
 $teachers = User::find()
-    ->where(['status_id' => $teacherStatusMap])
-    ->join('LEFT OUTER JOIN', 'status', 'status.id = user.status_id')
-    ->orderBy('status.level')
+    ->where(['status_id' => $teacherStatusIdMap])
+    ->joinWith('status')
+    ->orderBy('status.level DESC')
     ->all();
 
 foreach ($lectures as $lecture) {
@@ -64,24 +62,24 @@ $teacherItems = ArrayHelper::map($teachers, 'id', 'username');
 ]); ?>
 
 <?=
-$form->field($model, 'lectureId')
+$form->field($dayLecture, 'lecture_id')
     ->dropDownList($lectureItems)
     ->label('Лекция');
 ?>
-
 <?=
-$form->field($model, 'teacherId')
+$form->field($dayLecture, 'teacher_id')
     ->dropDownList($teacherItems)
     ->label('Преподаватель');
 ?>
 
-<div class="custom-checkbox"></div>
-
 <?=
-$form->field($model, 'isFree')
-    ->checkbox(['class' => 'form-check-input'])
-    ->label('Лекция не назначена');
+Html::a
+(
+    'Освободить',
+    ['schedule/vacate', 'id' => $dayLecture->id],
+    ['class' => 'btn btn-outline-secondary w-100 p-3 mb-3 mt-3 text-uppercase fw-bold']
+);
 ?>
 
-<?= Html::submitInput('Изменить', ['class' => 'btn btn-outline-success w-100 p-3 text-uppercase fw-bold']) ?>
+<?= Html::submitInput('Назначить', ['class' => 'btn btn-outline-success w-100 p-3 text-uppercase fw-bold']) ?>
 <?php ActiveForm::end(); ?>

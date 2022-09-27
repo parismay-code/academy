@@ -2,11 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\FormationUser;
 use Yii;
 use yii\web\Response;
 use yii\web\Controller;
-use app\models\LoginForm;
-use app\models\RegistrationForm;
 use app\models\User;
 use yii\helpers\Url;
 
@@ -18,14 +17,29 @@ class AuthController extends Controller
             return $this->redirect(Url::to(['schedule/index']));
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        $user = new User();
+        $user->scenario = User::SCENARIO_LOGIN;
+
+        if (Yii::$app->request->getIsPost()) {
+            $user->load(Yii::$app->request->post());
+
+            if ($user->validate()) {
+                $_user = User::findOne(['fivem_id' => $user->fivem_id]);
+
+                if (Yii::$app->security->validatePassword($user->password, $_user->password)) {
+                    Yii::$app->user->login($_user, 3600 * 24 * 30);
+                    Yii::$app->session->setFlash('success', "Вы вошли под именем $user->username.");
+
+                    return $this->goHome();
+                } else {
+                    $user->addError('password', 'Неверный пароль.');
+                }
+            }
         }
 
-        $model->password = '';
+        $user->password = '';
         return $this->render('index', [
-            'model' => $model,
+            'user' => $user,
         ]);
     }
 
@@ -35,24 +49,44 @@ class AuthController extends Controller
             return $this->goHome();
         }
 
-        $model = new RegistrationForm();
-        if ($model->load(Yii::$app->request->post()) && $model->registration()) {
-            Yii::$app->session->setFlash('success', 'Аккаунт успешно зарегистрирован.');
+        $user = new User();
+        $user->scenario = User::SCENARIO_REGISTRATION;
 
-            return $this->goHome();
+        $formationUser = new FormationUser();
+
+        if (Yii::$app->request->getIsPost()) {
+            $user->load(Yii::$app->request->post());
+
+            if ($user->validate()) {
+                $user->password = Yii::$app->security->generatePasswordHash($user->password);
+                $user->registration_date = date('Y.m.d H:i:s');
+                $user->auth_key = Yii::$app->getSecurity()->generateRandomString();
+                $user->access_token = Yii::$app->getSecurity()->generateRandomString();
+
+                $user->save(false);
+
+                $formationUser->user_id = $user->id;
+                $formationUser->formation_id = $user->formation_id;
+
+                $formationUser->save(false);
+
+                Yii::$app->user->login($user, 3600 * 24 * 30);
+                Yii::$app->session->setFlash('success', 'Аккаунт успешно зарегистрирован.');
+
+                return $this->goHome();
+            }
         }
 
-        $model->password = null;
-        $model->repeatPassword = null;
+        $user->password = null;
+        $user->password_repeat = null;
         return $this->render('registration', [
-            'model' => $model,
+            'user' => $user,
         ]);
     }
 
     public function actionLogout(): Response
     {
         Yii::$app->user->logout();
-
         Yii::$app->session->setFlash('success', 'Вы вышли из аккаунта.');
 
         return $this->goHome();

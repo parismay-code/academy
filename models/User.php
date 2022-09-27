@@ -66,6 +66,14 @@ class User extends ActiveRecord implements IdentityInterface
         self::ACTION_VIEW_ALL_USERS => 5,
     ];
 
+    const SCENARIO_LOGIN = 'login';
+    const SCENARIO_REGISTRATION = 'registration';
+    const SCENARIO_EDIT = 'edit';
+
+    public ?string $password_repeat = null;
+    public ?string $new_password = null;
+    public ?string $formation_id = null;
+
     public static function tableName(): string
     {
         return 'user';
@@ -74,12 +82,48 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules(): array
     {
         return [
-            [['status_id', 'fivem_id'], 'integer'],
+            [
+                ['status_id', 'formation_id', 'username', 'fivem_id', 'discord', 'password'],
+                'required',
+                'on' => [self::SCENARIO_REGISTRATION, self::SCENARIO_EDIT],
+            ],
+            [
+                ['fivem_id', 'password'],
+                'required',
+                'on' => self::SCENARIO_LOGIN,
+            ],
+            [
+                ['password_repeat'],
+                'required',
+                'on' => self::SCENARIO_REGISTRATION,
+            ],
+            [
+                ['password_repeat'],
+                'compare',
+                'compareAttribute' => 'password',
+                'on' => self::SCENARIO_REGISTRATION,
+            ],
+            [
+                ['password_repeat'],
+                'compare',
+                'compareAttribute' => 'new_password',
+                'on' => self::SCENARIO_EDIT,
+            ],
+            [
+                ['fivem_id', 'discord'],
+                'unique',
+                'on' => [self::SCENARIO_REGISTRATION, self::SCENARIO_EDIT],
+            ],
+            [['status_id', 'fivem_id', 'formation_id'], 'integer'],
             [['registration_date'], 'safe'],
             [['username', 'discord'], 'string', 'max' => 128],
             [['password'], 'string', 'max' => 64],
+            [['password_repeat'], 'string', 'max' => 64, 'on' => [self::SCENARIO_REGISTRATION, self::SCENARIO_EDIT]],
+            [['new_password'], 'string', 'max' => 64, 'on' => self::SCENARIO_EDIT],
+            [['password'], 'string', 'max' => 64],
             [['auth_key', 'access_token'], 'string', 'max' => 32],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
+            [['status_id'], 'exist', 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
+            [['formation_id'], 'exist', 'targetClass' => Formation::class, 'targetAttribute' => ['formation_id' => 'id']],
         ];
     }
 
@@ -87,11 +131,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'status_id' => 'Status ID',
-            'username' => 'Имя',
-            'fivem_id' => 'Fivem ID',
+            'status_id' => 'Статус пользователя',
+            'username' => 'Имя персонажа',
+            'fivem_id' => 'ID на сервере',
+            'formation_id' => 'Формация',
             'discord' => 'Discord',
             'password' => 'Пароль',
+            'password_repeat' => 'Повтор пароля',
+            'new_password' => 'Новый пароль',
             'registration_date' => 'Дата регистрации',
             'auth_key' => 'Auth Key',
             'access_token' => 'Access Token',

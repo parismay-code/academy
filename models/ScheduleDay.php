@@ -57,9 +57,9 @@ class ScheduleDay extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'type' => 'Type',
-            'from' => 'From',
-            'to' => 'To',
+            'type' => 'Тип дня',
+            'from' => 'Начало дня',
+            'to' => 'Конец дня',
         ];
     }
 

@@ -8,7 +8,7 @@ require_once Yii::$app->basePath . '/helpers/mainHelper.php';
 
 /**
  * @var yii\web\View $this
- * @var ScheduleDay[] $models
+ * @var ScheduleDay[] $schedules
  */
 
 $user = User::findOne(Yii::$app->user->id);
@@ -19,9 +19,9 @@ $this->title = 'Vampires Academy | Расписание';
 <section>
     <h4 class="mb-3">Расписание Академии Ночи</h4>
     <div class="d-flex flex-row align-items-start justify-content-between flex-wrap">
-        <?php foreach ($models as $model): ?>
+        <?php foreach ($schedules as $schedule): ?>
             <?php
-            $dayData = ScheduleDay::DAYS_MAP[$model->id];
+            $dayData = ScheduleDay::DAYS_MAP[$schedule->id];
 
             $title = $dayData['ru'];
             $timestamp = strtotime($dayData['en']);
@@ -32,23 +32,23 @@ $this->title = 'Vampires Academy | Расписание';
 
             $date = date('d.m.Y', $timestamp);
 
-            $isVacation = $model->type === ScheduleDay::TYPE_VACATION;
-            $isLecture = $model->type === ScheduleDay::TYPE_LECTURE;
-            $isAttestationOrExamination = $model->type === ScheduleDay::TYPE_ATTESTATION || $model->type === ScheduleDay::TYPE_EXAMINATION
+            $isVacation = $schedule->type === ScheduleDay::TYPE_VACATION;
+            $isLecture = $schedule->type === ScheduleDay::TYPE_LECTURE;
+            $isAttestationOrExamination = $schedule->type === ScheduleDay::TYPE_ATTESTATION || $schedule->type === ScheduleDay::TYPE_EXAMINATION
             ?>
             <?php if ($isVacation && $user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)): ?>
                 <div class="col-xxl-6 mb-4 px-3">
                     <h5 class="mb-4">
                         <?= "$title | $date" ?>
                         <?php if ($user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)): ?> |
-                            <?= Html::a('Изменить', ['schedule/change', 'type' => 'day', 'id' => $model->id],
+                            <?= Html::a('Изменить', ['schedule/change', 'id' => $schedule->id],
                                 ['class' => 'link-secondary text-decoration-none']) ?>
                         <?php endif; ?>
                     </h5>
                     <div
                             style="height: 15.5rem; border: 1px solid #373b3e; background-color: #212529; pointer-events: none; user-select: none;"
                             class="d-flex align-items-center justify-content-center text-uppercase fw-bold fs-5"
-                            id=<?= 'schedule' . $model->id ?>
+                            id=<?= 'schedule' . $schedule->id ?>
                     >
                         Выходной
                     </div>
@@ -58,14 +58,14 @@ $this->title = 'Vampires Academy | Расписание';
                     <h5 class="mb-4">
                         <?= "$title | $date" ?>
                         <?php if ($user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)): ?> |
-                            <?= Html::a('Изменить', ['schedule/change', 'type' => 'day', 'id' => $model->id],
+                            <?= Html::a('Изменить', ['schedule/change', 'id' => $schedule->id],
                                 ['class' => 'link-secondary text-decoration-none']) ?>
                         <?php endif; ?>
                     </h5>
                     <table
                             style="user-select: none"
                             class="table table-bordered table-striped table-hover table-dark"
-                            id=<?= 'schedule' . $model->id ?>
+                            id=<?= 'schedule' . $schedule->id ?>
                     >
                         <?php if ($isLecture): ?>
                             <thead>
@@ -76,7 +76,7 @@ $this->title = 'Vampires Academy | Расписание';
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($model->dayLectures as $dayLecture): ?>
+                            <?php foreach ($schedule->dayLectures as $dayLecture): ?>
                                 <?php
                                 $isFree = $dayLecture->is_free;
                                 $lectureTime = $dayLecture->time . ':00';
@@ -92,8 +92,7 @@ $this->title = 'Vampires Academy | Расписание';
                                                 (
                                                     'Свободно',
                                                     [
-                                                        'schedule/change',
-                                                        'type' => 'lecture',
+                                                        'schedule/appoint',
                                                         'id' => $dayLecture->id
                                                     ],
                                                     ['class' => 'link-secondary text-decoration-none border-bottom']
@@ -115,8 +114,7 @@ $this->title = 'Vampires Academy | Расписание';
                                                 (
                                                     Html::encode("$lecture->id. $lecture->title"),
                                                     [
-                                                        'schedule/change',
-                                                        'type' => 'lecture',
+                                                        'schedule/appoint',
                                                         'id' => $dayLecture->id
                                                     ],
                                                     ['class' => 'link-secondary text-decoration-none border-bottom']
@@ -144,10 +142,10 @@ $this->title = 'Vampires Academy | Расписание';
                             <tbody>
                             <tr>
                                 <td class="col-1 text-center">
-                                    <?= $model->type === ScheduleDay::TYPE_ATTESTATION ? 'Аттестация' : 'Экзамен' ?>
+                                    <?= $schedule->type === ScheduleDay::TYPE_ATTESTATION ? 'Аттестация' : 'Экзамен' ?>
                                 </td>
                                 <td class="col-1 text-center">
-                                    <?= "С $model->from:00 до $model->to:00" ?>
+                                    <?= "С $schedule->from:00 до $schedule->to:00" ?>
                                 </td>
                             </tr>
                             </tbody>

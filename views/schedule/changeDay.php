@@ -6,14 +6,13 @@ use app\models\ChangeScheduleDayForm;
 use app\models\ScheduleDay;
 
 /** @var yii\web\View $this
- * @var ChangeScheduleDayForm $model
- * @var ScheduleDay $scheduleDay
+ * @var ScheduleDay $schedule
  * @var ActiveForm $form
  */
 
 $this->title = 'Vampires Academy | Изменение расписания';
 
-$dayData = ScheduleDay::DAYS_MAP[$scheduleDay->id];
+$dayData = ScheduleDay::DAYS_MAP[$schedule->id];
 
 $title = $dayData['ru'];
 $timestamp = strtotime($dayData['en']);
@@ -34,11 +33,10 @@ $date = date('d.m.Y', $timestamp);
     ],
 ]); ?>
 
-<?= $form->field($model, 'type')
+<?= $form->field($schedule, 'type')
     ->dropDownList(ScheduleDay::TYPE_MAP)
     ->label('Тип дня') ?>
-
-<?= $form->field($model, 'from')
+<?= $form->field($schedule, 'from')
     ->dropDownList([
         15 => '15:00',
         16 => '16:00',
@@ -47,8 +45,7 @@ $date = date('d.m.Y', $timestamp);
         19 => '19:00',
     ])
     ->label('Начало дня') ?>
-
-<?= $form->field($model, 'to')
+<?= $form->field($schedule, 'to')
     ->dropDownList([
         20 => '20:00',
         21 => '21:00',

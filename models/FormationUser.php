@@ -27,8 +27,8 @@ class FormationUser extends ActiveRecord
     {
         return [
             [['user_id', 'formation_id'], 'integer'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
-            [['formation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Formation::class, 'targetAttribute' => ['formation_id' => 'id']],
+            [['user_id'], 'exist', 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['formation_id'], 'exist', 'targetClass' => Formation::class, 'targetAttribute' => ['formation_id' => 'id']],
         ];
     }
 
@@ -37,7 +37,7 @@ class FormationUser extends ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
-            'formation_id' => 'Formation ID',
+            'formation_id' => 'Формация',
         ];
     }
 
