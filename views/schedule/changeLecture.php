@@ -72,14 +72,17 @@ $form->field($dayLecture, 'teacher_id')
     ->label('Преподаватель');
 ?>
 
-<?=
-Html::a
-(
-    'Освободить',
-    ['schedule/vacate', 'id' => $dayLecture->id],
-    ['class' => 'btn btn-outline-secondary w-100 p-3 mb-3 mt-3 text-uppercase fw-bold']
-);
-?>
-
 <?= Html::submitInput('Назначить', ['class' => 'btn btn-outline-success w-100 p-3 text-uppercase fw-bold']) ?>
+
+<?php if (!$dayLecture->is_free): ?>
+    <?=
+    Html::a
+    (
+        'Освободить',
+        ['schedule/vacate', 'id' => $dayLecture->id],
+        ['class' => 'btn btn-outline-secondary w-100 p-3 mb-3 mt-3 text-uppercase fw-bold']
+    );
+    ?>
+<?php endif; ?>
+
 <?php ActiveForm::end(); ?>
