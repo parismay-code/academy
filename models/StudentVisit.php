@@ -28,6 +28,7 @@ class StudentVisit extends ActiveRecord
     {
         return [
             [['student_id', 'lecture_id', 'is_individual'], 'integer'],
+            ['date', 'safe'],
             [['student_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['student_id' => 'id']],
             [['lecture_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lecture::class, 'targetAttribute' => ['lecture_id' => 'id']],
         ];
@@ -40,6 +41,7 @@ class StudentVisit extends ActiveRecord
             'student_id' => 'Student ID',
             'lecture_id' => 'Lecture ID',
             'is_individual' => 'Is Individual',
+            'date' => 'Дата',
         ];
     }
 

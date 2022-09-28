@@ -20,20 +20,22 @@ class AuthController extends Controller
         $user = new User();
         $user->scenario = User::SCENARIO_LOGIN;
 
-        if (Yii::$app->request->getIsPost()) {
-            $user->load(Yii::$app->request->post());
+        if (Yii::$app->request->getIsPost() && $user->load(Yii::$app->request->post()) && $user->validate()) {
+            $_user = User::findOne(['fivem_id' => $user->fivem_id]);
 
-            if ($user->validate()) {
-                $_user = User::findOne(['fivem_id' => $user->fivem_id]);
+            if (!$_user) {
+                Yii::$app->session->setFlash('error', "На данный ID не зарегистрировано профилей. Зарегистрируйтесь.");
 
-                if (Yii::$app->security->validatePassword($user->password, $_user->password)) {
-                    Yii::$app->user->login($_user, 3600 * 24 * 30);
-                    Yii::$app->session->setFlash('success', "Вы вошли под именем $user->username.");
+                return $this->redirect(Url::to(['auth/registration']));
+            }
 
-                    return $this->goHome();
-                } else {
-                    $user->addError('password', 'Неверный пароль.');
-                }
+            if (Yii::$app->security->validatePassword($user->password, $_user->password)) {
+                Yii::$app->user->login($_user, 3600 * 24 * 30);
+                Yii::$app->session->setFlash('success', "Вы вошли под именем $user->username.");
+
+                return $this->goHome();
+            } else {
+                $user->addError('password', 'Неверный пароль.');
             }
         }
 

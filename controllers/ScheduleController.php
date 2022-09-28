@@ -2,12 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\DayLecture;
-use app\models\User;
 use Yii;
 use yii\web\Controller;
-use app\models\ScheduleDay;
 use yii\web\Response;
+use app\models\ScheduleDay;
+use app\models\DayLecture;
+use app\models\User;
+use app\models\TeacherActivity;
+use app\models\StudentVisit;
+use app\models\MarkPresenceForm;
+use yii\helpers\Url;
 
 class ScheduleController extends Controller
 {
@@ -20,6 +24,79 @@ class ScheduleController extends Controller
         $schedules = ScheduleDay::find()->all();
 
         return $this->render('index', ['schedules' => $schedules]);
+    }
+
+    public function actionPresence(int $id): Response|string
+    {
+        $user = User::findOne(Yii::$app->user->id);
+
+        if (!$user || !$user->isActionAvailable(User::ACTION_TAKE_LESSON)) {
+            return $this->goHome();
+        }
+
+        $dayLecture = DayLecture::findOne($id);
+
+        $dayData = ScheduleDay::DAYS_MAP[$dayLecture->day_id];
+
+        $timestamp = strtotime($dayData['en']);
+
+        if ($timestamp > strtotime('Sunday')) {
+            $timestamp = strtotime('-1 week', $timestamp);
+        }
+
+        $date = date('d.m.Y', $timestamp);
+
+        $isScheduleToday = $date === date("d.m.Y", time());
+
+        $lectureTimestamp = strtotime("$dayLecture->time:00");
+
+        $diff = time() - $lectureTimestamp;
+
+        if ($diff < 0) {
+            $diff *= -1;
+            $diff /= 60;
+            $diff *= -1;
+        } else {
+            $diff /= 60;
+        }
+
+//        if ($diff > 60 || $diff < -10 || !$isScheduleToday) {
+//            return $this->goHome();
+//        }
+
+        $formModel = new MarkPresenceForm();
+
+        if (Yii::$app->request->getIsPost()) {
+            $formModel->load(Yii::$app->request->post());
+
+            if ($formModel->validate() && $formModel->studentsIds !== '') {
+                foreach ($formModel->studentsIds as $studentId) {
+                    $studentVisit = new StudentVisit();
+
+                    $studentVisit->student_id = (int)$studentId;
+                    $studentVisit->lecture_id = $id;
+                    $studentVisit->is_individual = 0;
+                    $studentVisit->date = date('Y.m.d H:i:s');
+
+                    $studentVisit->save();
+                }
+
+                $teacherActivity = new TeacherActivity();
+
+                $teacherActivity->teacher_id = (int)$dayLecture->teacher_id;
+                $teacherActivity->type = ScheduleDay::TYPE_LECTURE;
+                $teacherActivity->date = date('Y.m.d H:i:s');
+
+                $teacherActivity->save();
+
+                return $this->redirect(Url::to(['schedule/index']));
+            }
+        }
+
+        return $this->render('presence', [
+            'formModel' => $formModel,
+            'dayLecture' => $dayLecture
+        ]);
     }
 
     public function actionVacate(int $id): Response|string

@@ -32,6 +32,8 @@ $this->title = 'Vampires Academy | Расписание';
 
             $date = date('d.m.Y', $timestamp);
 
+            $isScheduleToday = $date === date("d.m.Y", time());
+
             $isVacation = $schedule->type === ScheduleDay::TYPE_VACATION;
             $isLecture = $schedule->type === ScheduleDay::TYPE_LECTURE;
             $isAttestationOrExamination = $schedule->type === ScheduleDay::TYPE_ATTESTATION || $schedule->type === ScheduleDay::TYPE_EXAMINATION
@@ -58,8 +60,14 @@ $this->title = 'Vampires Academy | Расписание';
                     <h5 class="mb-4">
                         <?= "$title | $date" ?>
                         <?php if ($user->isActionAvailable(User::ACTION_CHANGE_SCHEDULE)): ?> |
-                            <?= Html::a('Изменить', ['schedule/change', 'id' => $schedule->id],
-                                ['class' => 'link-secondary text-decoration-none']) ?>
+                            <?=
+                            Html::a
+                            (
+                                'Изменить',
+                                ['schedule/change', 'id' => $schedule->id],
+                                ['class' => 'link-secondary text-decoration-none']
+                            );
+                            ?>
                         <?php endif; ?>
                     </h5>
                     <table
@@ -82,6 +90,18 @@ $this->title = 'Vampires Academy | Расписание';
                                 $lectureTime = $dayLecture->time . ':00';
                                 $lecture = $dayLecture->lecture;
                                 $teacher = $dayLecture->teacher;
+
+                                $lectureTimestamp = strtotime($lectureTime);
+
+                                $diff = time() - $lectureTimestamp;
+
+                                if ($diff < 0) {
+                                    $diff *= -1;
+                                    $diff /= 60;
+                                    $diff *= -1;
+                                } else {
+                                    $diff /= 60;
+                                }
                                 ?>
                                 <?php if ($isFree): ?>
                                     <tr>
@@ -124,9 +144,23 @@ $this->title = 'Vampires Academy | Расписание';
                                                 <?= Html::encode($lecture->title) ?>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="col-3 text-center"><?= Html::encode($teacher->username) ?></td>
-                                        <td class="col-1 text-center"><?= date('H:i',
-                                                strtotime($lectureTime)) ?></td>
+                                        <td class="col-3 text-center">
+                                            <?= Html::encode($teacher->username) ?>
+                                        </td>
+                                        <td class="col-1 text-center">
+                                            <?php if ($diff > 60 || $diff < -10 || !$isScheduleToday): ?>
+                                                <?= $lectureTime ?>
+                                            <?php else: ?>
+                                                <?=
+                                                Html::a
+                                                (
+                                                    $lectureTime,
+                                                    ['schedule/presence', 'id' => $dayLecture->id],
+                                                    ['class' => 'link-secondary text-decoration-none border-bottom']
+                                                );
+                                                ?>
+                                            <?php endif; ?>
+                                        </td>
                                     </tr>
                                 <?php endif; ?>
                             <?php endforeach; ?>
