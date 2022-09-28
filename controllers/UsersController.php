@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 use app\models\User;
+use app\models\SearchUserForm;
 
 class UsersController extends Controller
 {
@@ -23,9 +24,29 @@ class UsersController extends Controller
             ->orderBy('status.level DESC')
             ->all();
 
+        $formModel = new SearchUserForm();
+
+        if (Yii::$app->request->getIsPost() && $formModel->load(Yii::$app->request->post()) && $formModel->validate()) {
+            $models = User::find()
+                ->joinWith('status')
+                ->join('LEFT OUTER JOIN', 'formation_user', 'user_id = user.id');
+
+            if ($formModel->search !== '') {
+                $models = $models->andWhere("MATCH (username, discord) AGAINST ('$formModel->search')");
+            }
+
+            if (!empty($formModel->formationIds)) {
+                $models = $models->andWhere(['formation_user.formation_id' => $formModel->formationIds]);
+            }
+
+            $models = $models->orderBy('status.level DESC')
+                ->all();
+        }
+
         return $this->render('index', [
             'models' => $models,
-            'user' => $user
+            'user' => $user,
+            'formModel' => $formModel
         ]);
     }
 

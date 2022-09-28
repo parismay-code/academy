@@ -12,7 +12,7 @@ use app\models\SearchUserForm;
 
 class StudentsController extends Controller
 {
-    public function actionIndex(int $formation_id = 1): Response|string
+    public function actionIndex(): Response|string
     {
         $user = User::findOne(Yii::$app->user->id);
 
@@ -24,16 +24,34 @@ class StudentsController extends Controller
 
         $models = User::find()
             ->join('LEFT OUTER JOIN', 'formation_user', 'user_id = user.id')
-            ->where(['formation_user.formation_id' => $formation_id])
-            ->andWhere(['status_id' => 0])
-            ->orderBy('id DESC')
+            ->where(['status_id' => 2])
+            ->orderBy('formation_user.formation_id ASC')
             ->all();
+
+        $formModel = new SearchUserForm();
+
+        if (Yii::$app->request->getIsPost() && $formModel->load(Yii::$app->request->post()) && $formModel->validate()) {
+            $models = User::find()
+                ->join('LEFT OUTER JOIN', 'formation_user', 'user_id = user.id')
+                ->where(['status_id' => 2]);
+
+            if ($formModel->search !== '') {
+                $models = $models->andWhere("MATCH (username, discord) AGAINST ('$formModel->search')");
+            }
+
+            if (!empty($formModel->formationIds)) {
+                $models = $models->andWhere(['formation_user.formation_id' => $formModel->formationIds]);
+            }
+
+            $models = $models->orderBy('formation_user.formation_id ASC')
+                ->all();
+        }
 
         return $this->render('index', [
             'formations' => $formations,
-            'targetFormationId' => $formation_id,
             'models' => $models,
-            'user' => $user
+            'user' => $user,
+            'formModel' => $formModel,
         ]);
     }
 

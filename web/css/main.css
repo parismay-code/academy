@@ -54,6 +54,24 @@ pre {
     white-space: pre-wrap;
 }
 
+input[type="checkbox"] {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+
+    box-shadow: none !important;
+
+    -webkit-transform: scale(1.8);
+    transform: scale(1.8);
+    margin-right: 15px;
+    margin-left: 5px;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
+
 .invisible {
     display: none !important;
 }

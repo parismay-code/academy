@@ -6,14 +6,14 @@ use yii\base\Model;
 
 class SearchUserForm extends Model
 {
-    public string $formationId = '';
+    public array|string $formationIds = '';
     public string $search = '';
 
     public function rules(): array
     {
         return [
-            [['formationId', 'search'], 'string'],
-            [['formationId'], 'exist', 'targetClass' => Formation::class, 'targetAttribute' => ['formationId' => 'id']],
+            ['search', 'string'],
+            [['formationIds'], 'safe'],
         ];
     }
 
