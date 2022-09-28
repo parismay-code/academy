@@ -38,8 +38,10 @@ class ProfileController extends Controller
 
             if ($user->validate()) {
                 if (Yii::$app->security->validatePassword($user->password, $password)) {
-                    if ($user->new_password !== null) {
+                    if ($user->new_password !== null && $user->new_password !== '') {
                         $user->password = Yii::$app->security->generatePasswordHash($user->new_password);
+                    } else {
+                        $user->password = $password;
                     }
 
                     $user->update(false);

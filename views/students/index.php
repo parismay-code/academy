@@ -73,7 +73,7 @@ $this->title = 'Vampires Academy | Студенты';
                                         </td>
                                         <td class="col-1 text-center">
                                             <?php if ($visitedLecture): ?>
-                                                <?= date('d.m.Y H:i', $visitedLecture->date) ?>
+                                                <?= date('d.m.Y', strtotime($visitedLecture->date)) ?>
                                             <?php else: ?>
                                                 -
                                             <?php endif; ?>

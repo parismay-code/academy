@@ -119,7 +119,7 @@ $this->title = 'Vampires Academy | Профиль';
                             </td>
                             <td class="col-1 text-center fs-5">
                                 <?php if ($visitedLecture): ?>
-                                    <?= date('d.m.Y H:i', $visitedLecture->date) ?>
+                                    <?= date('d.m.Y', strtotime($visitedLecture->date)) ?>
                                 <?php else: ?>
                                     -
                                 <?php endif; ?>
