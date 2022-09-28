@@ -27,13 +27,15 @@ CREATE TABLE `user`
     `status_id`         INT,
     `username`          VARCHAR(128),
     `fivem_id`          INT UNIQUE,
-    `discord`           VARCHAR(128) UNICODE,
+    `discord`           VARCHAR(128) UNIQUE,
     `password`          CHAR(64),
     `registration_date` TIMESTAMP,
     `auth_key`          VARCHAR(32),
     `access_token`      VARCHAR(32),
     FOREIGN KEY (`status_id`) REFERENCES `status` (`id`) ON DELETE SET NULL
 );
+
+CREATE FULLTEXT INDEX `user_ft_search` ON `user` (`username`, `discord`);
 
 CREATE TABLE `formation_user`
 (
