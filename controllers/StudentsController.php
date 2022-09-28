@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use app\models\User;
 use app\models\Formation;
+use app\models\SearchUserForm;
 
 class StudentsController extends Controller
 {
