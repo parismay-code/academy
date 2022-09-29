@@ -20,7 +20,7 @@ class AuthController extends Controller
         $user = new User();
         $user->scenario = User::SCENARIO_LOGIN;
 
-        if (Yii::$app->request->getIsPost() && $user->load(Yii::$app->request->post()) && $user->validate()) {
+        if ($this->request->getIsPost() && $user->load($this->request->post()) && $user->validate()) {
             $_user = User::findOne(['fivem_id' => $user->fivem_id]);
 
             if (!$_user) {
@@ -56,8 +56,8 @@ class AuthController extends Controller
 
         $formationUser = new FormationUser();
 
-        if (Yii::$app->request->getIsPost()) {
-            $user->load(Yii::$app->request->post());
+        if ($this->request->getIsPost()) {
+            $user->load($this->request->post());
 
             if ($user->validate()) {
                 $user->password = Yii::$app->security->generatePasswordHash($user->password);

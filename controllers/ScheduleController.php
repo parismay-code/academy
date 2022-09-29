@@ -60,21 +60,27 @@ class ScheduleController extends Controller
             $diff /= 60;
         }
 
-//        if ($diff > 60 || $diff < -10 || !$isScheduleToday) {
-//            return $this->goHome();
-//        }
+        if ($diff > 60 || $diff < -10 || !$isScheduleToday) {
+            return $this->goHome();
+        }
 
         $formModel = new MarkPresenceForm();
 
-        if (Yii::$app->request->getIsPost()) {
-            $formModel->load(Yii::$app->request->post());
+        if ($this->request->getIsPost()) {
+            $formModel->load($this->request->post());
 
             if ($formModel->validate() && $formModel->studentsIds !== '') {
                 foreach ($formModel->studentsIds as $studentId) {
+                    $student = User::findOne($studentId);
+
+                    if ($student->isLectureVisited($dayLecture->lecture_id)) {
+                        continue;
+                    }
+
                     $studentVisit = new StudentVisit();
 
-                    $studentVisit->student_id = (int)$studentId;
-                    $studentVisit->lecture_id = $id;
+                    $studentVisit->student_id = $studentId;
+                    $studentVisit->lecture_id = $dayLecture->lecture_id;
                     $studentVisit->is_individual = 0;
                     $studentVisit->date = date('Y.m.d H:i:s');
 
@@ -131,8 +137,8 @@ class ScheduleController extends Controller
 
         $dayLecture->teacher_id = $dayLecture->teacher_id ?? $user->id;
 
-        if (Yii::$app->request->getIsPost()) {
-            $dayLecture->load(Yii::$app->request->post());
+        if ($this->request->getIsPost()) {
+            $dayLecture->load($this->request->post());
 
             if ($dayLecture->validate()) {
                 $dayLecture->is_free = 0;
@@ -160,8 +166,8 @@ class ScheduleController extends Controller
 
         $schedule = ScheduleDay::findOne($id);
 
-        if (Yii::$app->request->getIsPost()) {
-            $schedule->load(Yii::$app->request->post());
+        if ($this->request->getIsPost()) {
+            $schedule->load($this->request->post());
 
             if ($schedule->validate()) {
                 foreach ($schedule->dayLectures as $lecture) {

@@ -93,7 +93,7 @@ CREATE TABLE `day_lecture`
     `lecture_id` INT,
     `teacher_id` INT,
     `time`       INT,
-    `is_free`    BOOL,
+    `is_free`    TINYINT(1),
     FOREIGN KEY (`day_id`) REFERENCES `schedule_day` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
@@ -104,7 +104,7 @@ CREATE TABLE `student_visit`
     `id`            INT AUTO_INCREMENT PRIMARY KEY,
     `student_id`    INT,
     `lecture_id`    INT,
-    `is_individual` BOOl,
+    `is_individual` TINYINT(1),
     `date`          TIMESTAMP,
     FOREIGN KEY (`student_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ,
     FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

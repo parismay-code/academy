@@ -31,10 +31,10 @@ class ProfileController extends Controller
 
         $formationUser = FormationUser::findOne(['user_id' => $user->id]);
 
-        if (Yii::$app->request->getIsPost()) {
+        if ($this->request->getIsPost()) {
             $password = $user->password;
 
-            $user->load(Yii::$app->request->post());
+            $user->load($this->request->post());
 
             if ($user->validate()) {
                 if (Yii::$app->security->validatePassword($user->password, $password)) {

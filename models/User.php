@@ -220,7 +220,7 @@ class User extends ActiveRecord implements IdentityInterface
         $visitedLectures = $this->studentVisits;
 
         foreach ($visitedLectures as $visitedLecture) {
-            if ($visitedLecture->id === $lectureId) {
+            if ($visitedLecture->lecture_id === $lectureId) {
                 return $visitedLecture;
             }
         }

@@ -26,7 +26,7 @@ class UsersController extends Controller
 
         $formModel = new SearchUserForm();
 
-        if (Yii::$app->request->getIsPost() && $formModel->load(Yii::$app->request->post()) && $formModel->validate()) {
+        if ($this->request->getIsPost() && $formModel->load($this->request->post()) && $formModel->validate()) {
             $models = User::find()
                 ->joinWith('status')
                 ->join('LEFT OUTER JOIN', 'formation_user', 'user_id = user.id');

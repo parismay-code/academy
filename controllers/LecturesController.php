@@ -91,8 +91,8 @@ class LecturesController extends Controller
 
         $lecture = Lecture::findOne($id);
 
-        if (Yii::$app->request->getIsPost()) {
-            $lecture->load(Yii::$app->request->post());
+        if ($this->request->getIsPost()) {
+            $lecture->load($this->request->post());
 
             if ($lecture->validate()) {
                 $lecture->status = Lecture::STATUS_NEW;
@@ -120,8 +120,8 @@ class LecturesController extends Controller
 
         $lecture = new Lecture();
 
-        if (Yii::$app->request->getIsPost()) {
-            $lecture->load(Yii::$app->request->post());
+        if ($this->request->getIsPost()) {
+            $lecture->load($this->request->post());
 
             if ($lecture->validate()) {
                 $lecture->status = Lecture::STATUS_NEW;

@@ -66,7 +66,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_k
             <div class="d-flex flex-row align-items-center justify-content-between text-uppercase fw-bold">
                 <?php foreach ($links as $link): ?>
                     <?php
-                    $isLinkActive = $link['path'] === Yii::$app->requestedRoute;
+                    $isLinkActive = $link['path'] === $route = Yii::$app->requestedRoute;
 
                     if ($isLinkActive) {
                         $link['classParams'] = 'link-success';
