@@ -1,12 +1,10 @@
 <?php
 
-require_once Yii::$app->basePath . '/helpers/mainHelper.php';
-
 use app\models\User;
 use app\models\Lecture;
-use app\models\StudentVisit;
 use app\models\ScheduleDay;
 use yii\helpers\Html;
+use app\helpers\MainHelper;
 
 /**
  * @var yii\web\View $this
@@ -59,24 +57,30 @@ $this->title = 'Vampires Academy | Профиль';
             <div class="mb-4">
                 <h5>Формация:</h5>
                 <h4 class="fw-normal"><?= $user->formationUsers[0]->formation->name ?></h4>
-                <h4 class="fw-normal">
-                    Глава формации:
-                    <span class="fw-semibold">
-                        <?= $user->formationUsers[0]->formation->leader_name ?>
-                    </span>
-                </h4>
-                <h4 class="fw-normal">
-                    Первый заместитель:
-                    <span class="fw-semibold">
-                        <?= $user->formationUsers[0]->formation->deputy_leader_name ?>
-                    </span>
-                </h4>
-                <h4 class="fw-normal">
-                    Второй заместитель:
-                    <span class="fw-semibold">
-                        <?= $user->formationUsers[0]->formation->lawyer_name ?>
-                    </span>
-                </h4>
+                <?php if ($user->formationUsers[0]->formation->leader_name): ?>
+                    <h4 class="fw-normal">
+                        Глава формации:
+                        <span class="fw-semibold">
+                          <?= $user->formationUsers[0]->formation->leader_name ?>
+                      </span>
+                    </h4>
+                <?php endif; ?>
+                <?php if ($user->formationUsers[0]->formation->deputy_leader_name): ?>
+                    <h4 class="fw-normal">
+                        Первый заместитель:
+                        <span class="fw-semibold">
+                          <?= $user->formationUsers[0]->formation->deputy_leader_name ?>
+                      </span>
+                    </h4>
+                <?php endif; ?>
+                <?php if ($user->formationUsers[0]->formation->lawyer_name): ?>
+                    <h4 class="fw-normal">
+                        Второй заместитель:
+                        <span class="fw-semibold">
+                          <?= $user->formationUsers[0]->formation->lawyer_name ?>
+                      </span>
+                    </h4>
+                <?php endif; ?>
             </div>
             <div class="mb-4">
                 <h5>Статус:</h5>
@@ -87,9 +91,6 @@ $this->title = 'Vampires Academy | Профиль';
                 <h4 class="fw-normal"><?= date('d.m.Y в H:i:s', strtotime($user->registration_date)) ?></h4>
             </div>
         </div>
-        <?php
-        $userVisit = StudentVisit::findOne(['student_id' => $user->id]);
-        ?>
         <div>
             <?php if ($user->status->level === 1): ?>
                 <h5>Успеваемость:</h5>
@@ -187,7 +188,7 @@ $this->title = 'Vampires Academy | Профиль';
                             }
                             ?>
                             <td class="text-center">
-                                <?= $hours . ' ' . getNounPluralForm($hours, 'час', 'часа', 'часов') ?>
+                                <?= $hours . ' ' . MainHelper::getNounPluralForm($hours, 'час', 'часа', 'часов') ?>
                             </td>
                         <?php endfor; ?>
                     </tr>

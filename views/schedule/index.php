@@ -4,8 +4,6 @@ use yii\helpers\Html;
 use app\models\ScheduleDay;
 use app\models\User;
 
-require_once Yii::$app->basePath . '/helpers/mainHelper.php';
-
 /**
  * @var yii\web\View $this
  * @var ScheduleDay[] $schedules

@@ -4,7 +4,6 @@ use app\models\Formation;
 use app\models\Status;
 use app\models\User;
 use app\models\Lecture;
-use app\models\StudentVisit;
 use app\models\SearchUserForm;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
@@ -44,9 +43,6 @@ $this->title = 'Vampires Academy | Студенты';
                             </div>
                         </div>
                         <div class="user-performance mt-3 invisible" id="performance<?= $model->id ?>">
-                            <?php
-                            $userVisit = StudentVisit::findOne(['student_id' => $model->id]);
-                            ?>
                             <table class="table table-bordered table-striped table-hover table-dark">
                                 <thead>
                                 <tr>
