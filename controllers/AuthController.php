@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\FormationUser;
+use app\models\UserFormation;
 use Yii;
 use yii\web\Response;
 use yii\web\Controller;
@@ -52,7 +52,7 @@ class AuthController extends Controller
         $user = new User();
         $user->scenario = User::SCENARIO_REGISTRATION;
 
-        $formationUser = new FormationUser();
+        $formationUser = new UserFormation();
 
         if (Yii::$app->request->getIsPost()) {
             $user->load(Yii::$app->request->post());

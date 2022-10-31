@@ -7,31 +7,32 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "day_lecture".
+ * This is the model class for table "schedule_day_lecture".
  *
  * @property int $id
- * @property int|null $day_id
+ * @property int|null $schedule_day_id
  * @property int|null $lecture_id
  * @property int|null $teacher_id
  * @property int|null $time
  * @property int|null $is_free
  *
- * @property ScheduleDay $day
+ * @property ScheduleDay $scheduleDay
  * @property Lecture $lecture
  * @property User $teacher
  */
-class DayLecture extends ActiveRecord
+class ScheduleDayLecture extends ActiveRecord
 {
     public static function tableName(): string
     {
-        return 'day_lecture';
+        return 'schedule_day_lecture';
     }
 
     public function rules(): array
     {
         return [
-            [['day_id', 'lecture_id', 'teacher_id', 'time', 'is_free'], 'integer'],
-            [['day_id'], 'exist', 'targetClass' => ScheduleDay::class, 'targetAttribute' => ['day_id' => 'id']],
+            [['schedule_day_id', 'lecture_id', 'teacher_id', 'time'], 'integer'],
+            ['is_free' => 'boolean'],
+            [['schedule_day_id'], 'exist', 'targetClass' => ScheduleDay::class, 'targetAttribute' => ['day_id' => 'id']],
             [['lecture_id'], 'exist', 'targetClass' => Lecture::class, 'targetAttribute' => ['lecture_id' => 'id']],
             [['teacher_id'], 'exist', 'targetClass' => User::class, 'targetAttribute' => ['teacher_id' => 'id']],
         ];
@@ -41,7 +42,7 @@ class DayLecture extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'day_id' => 'Day ID',
+            'schedule_day_id' => 'Day ID',
             'lecture_id' => 'Лекция',
             'teacher_id' => 'Преподаватель',
             'time' => 'Time',
@@ -49,7 +50,7 @@ class DayLecture extends ActiveRecord
         ];
     }
 
-    public function getDay(): ActiveQuery
+    public function getScheduleDay(): ActiveQuery
     {
         return $this->hasOne(ScheduleDay::class, ['id' => 'day_id']);
     }

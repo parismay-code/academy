@@ -7,7 +7,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "formation_user".
+ * This is the model class for table "user_formation".
  *
  * @property int $id
  * @property int|null $user_id
@@ -16,11 +16,11 @@ use yii\db\ActiveRecord;
  * @property Formation $formation
  * @property User $user
  */
-class FormationUser extends ActiveRecord
+class UserFormation extends ActiveRecord
 {
     public static function tableName(): string
     {
-        return 'formation_user';
+        return 'user_formation';
     }
 
     public function rules(): array

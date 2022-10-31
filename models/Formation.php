@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  * @property string|null $deputy_leader_name
  * @property string|null $lawyer_name
  *
- * @property FormationUser[] $formationUsers
+ * @property UserFormation[] $formationUsers
  */
 class Formation extends ActiveRecord
 {
@@ -44,6 +44,6 @@ class Formation extends ActiveRecord
 
     public function getFormationUsers(): ActiveQuery
     {
-        return $this->hasMany(FormationUser::class, ['formation_id' => 'id']);
+        return $this->hasMany(UserFormation::class, ['formation_id' => 'id']);
     }
 }

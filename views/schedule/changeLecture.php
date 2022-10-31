@@ -3,7 +3,7 @@
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
 use app\models\ScheduleDay;
-use app\models\DayLecture;
+use app\models\ScheduleDayLecture;
 use app\models\Lecture;
 use app\models\User;
 use app\models\Status;
@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 
 /** @var yii\web\View $this
  * @var ScheduleDay $schedule
- * @var DayLecture $dayLecture
+ * @var ScheduleDayLecture $dayLecture
  * @var ActiveForm $form
  */
 

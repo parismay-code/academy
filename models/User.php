@@ -21,8 +21,8 @@ use yii\web\IdentityInterface;
  * @property string|null $auth_key
  * @property string|null $access_token
  *
- * @property DayLecture[] $dayLectures
- * @property FormationUser[] $formationUsers
+ * @property ScheduleDayLecture[] $dayLectures
+ * @property UserFormation[] $formationUsers
  * @property Status $status
  * @property StudentVisit[] $studentVisits
  * @property TeacherActivity[] $teacherActivities
@@ -147,12 +147,12 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getDayLectures(): ActiveQuery
     {
-        return $this->hasMany(DayLecture::class, ['teacher_id' => 'id']);
+        return $this->hasMany(ScheduleDayLecture::class, ['teacher_id' => 'id']);
     }
 
     public function getFormationUsers(): ActiveQuery
     {
-        return $this->hasMany(FormationUser::class, ['user_id' => 'id']);
+        return $this->hasMany(UserFormation::class, ['user_id' => 'id']);
     }
 
     public function getStatus(): ActiveQuery

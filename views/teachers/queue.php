@@ -2,7 +2,7 @@
 
 use app\models\TeacherQueue;
 use app\models\User;
-use app\models\FormationUser;
+use app\models\UserFormation;
 use yii\helpers\Html;
 
 /**
@@ -21,7 +21,7 @@ $this->title = 'Vampires Academy | Заявки';
                 <?php
                 $candidate = $model->user;
 
-                $formation = FormationUser::findOne(['user_id' => $candidate->id])->formation;
+                $formation = UserFormation::findOne(['user_id' => $candidate->id])->formation;
                 ?>
                 <div class="users-request-user w-75">
                     <span class="users-request-user__name">

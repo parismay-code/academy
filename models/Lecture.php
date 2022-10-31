@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  * @property string|null $title
  * @property string|null $details
  *
- * @property DayLecture[] $dayLectures
+ * @property ScheduleDayLecture[] $dayLectures
  * @property LectureFile[] $lectureFiles
  * @property StudentVisit[] $studentVisits
  */
@@ -52,7 +52,7 @@ class Lecture extends ActiveRecord
 
     public function getDayLectures(): ActiveQuery
     {
-        return $this->hasMany(DayLecture::class, ['lecture_id' => 'id']);
+        return $this->hasMany(ScheduleDayLecture::class, ['lecture_id' => 'id']);
     }
 
     public function getLectureFiles(): ActiveQuery

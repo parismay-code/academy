@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\FormationUser;
+use app\models\UserFormation;
 use yii\helpers\Url;
 use Yii;
 use yii\web\Controller;
@@ -29,7 +29,7 @@ class ProfileController extends Controller
         $user = User::findOne(Yii::$app->user->id);
         $user->scenario = User::SCENARIO_EDIT;
 
-        $formationUser = FormationUser::findOne(['user_id' => $user->id]);
+        $formationUser = UserFormation::findOne(['user_id' => $user->id]);
 
         if (Yii::$app->request->getIsPost()) {
             $password = $user->password;

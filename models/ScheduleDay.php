@@ -11,10 +11,10 @@ use yii\db\ActiveRecord;
  *
  * @property int $id
  * @property string|null $type
- * @property int|null $from
- * @property int|null $to
+ * @property int|null $day
+ * @property int|null $evening
  *
- * @property DayLecture[] $dayLectures
+ * @property ScheduleDayLecture[] $scheduleDayLectures
  */
 class ScheduleDay extends ActiveRecord
 {
@@ -48,7 +48,7 @@ class ScheduleDay extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['from', 'to'], 'integer'],
+            [['day', 'evening'], 'integer'],
             [['type'], 'string', 'max' => 32],
         ];
     }
@@ -58,13 +58,13 @@ class ScheduleDay extends ActiveRecord
         return [
             'id' => 'ID',
             'type' => 'Тип дня',
-            'from' => 'Начало дня',
-            'to' => 'Конец дня',
+            'day' => 'Начало дневной группы',
+            'evening' => 'Начало вечерней группы',
         ];
     }
 
-    public function getDayLectures(): ActiveQuery
+    public function getScheduleDayLectures(): ActiveQuery
     {
-        return $this->hasMany(DayLecture::class, ['day_id' => 'id']);
+        return $this->hasMany(ScheduleDayLecture::class, ['day_id' => 'id']);
     }
 }

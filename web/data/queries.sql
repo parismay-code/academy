@@ -254,7 +254,7 @@ Shaquille de Castan (Канцлер, десница Виктории де Лан
        ('archived', NOW(), 'История вампирского сообщества', 'Скоро'),
        ('archived', NOW(), 'Производство формаций', 'Скоро');
 
-INSERT INTO schedule_day (type, `from`, `to`)
+INSERT INTO schedule_day (type, day, `to`)
 VALUES ('lecture', 17, 21),
        ('vacation', 17, 21),
        ('lecture', 17, 21),

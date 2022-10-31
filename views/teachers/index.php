@@ -1,7 +1,7 @@
 <?php
 
 use app\models\User;
-use app\models\FormationUser;
+use app\models\UserFormation;
 use app\models\Status;
 use yii\helpers\Html;
 
@@ -43,7 +43,7 @@ $this->title = 'Vampires Academy | Преподаватели';
     <div class="users-list">
         <?php foreach ($models as $model): ?>
             <?php
-            $formation = FormationUser::findOne(['user_id' => $model->id])->formation;
+            $formation = UserFormation::findOne(['user_id' => $model->id])->formation;
             ?>
             <div class="users-list__wrapper">
                 <div class="users-list__user user <?= $model->id === $user->id ? 'user_active' : '' ?>">

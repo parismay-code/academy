@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\DayLecture;
+use app\models\ScheduleDayLecture;
 use app\models\User;
 use Yii;
 use yii\web\Controller;
@@ -17,9 +17,9 @@ class ScheduleController extends Controller
             return $this->goHome();
         }
 
-        $schedules = ScheduleDay::find()->all();
+        $scheduleDays = ScheduleDay::find()->all();
 
-        return $this->render('index', ['schedules' => $schedules]);
+        return $this->render('index', ['scheduleDays' => $scheduleDays]);
     }
 
     public function actionVacate(int $id): Response|string
@@ -30,7 +30,7 @@ class ScheduleController extends Controller
             return $this->goHome();
         }
 
-        $dayLecture = DayLecture::findOne($id);
+        $dayLecture = ScheduleDayLecture::findOne($id);
 
         $dayLecture->is_free = 1;
 
@@ -49,7 +49,7 @@ class ScheduleController extends Controller
             return $this->goHome();
         }
 
-        $dayLecture = DayLecture::findOne($id);
+        $dayLecture = ScheduleDayLecture::findOne($id);
         $schedule = $dayLecture->day;
 
         $dayLecture->teacher_id = $dayLecture->teacher_id ?? $user->id;
@@ -92,7 +92,7 @@ class ScheduleController extends Controller
                 }
 
                 for ($i = 0; $i < $schedule->to - $schedule->from; $i++) {
-                    $lecture = new DayLecture();
+                    $lecture = new ScheduleDayLecture();
 
                     $lecture->day_id = $id;
                     $lecture->time = $schedule->from + $i;
